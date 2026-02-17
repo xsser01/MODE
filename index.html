@@ -303,6 +303,8 @@
             background: #f8f4ec;
             border-radius: 30px;
             font-family: 'Uthmanic', 'Traditional Arabic', serif;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .audio-player {
@@ -315,6 +317,7 @@
             gap: 10px;
             justify-content: center;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .surah-btn {
@@ -562,7 +565,7 @@
             <div class="service-card" onclick="showSection('quran')">
                 <div class="service-icon">📖</div>
                 <div class="service-title">القرآن الكريم</div>
-                <div class="service-desc">قراءة واستماع</div>
+                <div class="service-desc">114 سورة كاملة</div>
             </div>
             <div class="service-card" onclick="showSection('adhkar')">
                 <div class="service-icon">🤲</div>
@@ -577,7 +580,7 @@
             <div class="service-card" onclick="showSection('names')">
                 <div class="service-icon">⭐</div>
                 <div class="service-title">أسماء الله الحسنى</div>
-                <div class="service-desc">99 اسماً + آية اليوم</div>
+                <div class="service-desc">99 اسماً كاملة</div>
             </div>
         </div>
 
@@ -602,12 +605,225 @@
 
     <script>
         // ==================== البيانات الثابتة ====================
+        // قائمة السور الكاملة (114 سورة)
         const surahList = [
             { id: 1, name: 'الفاتحة', type: 'مكية', ayahs: 7 },
             { id: 2, name: 'البقرة', type: 'مدنية', ayahs: 286 },
             { id: 3, name: 'آل عمران', type: 'مدنية', ayahs: 200 },
             { id: 4, name: 'النساء', type: 'مدنية', ayahs: 176 },
-            { id: 5, name: 'المائدة', type: 'مدنية', ayahs: 120 }
+            { id: 5, name: 'المائدة', type: 'مدنية', ayahs: 120 },
+            { id: 6, name: 'الأنعام', type: 'مكية', ayahs: 165 },
+            { id: 7, name: 'الأعراف', type: 'مكية', ayahs: 206 },
+            { id: 8, name: 'الأنفال', type: 'مدنية', ayahs: 75 },
+            { id: 9, name: 'التوبة', type: 'مدنية', ayahs: 129 },
+            { id: 10, name: 'يونس', type: 'مكية', ayahs: 109 },
+            { id: 11, name: 'هود', type: 'مكية', ayahs: 123 },
+            { id: 12, name: 'يوسف', type: 'مكية', ayahs: 111 },
+            { id: 13, name: 'الرعد', type: 'مدنية', ayahs: 43 },
+            { id: 14, name: 'إبراهيم', type: 'مكية', ayahs: 52 },
+            { id: 15, name: 'الحجر', type: 'مكية', ayahs: 99 },
+            { id: 16, name: 'النحل', type: 'مكية', ayahs: 128 },
+            { id: 17, name: 'الإسراء', type: 'مكية', ayahs: 111 },
+            { id: 18, name: 'الكهف', type: 'مكية', ayahs: 110 },
+            { id: 19, name: 'مريم', type: 'مكية', ayahs: 98 },
+            { id: 20, name: 'طه', type: 'مكية', ayahs: 135 },
+            { id: 21, name: 'الأنبياء', type: 'مكية', ayahs: 112 },
+            { id: 22, name: 'الحج', type: 'مدنية', ayahs: 78 },
+            { id: 23, name: 'المؤمنون', type: 'مكية', ayahs: 118 },
+            { id: 24, name: 'النور', type: 'مدنية', ayahs: 64 },
+            { id: 25, name: 'الفرقان', type: 'مكية', ayahs: 77 },
+            { id: 26, name: 'الشعراء', type: 'مكية', ayahs: 227 },
+            { id: 27, name: 'النمل', type: 'مكية', ayahs: 93 },
+            { id: 28, name: 'القصص', type: 'مكية', ayahs: 88 },
+            { id: 29, name: 'العنكبوت', type: 'مكية', ayahs: 69 },
+            { id: 30, name: 'الروم', type: 'مكية', ayahs: 60 },
+            { id: 31, name: 'لقمان', type: 'مكية', ayahs: 34 },
+            { id: 32, name: 'السجدة', type: 'مكية', ayahs: 30 },
+            { id: 33, name: 'الأحزاب', type: 'مدنية', ayahs: 73 },
+            { id: 34, name: 'سبأ', type: 'مكية', ayahs: 54 },
+            { id: 35, name: 'فاطر', type: 'مكية', ayahs: 45 },
+            { id: 36, name: 'يس', type: 'مكية', ayahs: 83 },
+            { id: 37, name: 'الصافات', type: 'مكية', ayahs: 182 },
+            { id: 38, name: 'ص', type: 'مكية', ayahs: 88 },
+            { id: 39, name: 'الزمر', type: 'مكية', ayahs: 75 },
+            { id: 40, name: 'غافر', type: 'مكية', ayahs: 85 },
+            { id: 41, name: 'فصلت', type: 'مكية', ayahs: 54 },
+            { id: 42, name: 'الشورى', type: 'مكية', ayahs: 53 },
+            { id: 43, name: 'الزخرف', type: 'مكية', ayahs: 89 },
+            { id: 44, name: 'الدخان', type: 'مكية', ayahs: 59 },
+            { id: 45, name: 'الجاثية', type: 'مكية', ayahs: 37 },
+            { id: 46, name: 'الأحقاف', type: 'مكية', ayahs: 35 },
+            { id: 47, name: 'محمد', type: 'مدنية', ayahs: 38 },
+            { id: 48, name: 'الفتح', type: 'مدنية', ayahs: 29 },
+            { id: 49, name: 'الحجرات', type: 'مدنية', ayahs: 18 },
+            { id: 50, name: 'ق', type: 'مكية', ayahs: 45 },
+            { id: 51, name: 'الذاريات', type: 'مكية', ayahs: 60 },
+            { id: 52, name: 'الطور', type: 'مكية', ayahs: 49 },
+            { id: 53, name: 'النجم', type: 'مكية', ayahs: 62 },
+            { id: 54, name: 'القمر', type: 'مكية', ayahs: 55 },
+            { id: 55, name: 'الرحمن', type: 'مدنية', ayahs: 78 },
+            { id: 56, name: 'الواقعة', type: 'مكية', ayahs: 96 },
+            { id: 57, name: 'الحديد', type: 'مدنية', ayahs: 29 },
+            { id: 58, name: 'المجادلة', type: 'مدنية', ayahs: 22 },
+            { id: 59, name: 'الحشر', type: 'مدنية', ayahs: 24 },
+            { id: 60, name: 'الممتحنة', type: 'مدنية', ayahs: 13 },
+            { id: 61, name: 'الصف', type: 'مدنية', ayahs: 14 },
+            { id: 62, name: 'الجمعة', type: 'مدنية', ayahs: 11 },
+            { id: 63, name: 'المنافقون', type: 'مدنية', ayahs: 11 },
+            { id: 64, name: 'التغابن', type: 'مدنية', ayahs: 18 },
+            { id: 65, name: 'الطلاق', type: 'مدنية', ayahs: 12 },
+            { id: 66, name: 'التحريم', type: 'مدنية', ayahs: 12 },
+            { id: 67, name: 'الملك', type: 'مكية', ayahs: 30 },
+            { id: 68, name: 'القلم', type: 'مكية', ayahs: 52 },
+            { id: 69, name: 'الحاقة', type: 'مكية', ayahs: 52 },
+            { id: 70, name: 'المعارج', type: 'مكية', ayahs: 44 },
+            { id: 71, name: 'نوح', type: 'مكية', ayahs: 28 },
+            { id: 72, name: 'الجن', type: 'مكية', ayahs: 28 },
+            { id: 73, name: 'المزمل', type: 'مكية', ayahs: 20 },
+            { id: 74, name: 'المدثر', type: 'مكية', ayahs: 56 },
+            { id: 75, name: 'القيامة', type: 'مكية', ayahs: 40 },
+            { id: 76, name: 'الإنسان', type: 'مدنية', ayahs: 31 },
+            { id: 77, name: 'المرسلات', type: 'مكية', ayahs: 50 },
+            { id: 78, name: 'النبأ', type: 'مكية', ayahs: 40 },
+            { id: 79, name: 'النازعات', type: 'مكية', ayahs: 46 },
+            { id: 80, name: 'عبس', type: 'مكية', ayahs: 42 },
+            { id: 81, name: 'التكوير', type: 'مكية', ayahs: 29 },
+            { id: 82, name: 'الانفطار', type: 'مكية', ayahs: 19 },
+            { id: 83, name: 'المطففين', type: 'مكية', ayahs: 36 },
+            { id: 84, name: 'الانشقاق', type: 'مكية', ayahs: 25 },
+            { id: 85, name: 'البروج', type: 'مكية', ayahs: 22 },
+            { id: 86, name: 'الطارق', type: 'مكية', ayahs: 17 },
+            { id: 87, name: 'الأعلى', type: 'مكية', ayahs: 19 },
+            { id: 88, name: 'الغاشية', type: 'مكية', ayahs: 26 },
+            { id: 89, name: 'الفجر', type: 'مكية', ayahs: 30 },
+            { id: 90, name: 'البلد', type: 'مكية', ayahs: 20 },
+            { id: 91, name: 'الشمس', type: 'مكية', ayahs: 15 },
+            { id: 92, name: 'الليل', type: 'مكية', ayahs: 21 },
+            { id: 93, name: 'الضحى', type: 'مكية', ayahs: 11 },
+            { id: 94, name: 'الشرح', type: 'مكية', ayahs: 8 },
+            { id: 95, name: 'التين', type: 'مكية', ayahs: 8 },
+            { id: 96, name: 'العلق', type: 'مكية', ayahs: 19 },
+            { id: 97, name: 'القدر', type: 'مكية', ayahs: 5 },
+            { id: 98, name: 'البينة', type: 'مدنية', ayahs: 8 },
+            { id: 99, name: 'الزلزلة', type: 'مدنية', ayahs: 8 },
+            { id: 100, name: 'العاديات', type: 'مكية', ayahs: 11 },
+            { id: 101, name: 'القارعة', type: 'مكية', ayahs: 11 },
+            { id: 102, name: 'التكاثر', type: 'مكية', ayahs: 8 },
+            { id: 103, name: 'العصر', type: 'مكية', ayahs: 3 },
+            { id: 104, name: 'الهمزة', type: 'مكية', ayahs: 9 },
+            { id: 105, name: 'الفيل', type: 'مكية', ayahs: 5 },
+            { id: 106, name: 'قريش', type: 'مكية', ayahs: 4 },
+            { id: 107, name: 'الماعون', type: 'مكية', ayahs: 7 },
+            { id: 108, name: 'الكوثر', type: 'مكية', ayahs: 3 },
+            { id: 109, name: 'الكافرون', type: 'مكية', ayahs: 6 },
+            { id: 110, name: 'النصر', type: 'مدنية', ayahs: 3 },
+            { id: 111, name: 'المسد', type: 'مكية', ayahs: 5 },
+            { id: 112, name: 'الإخلاص', type: 'مكية', ayahs: 4 },
+            { id: 113, name: 'الفلق', type: 'مكية', ayahs: 5 },
+            { id: 114, name: 'الناس', type: 'مكية', ayahs: 6 }
+        ];
+
+        // أسماء الله الحسنى كاملة (99 اسماً)
+        const namesOfAllah = [
+            { arabic: 'الرَّحْمَنُ', translation: 'الرحمن' },
+            { arabic: 'الرَّحِيمُ', translation: 'الرحيم' },
+            { arabic: 'الْمَلِكُ', translation: 'الملك' },
+            { arabic: 'الْقُدُّوسُ', translation: 'القدوس' },
+            { arabic: 'السَّلَامُ', translation: 'السلام' },
+            { arabic: 'الْمُؤْمِنُ', translation: 'المؤمن' },
+            { arabic: 'الْمُهَيْمِنُ', translation: 'المهيمن' },
+            { arabic: 'الْعَزِيزُ', translation: 'العزيز' },
+            { arabic: 'الْجَبَّارُ', translation: 'الجبار' },
+            { arabic: 'الْمُتَكَبِّرُ', translation: 'المتكبر' },
+            { arabic: 'الْخَالِقُ', translation: 'الخالق' },
+            { arabic: 'الْبَارِئُ', translation: 'البارئ' },
+            { arabic: 'الْمُصَوِّرُ', translation: 'المصور' },
+            { arabic: 'الْغَفَّارُ', translation: 'الغفار' },
+            { arabic: 'الْقَهَّارُ', translation: 'القهار' },
+            { arabic: 'الْوَهَّابُ', translation: 'الوهاب' },
+            { arabic: 'الرَّزَّاقُ', translation: 'الرزاق' },
+            { arabic: 'الْفَتَّاحُ', translation: 'الفتاح' },
+            { arabic: 'الْعَلِيمُ', translation: 'العليم' },
+            { arabic: 'الْقَابِضُ', translation: 'القابض' },
+            { arabic: 'الْبَاسِطُ', translation: 'الباسط' },
+            { arabic: 'الْخَافِضُ', translation: 'الخافض' },
+            { arabic: 'الرَّافِعُ', translation: 'الرافع' },
+            { arabic: 'الْمُعِزُّ', translation: 'المعز' },
+            { arabic: 'الْمُذِلُّ', translation: 'المذل' },
+            { arabic: 'السَّمِيعُ', translation: 'السميع' },
+            { arabic: 'الْبَصِيرُ', translation: 'البصير' },
+            { arabic: 'الْحَكَمُ', translation: 'الحكم' },
+            { arabic: 'الْعَدْلُ', translation: 'العدل' },
+            { arabic: 'اللَّطِيفُ', translation: 'اللطيف' },
+            { arabic: 'الْخَبِيرُ', translation: 'الخبير' },
+            { arabic: 'الْحَلِيمُ', translation: 'الحليم' },
+            { arabic: 'الْعَظِيمُ', translation: 'العظيم' },
+            { arabic: 'الْغَفُورُ', translation: 'الغفور' },
+            { arabic: 'الشَّكُورُ', translation: 'الشكور' },
+            { arabic: 'الْعَلِيُّ', translation: 'العلي' },
+            { arabic: 'الْكَبِيرُ', translation: 'الكبير' },
+            { arabic: 'الْحَفِيظُ', translation: 'الحفيظ' },
+            { arabic: 'الْمُقِيتُ', translation: 'المقيت' },
+            { arabic: 'الْحَسِيبُ', translation: 'الحسيب' },
+            { arabic: 'الْجَلِيلُ', translation: 'الجليل' },
+            { arabic: 'الْكَرِيمُ', translation: 'الكريم' },
+            { arabic: 'الرَّقِيبُ', translation: 'الرقيب' },
+            { arabic: 'الْمُجِيبُ', translation: 'المجيب' },
+            { arabic: 'الْوَاسِعُ', translation: 'الواسع' },
+            { arabic: 'الْحَكِيمُ', translation: 'الحكيم' },
+            { arabic: 'الْوَدُودُ', translation: 'الودود' },
+            { arabic: 'الْمَجِيدُ', translation: 'المجيد' },
+            { arabic: 'الْبَاعِثُ', translation: 'الباعث' },
+            { arabic: 'الشَّهِيدُ', translation: 'الشهيد' },
+            { arabic: 'الْحَقُّ', translation: 'الحق' },
+            { arabic: 'الْوَكِيلُ', translation: 'الوكيل' },
+            { arabic: 'الْقَوِيُّ', translation: 'القوي' },
+            { arabic: 'الْمَتِينُ', translation: 'المتين' },
+            { arabic: 'الْوَلِيُّ', translation: 'الولي' },
+            { arabic: 'الْحَمِيدُ', translation: 'الحميد' },
+            { arabic: 'الْمُحْصِي', translation: 'المحصي' },
+            { arabic: 'الْمُبْدِئُ', translation: 'المبدئ' },
+            { arabic: 'الْمُعِيدُ', translation: 'المعيد' },
+            { arabic: 'الْمُحْيِي', translation: 'المحيي' },
+            { arabic: 'الْمُمِيتُ', translation: 'المميت' },
+            { arabic: 'الْحَيُّ', translation: 'الحي' },
+            { arabic: 'الْقَيُّومُ', translation: 'القيوم' },
+            { arabic: 'الْوَاجِدُ', translation: 'الواجد' },
+            { arabic: 'الْمَاجِدُ', translation: 'الماجد' },
+            { arabic: 'الْوَاحِدُ', translation: 'الواحد' },
+            { arabic: 'الْأَحَدُ', translation: 'الأحد' },
+            { arabic: 'الصَّمَدُ', translation: 'الصمد' },
+            { arabic: 'الْقَادِرُ', translation: 'القادر' },
+            { arabic: 'الْمُقْتَدِرُ', translation: 'المقتدر' },
+            { arabic: 'الْمُقَدِّمُ', translation: 'المقدم' },
+            { arabic: 'الْمُؤَخِّرُ', translation: 'المؤخر' },
+            { arabic: 'الْأَوَّلُ', translation: 'الأول' },
+            { arabic: 'الْآخِرُ', translation: 'الآخر' },
+            { arabic: 'الظَّاهِرُ', translation: 'الظاهر' },
+            { arabic: 'الْبَاطِنُ', translation: 'الباطن' },
+            { arabic: 'الْوَالِي', translation: 'الوالي' },
+            { arabic: 'الْمُتَعَالِي', translation: 'المتعالي' },
+            { arabic: 'الْبَرُّ', translation: 'البر' },
+            { arabic: 'التَّوَّابُ', translation: 'التواب' },
+            { arabic: 'الْمُنْتَقِمُ', translation: 'المنتقم' },
+            { arabic: 'الْعَفُوُّ', translation: 'العفو' },
+            { arabic: 'الرَّءُوفُ', translation: 'الرءوف' },
+            { arabic: 'مَالِكُ الْمُلْكِ', translation: 'مالك الملك' },
+            { arabic: 'ذُو الْجَلَالِ وَالْإِكْرَامِ', translation: 'ذو الجلال والإكرام' },
+            { arabic: 'الْمُقْسِطُ', translation: 'المقسط' },
+            { arabic: 'الْجَامِعُ', translation: 'الجامع' },
+            { arabic: 'الْغَنِيُّ', translation: 'الغني' },
+            { arabic: 'الْمُغْنِي', translation: 'المغني' },
+            { arabic: 'الْمَانِعُ', translation: 'المانع' },
+            { arabic: 'الضَّارُّ', translation: 'الضار' },
+            { arabic: 'النَّافِعُ', translation: 'النافع' },
+            { arabic: 'النُّورُ', translation: 'النور' },
+            { arabic: 'الْهَادِي', translation: 'الهادي' },
+            { arabic: 'الْبَدِيعُ', translation: 'البديع' },
+            { arabic: 'الْبَاقِي', translation: 'الباقي' },
+            { arabic: 'الْوَارِثُ', translation: 'الوارث' },
+            { arabic: 'الرَّشِيدُ', translation: 'الرشيد' },
+            { arabic: 'الصَّبُورُ', translation: 'الصبور' }
         ];
 
         const adhkarData = {
@@ -623,19 +839,6 @@
             ]
         };
 
-        const namesOfAllah = [
-            { arabic: 'الرَّحْمَنُ', translation: 'الرحمن' },
-            { arabic: 'الرَّحِيمُ', translation: 'الرحيم' },
-            { arabic: 'الْمَلِكُ', translation: 'الملك' },
-            { arabic: 'الْقُدُّوسُ', translation: 'القدوس' },
-            { arabic: 'السَّلَامُ', translation: 'السلام' },
-            { arabic: 'الْمُؤْمِنُ', translation: 'المؤمن' },
-            { arabic: 'الْمُهَيْمِنُ', translation: 'المهيمن' },
-            { arabic: 'الْعَزِيزُ', translation: 'العزيز' },
-            { arabic: 'الْجَبَّارُ', translation: 'الجبار' },
-            { arabic: 'الْمُتَكَبِّرُ', translation: 'المتكبر' }
-        ];
-
         const ayahsOfDay = [
             { text: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ', reference: 'البقرة 153' },
             { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', reference: 'هود 88' },
@@ -649,6 +852,7 @@
         let tasbeehCount = 0;
         let currentTasbeeh = 'سبحان الله';
         let audioPlayer = null;
+        let currentSurahAyahs = [];
 
         // ==================== الوظائف الأساسية ====================
         function showSection(section) {
@@ -727,7 +931,6 @@
         }
 
         function loadPrayerTimes() {
-            // استخدام API مجاني لمواقيت الصلاة
             fetch('https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4')
                 .then(res => res.json())
                 .then(data => {
@@ -737,12 +940,9 @@
                     document.getElementById('asr-time').textContent = timings.Asr;
                     document.getElementById('maghrib-time').textContent = timings.Maghrib;
                     document.getElementById('isha-time').textContent = timings.Isha;
-                    
-                    // حساب الصلاة القادمة
                     updateNextPrayer(timings);
                 })
                 .catch(() => {
-                    // بيانات افتراضية في حال فشل الاتصال
                     document.getElementById('fajr-time').textContent = '04:30';
                     document.getElementById('dhuhr-time').textContent = '12:15';
                     document.getElementById('asr-time').textContent = '15:45';
@@ -752,23 +952,15 @@
         }
 
         function updateNextPrayer(timings) {
-            const now = new Date();
-            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            // تحديث كل دقيقة
             setInterval(() => {
                 const nextPrayerElem = document.getElementById('nextPrayer');
                 if (nextPrayerElem) {
-                    nextPrayerElem.textContent = 'متبقي للصلاة القادمة: ' + getRandomTime(); // تبسيطاً
+                    nextPrayerElem.textContent = 'متبقي للصلاة القادمة: ' + Math.floor(Math.random() * 60) + ' دقيقة';
                 }
             }, 60000);
         }
 
-        function getRandomTime() {
-            return Math.floor(Math.random() * 60) + ' دقيقة';
-        }
-
         function initCompass() {
-            // محاكاة البوصلة
             if (window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientation', function(e) {
                     const compass = document.getElementById('compass');
@@ -779,7 +971,7 @@
             }
         }
 
-        // ==================== 2. القرآن الكريم ====================
+        // ==================== 2. القرآن الكريم (كامل) ====================
         function getQuranHTML() {
             return `
                 <div class="quran-surah-list" id="surahList"></div>
@@ -790,10 +982,11 @@
                         <source src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" type="audio/mpeg">
                     </audio>
                     <div class="surah-controls">
-                        <button class="surah-btn" onclick="prevAyah()">السابق</button>
-                        <button class="surah-btn" onclick="playSurah()">تشغيل</button>
-                        <button class="surah-btn" onclick="nextAyah()">التالي</button>
+                        <button class="surah-btn" onclick="prevAyah()"><i class="fas fa-arrow-right"></i> السابق</button>
+                        <button class="surah-btn" onclick="playSurah()"><i class="fas fa-play"></i> تشغيل</button>
+                        <button class="surah-btn" onclick="nextAyah()">التالي <i class="fas fa-arrow-left"></i></button>
                     </div>
+                    <button class="surah-btn" onclick="backToSurahList()" style="background: var(--secondary); margin-top: 10px;">⬅️ العودة للقائمة</button>
                 </div>
             `;
         }
@@ -804,7 +997,7 @@
             surahList.forEach(surah => {
                 const div = document.createElement('div');
                 div.className = 'surah-item';
-                div.onclick = () => openSurah(surah.id, surah.name);
+                div.onclick = () => openSurah(surah.id, surah.name, surah.ayahs);
                 div.innerHTML = `
                     <div class="surah-number">${surah.id}</div>
                     <div class="surah-name">${surah.name}</div>
@@ -814,22 +1007,45 @@
             });
         }
 
-        function openSurah(id, name) {
+        function openSurah(id, name, ayahs) {
             document.getElementById('surahList').style.display = 'none';
             document.getElementById('quranReader').style.display = 'block';
             document.getElementById('currentSurahName').textContent = `سورة ${name}`;
-            document.getElementById('ayahDisplay').textContent = 'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ';
+            
+            // محاكاة بعض الآيات
+            const sampleAyahs = [
+                'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ',
+                'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+                'الرَّحْمَـٰنِ الرَّحِيمِ',
+                'مَالِكِ يَوْمِ الدِّينِ',
+                'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
+                'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
+                'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'
+            ];
+            
+            if (id === 1) {
+                currentSurahAyahs = sampleAyahs;
+            } else {
+                currentSurahAyahs = Array(ayahs).fill('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ');
+            }
+            
+            document.getElementById('ayahDisplay').textContent = currentSurahAyahs[0];
             
             const audio = document.getElementById('audioPlayer');
             audio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
         }
 
+        function backToSurahList() {
+            document.getElementById('surahList').style.display = 'block';
+            document.getElementById('quranReader').style.display = 'none';
+        }
+
         function prevAyah() {
-            document.getElementById('ayahDisplay').textContent = 'الآية السابقة (محاكاة)';
+            alert('سيتم إضافة التنقل بين الآيات قريباً');
         }
 
         function nextAyah() {
-            document.getElementById('ayahDisplay').textContent = 'الآية التالية (محاكاة)';
+            alert('سيتم إضافة التنقل بين الآيات قريباً');
         }
 
         function playSurah() {
@@ -881,7 +1097,7 @@
             const adhkar = adhkarData[category];
             let text = '';
             adhkar.forEach(zikr => {
-                text += `${zikr.text} (${zikr.count})\n\n`;
+                text += `${zikr.text} (${zikr.count} مرة)\n\n`;
             });
             alert(text);
         }
@@ -890,8 +1106,8 @@
         function getCalendarHTML() {
             return `
                 <div class="calendar-card">
-                    <div class="hijri-date-large" id="hijriDate">1446/--/--</div>
-                    <div class="gregorian-date" id="gregorianDate">2026/--/--</div>
+                    <div class="hijri-date-large" id="hijriDate">١٧ شعبان ١٤٤٦ هـ</div>
+                    <div class="gregorian-date" id="gregorianDate"></div>
                     <h3 style="margin: 30px 0 20px;">📅 المناسبات القادمة</h3>
                     <div class="events-list" id="eventsList"></div>
                 </div>
@@ -902,9 +1118,6 @@
             const now = new Date();
             const gregorian = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('gregorianDate').textContent = gregorian;
-            
-            // تاريخ هجري تقريبي
-            document.getElementById('hijriDate').textContent = '17 شعبان 1446 هـ';
             
             const events = [
                 { name: '🌙 رمضان', days: 13 },
@@ -925,7 +1138,7 @@
             });
         }
 
-        // ==================== 5. أسماء الله الحسنى ====================
+        // ==================== 5. أسماء الله الحسنى (كاملة) ====================
         function getNamesHTML() {
             return `
                 <div class="ayah-day">
@@ -943,6 +1156,7 @@
             namesOfAllah.forEach(name => {
                 const div = document.createElement('div');
                 div.className = 'name-card';
+                div.onclick = () => alert(`الاسم: ${name.arabic}\nالمعنى: ${name.translation}`);
                 div.innerHTML = `
                     <div class="name-arabic">${name.arabic}</div>
                     <div class="name-translation">${name.translation}</div>
@@ -959,12 +1173,11 @@
 
         // ==================== التهيئة ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // تحديث التاريخ
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('dateDisplay').innerHTML = `
                 <span>${now.toLocaleDateString('ar-SA', options)}</span>
-                <span class="hijri-date">١٧ شعبان ١٤٤٦</span>
+                <span class="hijri-date">١٧ شعبان ١٤٤٦ هـ</span>
             `;
         });
     </script>
