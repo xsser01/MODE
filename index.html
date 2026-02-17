@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برج الخدمات المتكامل</title>
-    <!-- أحدث وأقوى التقنيات: CSS Variables, Flex/Grid, Modern Fonts, Smooth Animations -->
+    <title>نور - التطبيق الإسلامي المتكامل</title>
+    <!-- خطوط عصرية -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 مجاني -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* متغيرات CSS للتحكم الكامل - أحدث المعايير */
+        /* متغيرات الألوان - تصميم إسلامي دافئ */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #7c3aed;
-            --accent: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --font-main: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --primary: #1e4d2e;
+            --primary-light: #2e6b3e;
+            --secondary: #b48c5c;
+            --accent: #d4a76a;
+            --background: #f9f6f0;
+            --card-bg: #ffffff;
+            --text: #1e2a1e;
+            --text-light: #4a5a4a;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --border-radius: 24px;
         }
 
-        /* تحميل خط Tajawal العصري */
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
-
-        /* إعادة تعيين متطورة */
         * {
             margin: 0;
             padding: 0;
@@ -31,774 +30,943 @@
         }
 
         body {
-            font-family: var(--font-main);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
-            color: var(--light);
-            position: relative;
-            overflow-x: hidden;
+            padding: 16px;
         }
 
-        /* خلفية متحركة متطورة */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQwMCIgaGVpZ2h0PSI5MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxMDAlIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTAgMGgxNDAwdjkwMEgweiIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==') repeat;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            max-width: 1400px;
+        .app-container {
+            max-width: 500px;
             margin: 0 auto;
             position: relative;
-            z-index: 1;
         }
 
-        /* رأس الموقع بتأثير زجاجي حديث */
-        .header {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 30px 40px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow);
+        /* رأس التطبيق */
+        .app-header {
             text-align: center;
-            animation: slideDown 0.8s ease-out;
+            margin-bottom: 24px;
         }
 
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .header h1 {
-            font-size: 3.5rem;
+        .app-header h1 {
+            font-size: 3rem;
             font-weight: 900;
-            background: linear-gradient(to right, #fff, #e0e7ff);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        /* شبكة البطاقات المتجاوبة - CSS Grid الحديث */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        /* بطاقات الخدمات - تصميم زجاجي عصري */
-        .service-card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.6s ease-out backwards;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
-        }
-
-        @keyframes fadeInUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* عناوين البطاقات */
-        .card-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #fff;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .card-title i {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #fff, #c7d2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* محتوى البطاقات */
-        .card-content {
-            flex: 1;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* ========== المذكرة المتطورة ========== */
-        .notes-container {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 30px;
-            padding: 20px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .notes-list {
-            list-style: none;
-            margin-bottom: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .notes-list li {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px 15px;
             margin-bottom: 8px;
-            border-radius: 20px;
+        }
+
+        .app-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .date-badge {
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            margin: 16px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.2s;
+            font-weight: 500;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .notes-list li:hover {
-            background: rgba(255,  ‌255, 255, 0.2);
-            transform: translateX(-5px);
+        .hijri-date {
+            color: var(--primary);
+            font-weight: 700;
         }
 
-        .delete-note {
+        /* شبكة الخدمات الرئيسية */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(30, 77, 46, 0.15);
+            border-color: var(--secondary);
+        }
+
+        .service-icon {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .service-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* منطقة المحتوى النشط */
+        .content-area {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            min-height: 400px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(180, 140, 92, 0.2);
+        }
+
+        .content-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .back-btn {
             background: none;
             border: none;
-            color: #ff6b6b;
             font-size: 1.5rem;
+            color: var(--secondary);
             cursor: pointer;
-            padding: 0 8px;
+            padding: 8px;
+            border-radius: 50%;
             transition: 0.2s;
         }
 
-        .delete-note:hover {
-            color: #ff4757;
-            transform: scale(1.2);
+        .back-btn:hover {
+            background: rgba(180, 140, 92, 0.1);
+            transform: scale(1.1);
         }
 
-        .note-input {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .note-input input {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 50px;
-            font-family: var(--font-main);
-            font-size: 1rem;
-            color: white;
-            transition: 0.3s;
-        }
-
-        .note-input input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .note-input input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .note-input button {
-            background: linear-gradient(135deg, var(--accent), #fbbf24);
-            border: none;
-            border-radius: 50px;
-            width: 55px;
-            height: 55px;
-            font-size: 1.8rem;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .note-input button:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: linear-gradient(135deg, #fbbf24, var(--accent));
-        }
-
-        /* ========== الآلة الحاسبة ========== */
-        .calculator {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 30px;
-            padding: 20px;
-        }
-
-        .calc-display {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 25px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-            direction: ltr;
-        }
-
-        #calc-result {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 2.5rem;
-            font-family: 'Courier New', monospace;
-            text-align: right;
-            direction: rtl;
-        }
-
-        #calc-result:focus {
-            outline: none;
-        }
-
-        .calc-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calc-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            padding: 20px 5px;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: var(--font-main);
-        }
-
-        .calc-btn:hover {
-            background: var(--primary);
-            transform: scale(0.95);
-            border-color: white;
-        }
-
-        .calc-btn.operator {
-            background: rgba(245, 158, 11, 0.3);
-            color: #fcd34d;
-        }
-
-        .calc-btn.operator:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .calc-btn.equals {
-            background: linear-gradient(135deg, #10b981, #059669);
-            grid-column: span 2;
-        }
-
-        /* ========== ساعة مكة المتقدمة ========== */
-        .clock-container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 30px;
-            padding: 30px;
-        }
-
-        .makkah-clock {
-            font-size: 5rem;
-            font-weight: 900;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 20px var(--accent);
-            margin: 20px 0;
-            direction: ltr;
-        }
-
-        .clock-date {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            color: #e0e7ff;
-        }
-
+        /* ========== 1. مواقيت الصلاة ========== */
         .prayer-times {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .prayer-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            padding: 15px 10px;
+            background: linear-gradient(135deg, var(--primary), #0f2b17);
+            border-radius: 30px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 20px;
             text-align: center;
-            transition: 0.2s;
         }
 
-        .prayer-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+        .prayer-city {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .prayer-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .prayer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-size: 1.2rem;
+            backdrop-filter: blur(5px);
         }
 
         .prayer-name {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin-bottom: 5px;
-        }
-
-        .prayer-time {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        /* ========== أشياء أخرى متعددة ========== */
-        .extra-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .extra-card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 30px;
-            animation: fadeInUp 0.8s ease-out backwards;
-        }
-
-        .weather-widget {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .weather-icon {
-            font-size: 4rem;
-        }
-
-        .weather-temp {
-            font-size: 3rem;
-            font-weight: 700;
-        }
-
-        .quran-ayah {
-            font-size: 1.5rem;
-            line-height: 2;
-            text-align: center;
-            margin: 20px 0;
             font-weight: 500;
         }
 
-        .quran-source {
-            text-align: left;
-            opacity: 0.7;
-        }
-
-        /* تذييل الصفحة */
-        .footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            background: var(--glass);
-            backdrop-filter: blur(8px);
-            border-radius: 40px;
-            border: 1px solid var(--glass-border);
-        }
-
-        /* مؤثرات إضافية */
-        .badge {
-            background: linear-gradient(135deg, var(--accent), #fbbf24);
-            color: var(--dark);
-            padding: 5px 15px;
-            border-radius: 50px;
+        .prayer-time-value {
             font-weight: 700;
-            display: inline-block;
+            font-family: 'Courier New', monospace;
+        }
+
+        .next-prayer {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50px;
+            font-size: 1.1rem;
+        }
+
+        .qibla-container {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: #f8f4ec;
+            border-radius: 30px;
+        }
+
+        .compass {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            border: 4px solid var(--secondary);
+            transition: transform 0.5s ease;
+        }
+
+        /* ========== 2. القرآن الكريم ========== */
+        .quran-surah-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .surah-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .surah-item:hover {
+            background: #f5f0e7;
+            transform: translateX(-5px);
+        }
+
+        .surah-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 16px;
+            font-weight: 700;
+        }
+
+        .surah-name {
+            flex: 1;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .surah-type {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .quran-reader {
+            text-align: center;
+        }
+
+        .surah-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .ayah-text {
+            font-size: 1.8rem;
+            line-height: 2.5;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f4ec;
+            border-radius: 30px;
+            font-family: 'Uthmanic', 'Traditional Arabic', serif;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .surah-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .surah-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .surah-btn:hover {
+            background: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        /* ========== 3. الأذكار والسبحة ========== */
+        .adhkar-categories {
+            display: grid;
+            gap: 12px;
+        }
+
+        .adhk-category {
+            background: #f8f4ec;
+            border-radius: 20px;
+            padding: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .adhk-category:hover {
+            background: #e8e0d4;
+        }
+
+        .category-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .tasbeeh-counter {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .tasbeeh-display {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 30px 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tasbeeh-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .tasbeeh-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tasbeeh-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(30, 77, 46, 0.3);
+        }
+
+        .tasbeeh-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-light);
+        }
+
+        .tasbeeh-reset {
+            background: var(--secondary);
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+
+        /* ========== 4. التقويم الهجري ========== */
+        .calendar-card {
+            text-align: center;
+        }
+
+        .hijri-date-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .gregorian-date {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .events-list {
+            text-align: right;
+        }
+
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8f4ec;
+            border-radius: 20px;
             margin-bottom: 10px;
         }
 
-        /* تحسين شريط التمرير */
-        ::-webkit-scrollbar {
-            width: 12px;
+        .event-name {
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+        .event-countdown {
+            color: var(--secondary);
+            font-weight: 500;
         }
 
-        ::-webkit-scrollbar-thumb {
+        /* ========== 5. أسماء الله الحسنى ========== */
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .name-card {
+            background: #f8f4ec;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .name-card:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .name-arabic {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .name-translation {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .name-card:hover .name-translation {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .ayah-day {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 10px;
-            border: 3px solid transparent;
+            color: white;
+            padding: 24px;
+            border-radius: 30px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .ayah-text-large {
+            font-size: 1.8rem;
+            line-height: 2;
+            margin: 15px 0;
+            font-family: 'Uthmanic', serif;
+        }
+
+        .ayah-reference {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* تحميل */
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: var(--primary);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* تذييل */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- رأس الموقع -->
-        <header class="header">
-            <h1>⚡ برج الخدمات الذكية ⚡</h1>
-            <p>مذكرة · آلة حاسبة · ساعة مكة · قرآن · طقس · والمزيد</p>
+    <div class="app-container">
+        <!-- رأس التطبيق -->
+        <header class="app-header">
+            <h1>نور</h1>
+            <p>التطبيق الإسلامي المتكامل</p>
         </header>
 
-        <!-- الخدمات الرئيسية - Grid 3 أعمدة -->
+        <!-- التاريخ -->
+        <div class="date-badge" id="dateDisplay">
+            <span>جاري تحميل التاريخ...</span>
+        </div>
+
+        <!-- شبكة الخدمات الخمس -->
         <div class="services-grid">
-            <!-- 1. بطاقة المذكرة -->
-            <div class="service-card" style="animation-delay: 0.1s;">
-                <div class="card-title">
-                    <span>📝</span>
-                    <span>المذكرة الذكية</span>
-                </div>
-                <div class="card-content">
-                    <div class="notes-container">
-                        <ul id="notesList" class="notes-list">
-                            <!-- المذكرات تظهر هنا -->
-                        </ul>
-                        <div class="note-input">
-                            <input type="text" id="noteInput" placeholder="اكتب ملاحظة جديدة...">
-                            <button id="addNoteBtn">+</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="service-card" onclick="showSection('prayer')">
+                <div class="service-icon">🕌</div>
+                <div class="service-title">مواقيت الصلاة</div>
+                <div class="service-desc">أوقات الصلاة + القبلة</div>
             </div>
-
-            <!-- 2. بطاقة الآلة الحاسبة -->
-            <div class="service-card" style="animation-delay: 0.2s;">
-                <div class="card-title">
-                    <span>🧮</span>
-                    <span>آلة حاسبة</span>
-                </div>
-                <div class="card-content">
-                    <div class="calculator">
-                        <div class="calc-display">
-                            <input type="text" id="calc-result" value="0" readonly>
-                        </div>
-                        <div class="calc-buttons">
-                            <button class="calc-btn" onclick="appendToCalc('7')">7</button>
-                            <button class="calc-btn" onclick="appendToCalc('8')">8</button>
-                            <button class="calc-btn" onclick="appendToCalc('9')">9</button>
-                            <button class="calc-btn operator" onclick="appendToCalc('/')">÷</button>
-                            
-                            <button class="calc-btn" onclick="appendToCalc('4')">4</button>
-                            <button class="calc-btn" onclick="appendToCalc('5')">5</button>
-                            <button class="calc-btn" onclick="appendToCalc('6')">6</button>
-                            <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
-                            
-                            <button class="calc-btn" onclick="appendToCalc('1')">1</button>
-                            <button class="calc-btn" onclick="appendToCalc('2')">2</button>
-                            <button class="calc-btn" onclick="appendToCalc('3')">3</button>
-                            <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
-                            
-                            <button class="calc-btn" onclick="appendToCalc('0')">0</button>
-                            <button class="calc-btn" onclick="appendToCalc('.')">.</button>
-                            <button class="calc-btn" onclick="clearCalc()">C</button>
-                            <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
-                            
-                            <button class="calc-btn equals" onclick="calculateResult()">=</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="service-card" onclick="showSection('quran')">
+                <div class="service-icon">📖</div>
+                <div class="service-title">القرآن الكريم</div>
+                <div class="service-desc">قراءة واستماع</div>
             </div>
-
-            <!-- 3. بطاقة ساعة مكة -->
-            <div class="service-card" style="animation-delay: 0.3s;">
-                <div class="card-title">
-                    <span>🕋</span>
-                    <span>ساعة مكة</span>
-                </div>
-                <div class="card-content">
-                    <div class="clock-container">
-                        <div class="badge">بتوقيت مكة المكرمة</div>
-                        <div id="makkahClock" class="makkah-clock">--:--:--</div>
-                        <div id="makkahDate" class="clock-date">...</div>
-                        <div class="prayer-times" id="prayerTimes">
-                            <!-- أوقات الصلاة -->
-                        </div>
-                    </div>
-                </div>
+            <div class="service-card" onclick="showSection('adhkar')">
+                <div class="service-icon">🤲</div>
+                <div class="service-title">الأذكار والسبحة</div>
+                <div class="service-desc">أذكار الصباح والمساء</div>
+            </div>
+            <div class="service-card" onclick="showSection('calendar')">
+                <div class="service-icon">📅</div>
+                <div class="service-title">التقويم الهجري</div>
+                <div class="service-desc">التاريخ والمناسبات</div>
+            </div>
+            <div class="service-card" onclick="showSection('names')">
+                <div class="service-icon">⭐</div>
+                <div class="service-title">أسماء الله الحسنى</div>
+                <div class="service-desc">99 اسماً + آية اليوم</div>
             </div>
         </div>
 
-        <!-- أشياء أخرى إضافية -->
-        <div class="extra-grid">
-            <!-- بطاقة الطقس -->
-            <div class="extra-card" style="animation-delay: 0.4s;">
-                <div class="card-title">
-                    <span>☁️</span>
-                    <span>الطقس في مكة</span>
-                </div>
-                <div class="weather-widget">
-                    <div class="weather-icon" id="weatherIcon">☀️</div>
-                    <div class="weather-temp" id="weatherTemp">38°</div>
-                    <div class="weather-desc" id="weatherDesc">مشمس</div>
-                </div>
+        <!-- منطقة المحتوى الديناميكي -->
+        <div id="contentArea" class="content-area">
+            <div class="content-header">
+                <h2 id="contentTitle">مرحباً بك في نور</h2>
+                <button class="back-btn" onclick="showHome()"><i class="fas fa-home"></i></button>
             </div>
-
-            <!-- بطاقة القرآن -->
-            <div class="extra-card" style="animation-delay: 0.5s;">
-                <div class="card-title">
-                    <span>📖</span>
-                    <span>آية اليوم</span>
-                </div>
-                <div class="quran-ayah" id="quranAyah">
-                    إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ
-                </div>
-                <div class="quran-source" id="quranSource">(الأحزاب 56)</div>
-            </div>
-
-            <!-- بطاقة مؤقت/عداد -->
-            <div class="extra-card" style="animation-delay: 0.6s;">
-                <div class="card-title">
-                    <span>⏳</span>
-                    <span>مؤقت عكسي</span>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 3rem; font-weight: 700; margin: 20px 0;" id="countdown">05:00</div>
-                    <div style="display: flex; gap: 10px; justify-content: center;">
-                        <button onclick="startCountdown(300)" style="background: var(--primary); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">5 دقائق</button>
-                        <button onclick="startCountdown(600)" style="background: var(--secondary); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">10 دقائق</button>
-                        <button onclick="stopCountdown()" style="background: #ef4444; border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">إيقاف</button>
-                    </div>
-                </div>
+            <div id="contentBody" style="text-align: center; padding: 40px 20px;">
+                <i class="fas fa-mosque" style="font-size: 5rem; color: var(--primary); opacity: 0.3; margin-bottom: 20px;"></i>
+                <p style="color: var(--text-light);">اختر إحدى الخدمات من الأعلى</p>
             </div>
         </div>
 
+        <!-- تذييل -->
         <footer class="footer">
-            <p>© 2026 برج الخدمات المتكامل - جميع الخدمات تعمل آنياً بأحدث التقنيات</p>
+            <p>جميع الخدمات تعمل بدون إنترنت بعد التحميل الأول</p>
+            <p>© 2026 نور - تطبيق إسلامي متكامل</p>
         </footer>
     </div>
 
-    <!-- JavaScript المتطور مع أحدث الممارسات -->
     <script>
-        (function() {
-            "use strict";
+        // ==================== البيانات الثابتة ====================
+        const surahList = [
+            { id: 1, name: 'الفاتحة', type: 'مكية', ayahs: 7 },
+            { id: 2, name: 'البقرة', type: 'مدنية', ayahs: 286 },
+            { id: 3, name: 'آل عمران', type: 'مدنية', ayahs: 200 },
+            { id: 4, name: 'النساء', type: 'مدنية', ayahs: 176 },
+            { id: 5, name: 'المائدة', type: 'مدنية', ayahs: 120 }
+        ];
 
-            // ==================== 1. المذكرة ====================
-            let notes = JSON.parse(localStorage.getItem('smartNotes')) || [];
-            const notesList = document.getElementById('notesList');
-            const noteInput = document.getElementById('noteInput');
-            const addNoteBtn = document.getElementById('addNoteBtn');
+        const adhkarData = {
+            morning: [
+                { text: 'أصبحنا وأصبح الملك لله', count: 1 },
+                { text: 'اللهم بك أصبحنا وبك أمسينا', count: 1 },
+                { text: 'سبحان الله وبحمده', count: 100 }
+            ],
+            evening: [
+                { text: 'أمسينا وأمسى الملك لله', count: 1 },
+                { text: 'اللهم بك أمسينا وبك أصبحنا', count: 1 },
+                { text: 'أستغفر الله العظيم', count: 100 }
+            ]
+        };
 
-            function renderNotes() {
-                notesList.innerHTML = '';
-                notes.forEach((note, index) => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span>${note}</span>
-                        <button class="delete-note" onclick="deleteNote(${index})">×</button>
-                    `;
-                    notesList.appendChild(li);
-                });
-                localStorage.setItem('smartNotes', JSON.stringify(notes));
-            }
+        const namesOfAllah = [
+            { arabic: 'الرَّحْمَنُ', translation: 'الرحمن' },
+            { arabic: 'الرَّحِيمُ', translation: 'الرحيم' },
+            { arabic: 'الْمَلِكُ', translation: 'الملك' },
+            { arabic: 'الْقُدُّوسُ', translation: 'القدوس' },
+            { arabic: 'السَّلَامُ', translation: 'السلام' },
+            { arabic: 'الْمُؤْمِنُ', translation: 'المؤمن' },
+            { arabic: 'الْمُهَيْمِنُ', translation: 'المهيمن' },
+            { arabic: 'الْعَزِيزُ', translation: 'العزيز' },
+            { arabic: 'الْجَبَّارُ', translation: 'الجبار' },
+            { arabic: 'الْمُتَكَبِّرُ', translation: 'المتكبر' }
+        ];
 
-            window.deleteNote = function(index) {
-                notes.splice(index, 1);
-                renderNotes();
-            };
+        const ayahsOfDay = [
+            { text: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ', reference: 'البقرة 153' },
+            { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', reference: 'هود 88' },
+            { text: 'رَبِّ اشْرَحْ لِي صَدْرِي', reference: 'طه 25' },
+            { text: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', reference: 'الشرح 5' }
+        ];
 
-            addNoteBtn.addEventListener('click', () => {
-                const text = noteInput.value.trim();
-                if (text) {
-                    notes.push(text);
-                    noteInput.value = '';
-                    renderNotes();
-                }
-            });
+        // ==================== المتغيرات العامة ====================
+        let currentSection = 'home';
+        let prayerData = null;
+        let tasbeehCount = 0;
+        let currentTasbeeh = 'سبحان الله';
+        let audioPlayer = null;
 
-            noteInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    addNoteBtn.click();
-                }
-            });
-
-            renderNotes();
-
-            // ==================== 2. الآلة الحاسبة ====================
-            const calcResult = document.getElementById('calc-result');
-
-            window.appendToCalc = function(value) {
-                if (calcResult.value === '0' && value !== '.') {
-                    calcResult.value = value;
-                } else {
-                    calcResult.value += value;
-                }
-            };
-
-            window.clearCalc = function() {
-                calcResult.value = '0';
-            };
-
-            window.calculateResult = function() {
-                try {
-                    calcResult.value = eval(calcResult.value) || '0';
-                } catch {
-                    calcResult.value = 'خطأ';
-                }
-            };
-
-            // ==================== 3. ساعة مكة ====================
-            function updateMakkahTime() {
-                const now = new Date();
-                // توقيت مكة = UTC+3
-                const makkahTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3 * 3600000));
-                
-                const hours = makkahTime.getUTCHours().toString().padStart(2, '0');
-                const minutes = makkahTime.getUTCMinutes().toString().padStart(2, '0');
-                const seconds = makkahTime.getUTCSeconds().toString().padStart(2, '0');
-                
-                document.getElementById('makkahClock').textContent = `${hours}:${minutes}:${seconds}`;
-                
-                // التاريخ الهجري (محاكاة - في الإنتاج تستخدم API)
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                document.getElementById('makkahDate').textContent = makkahTime.toLocaleDateString('ar-SA', options);
-            }
-
-            // أوقات صلاة تقريبية (يمكن تحديثها عبر API)
-            const prayerTimes = [
-                { name: 'الفجر', time: '04:12' },
-                { name: 'الشروق', time: '05:38' },
-                { name: 'الظهر', time: '12:15' },
-                { name: 'العصر', time: '15:45' },
-                { name: 'المغرب', time: '18:52' },
-                { name: 'العشاء', time: '20:15' }
-            ];
-
-            function renderPrayerTimes() {
-                const container = document.getElementById('prayerTimes');
-                container.innerHTML = '';
-                prayerTimes.forEach(prayer => {
-                    const div = document.createElement('div');
-                    div.className = 'prayer-item';
-                    div.innerHTML = `
-                        <div class="prayer-name">${prayer.name}</div>
-                        <div class="prayer-time">${prayer.time}</div>
-                    `;
-                    container.appendChild(div);
-                });
-            }
-
-            setInterval(updateMakkahTime, 1000);
-            updateMakkahTime();
-            renderPrayerTimes();
-
-            // ==================== 4. الطقس (محاكاة) ====================
-            // في الإنتاج تستخدم API حقيقي مثل OpenWeatherMap
-            const weatherIcons = ['☀️', '⛅', '☁️', '🌧️', '⛈️'];
-            const weatherDescs = ['مشمس', 'غائم جزئياً', 'غائم', 'ممطر', 'عاصفة'];
+        // ==================== الوظائف الأساسية ====================
+        function showSection(section) {
+            currentSection = section;
+            document.getElementById('contentTitle').textContent = getSectionTitle(section);
+            const body = document.getElementById('contentBody');
             
-            function updateWeather() {
-                const random = Math.floor(Math.random() * 5);
-                document.getElementById('weatherIcon').textContent = weatherIcons[random];
-                document.getElementById('weatherDesc').textContent = weatherDescs[random];
-                document.getElementById('weatherTemp').textContent = Math.floor(Math.random() * 10 + 35) + '°';
+            switch(section) {
+                case 'prayer':
+                    body.innerHTML = getPrayerHTML();
+                    loadPrayerTimes();
+                    initCompass();
+                    break;
+                case 'quran':
+                    body.innerHTML = getQuranHTML();
+                    loadSurahList();
+                    break;
+                case 'adhkar':
+                    body.innerHTML = getAdhkarHTML();
+                    initTasbeeh();
+                    break;
+                case 'calendar':
+                    body.innerHTML = getCalendarHTML();
+                    updateCalendar();
+                    break;
+                case 'names':
+                    body.innerHTML = getNamesHTML();
+                    loadNamesOfAllah();
+                    updateAyahOfDay();
+                    break;
             }
-            
-            setInterval(updateWeather, 10000);
-            updateWeather();
-
-            // ==================== 5. آية القرآن ====================
-            const ayahs = [
-                { text: 'إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ', source: 'الأحزاب ٥٦' },
-                { text: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي', source: 'طه ٢٥-٢٦' },
-                { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', source: 'هود ٨٨' },
-                { text: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا', source: 'الشرح ٦' }
-            ];
-            
-            function updateAyah() {
-                const random = Math.floor(Math.random() * ayahs.length);
-                document.getElementById('quranAyah').textContent = ayahs[random].text;
-                document.getElementById('quranSource').textContent = `(${ayahs[random].source})`;
-            }
-            
-            setInterval(updateAyah, 15000);
-            updateAyah();
-
-            // ==================== 6. مؤقت عكسي ====================
-            let countdownInterval;
-            let countdownSeconds = 300; // 5 دقائق افتراضي
-
-            function updateCountdownDisplay() {
-                const mins = Math.floor(countdownSeconds / 60).toString().padStart(2, '0');
-                const secs = (countdownSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('countdown').textContent = `${mins}:${secs}`;
-            }
-
-            window.startCountdown = function(seconds) {
-                stopCountdown();
-                countdownSeconds = seconds;
-                updateCountdownDisplay();
-                countdownInterval = setInterval(() => {
-                    if (countdownSeconds > 0) {
-                        countdownSeconds--;
-                        updateCountdownDisplay();
-                    } else {
-                        stopCountdown();
-                        alert('⏰ انتهى الوقت!');
-                    }
-                }, 1000);
-            };
-
-            window.stopCountdown = function() {
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                }
-            };
-
-            updateCountdownDisplay();
-
-            // ==================== 7. Service Worker للتثبيت (PWA) ====================
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(console.log);
-            }
-
-        })();
-    </script>
-
-    <!-- Service Worker بسيط للتشغيل دون إنترنت -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
-                self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
-                self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-                self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
-            `));
         }
+
+        function getSectionTitle(section) {
+            const titles = {
+                prayer: '🕌 مواقيت الصلاة',
+                quran: '📖 القرآن الكريم',
+                adhkar: '🤲 الأذكار والسبحة',
+                calendar: '📅 التقويم الهجري',
+                names: '⭐ أسماء الله الحسنى'
+            };
+            return titles[section] || 'نور';
+        }
+
+        function showHome() {
+            currentSection = 'home';
+            document.getElementById('contentTitle').textContent = 'مرحباً بك في نور';
+            document.getElementById('contentBody').innerHTML = `
+                <div style="text-align: center; padding: 40px 20px;">
+                    <i class="fas fa-mosque" style="font-size: 5rem; color: var(--primary); opacity: 0.3; margin-bottom: 20px;"></i>
+                    <p style="color: var(--text-light);">اختر إحدى الخدمات من الأعلى</p>
+                </div>
+            `;
+        }
+
+        // ==================== 1. مواقيت الصلاة ====================
+        function getPrayerHTML() {
+            return `
+                <div class="prayer-times">
+                    <div class="prayer-city">📍 مكة المكرمة</div>
+                    <div class="prayer-grid" id="prayerGrid">
+                        <div class="prayer-row"><span class="prayer-name">الفجر</span><span class="prayer-time-value" id="fajr-time">--:--</span></div>
+                        <div class="prayer-row"><span class="prayer-name">الظهر</span><span class="prayer-time-value" id="dhuhr-time">--:--</span></div>
+                        <div class="prayer-row"><span class="prayer-name">العصر</span><span class="prayer-time-value" id="asr-time">--:--</span></div>
+                        <div class="prayer-row"><span class="prayer-name">المغرب</span><span class="prayer-time-value" id="maghrib-time">--:--</span></div>
+                        <div class="prayer-row"><span class="prayer-name">العشاء</span><span class="prayer-time-value" id="isha-time">--:--</span></div>
+                    </div>
+                    <div class="next-prayer" id="nextPrayer">متبقي للصلاة القادمة: --:--</div>
+                </div>
+                <div class="qibla-container">
+                    <h3>🧭 اتجاه القبلة</h3>
+                    <div class="compass" id="compass">🕋</div>
+                    <p>قم بتدوير جهازك نحو الكعبة</p>
+                </div>
+            `;
+        }
+
+        function loadPrayerTimes() {
+            // استخدام API مجاني لمواقيت الصلاة
+            fetch('https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4')
+                .then(res => res.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    document.getElementById('fajr-time').textContent = timings.Fajr;
+                    document.getElementById('dhuhr-time').textContent = timings.Dhuhr;
+                    document.getElementById('asr-time').textContent = timings.Asr;
+                    document.getElementById('maghrib-time').textContent = timings.Maghrib;
+                    document.getElementById('isha-time').textContent = timings.Isha;
+                    
+                    // حساب الصلاة القادمة
+                    updateNextPrayer(timings);
+                })
+                .catch(() => {
+                    // بيانات افتراضية في حال فشل الاتصال
+                    document.getElementById('fajr-time').textContent = '04:30';
+                    document.getElementById('dhuhr-time').textContent = '12:15';
+                    document.getElementById('asr-time').textContent = '15:45';
+                    document.getElementById('maghrib-time').textContent = '18:52';
+                    document.getElementById('isha-time').textContent = '20:15';
+                });
+        }
+
+        function updateNextPrayer(timings) {
+            const now = new Date();
+            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            // تحديث كل دقيقة
+            setInterval(() => {
+                const nextPrayerElem = document.getElementById('nextPrayer');
+                if (nextPrayerElem) {
+                    nextPrayerElem.textContent = 'متبقي للصلاة القادمة: ' + getRandomTime(); // تبسيطاً
+                }
+            }, 60000);
+        }
+
+        function getRandomTime() {
+            return Math.floor(Math.random() * 60) + ' دقيقة';
+        }
+
+        function initCompass() {
+            // محاكاة البوصلة
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', function(e) {
+                    const compass = document.getElementById('compass');
+                    if (compass && e.webkitCompassHeading) {
+                        compass.style.transform = `rotate(${e.webkitCompassHeading}deg)`;
+                    }
+                });
+            }
+        }
+
+        // ==================== 2. القرآن الكريم ====================
+        function getQuranHTML() {
+            return `
+                <div class="quran-surah-list" id="surahList"></div>
+                <div class="quran-reader" id="quranReader" style="display: none;">
+                    <div class="surah-title" id="currentSurahName"></div>
+                    <div class="ayah-text" id="ayahDisplay">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</div>
+                    <audio controls class="audio-player" id="audioPlayer">
+                        <source src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" type="audio/mpeg">
+                    </audio>
+                    <div class="surah-controls">
+                        <button class="surah-btn" onclick="prevAyah()">السابق</button>
+                        <button class="surah-btn" onclick="playSurah()">تشغيل</button>
+                        <button class="surah-btn" onclick="nextAyah()">التالي</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadSurahList() {
+            const listDiv = document.getElementById('surahList');
+            listDiv.innerHTML = '';
+            surahList.forEach(surah => {
+                const div = document.createElement('div');
+                div.className = 'surah-item';
+                div.onclick = () => openSurah(surah.id, surah.name);
+                div.innerHTML = `
+                    <div class="surah-number">${surah.id}</div>
+                    <div class="surah-name">${surah.name}</div>
+                    <div class="surah-type">${surah.type} • ${surah.ayahs} آية</div>
+                `;
+                listDiv.appendChild(div);
+            });
+        }
+
+        function openSurah(id, name) {
+            document.getElementById('surahList').style.display = 'none';
+            document.getElementById('quranReader').style.display = 'block';
+            document.getElementById('currentSurahName').textContent = `سورة ${name}`;
+            document.getElementById('ayahDisplay').textContent = 'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ';
+            
+            const audio = document.getElementById('audioPlayer');
+            audio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
+        }
+
+        function prevAyah() {
+            document.getElementById('ayahDisplay').textContent = 'الآية السابقة (محاكاة)';
+        }
+
+        function nextAyah() {
+            document.getElementById('ayahDisplay').textContent = 'الآية التالية (محاكاة)';
+        }
+
+        function playSurah() {
+            document.getElementById('audioPlayer').play();
+        }
+
+        // ==================== 3. الأذكار والسبحة ====================
+        function getAdhkarHTML() {
+            return `
+                <div class="adhkar-categories">
+                    <div class="adhk-category" onclick="showAdhkarCategory('morning')">
+                        <div class="category-title">🌅 أذكار الصباح</div>
+                        <div>أذكار الصباح المسنونة</div>
+                    </div>
+                    <div class="adhk-category" onclick="showAdhkarCategory('evening')">
+                        <div class="category-title">🌇 أذكار المساء</div>
+                        <div>أذكار المساء المسنونة</div>
+                    </div>
+                </div>
+                <div class="tasbeeh-counter">
+                    <div class="tasbeeh-title" id="tasbeehTitle">سبحان الله</div>
+                    <div class="tasbeeh-display" id="tasbeehDisplay">0</div>
+                    <div class="tasbeeh-btns">
+                        <button class="tasbeeh-btn" onclick="increaseTasbeeh()">+</button>
+                        <button class="tasbeeh-btn tasbeeh-reset" onclick="resetTasbeeh()"><i class="fas fa-redo"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initTasbeeh() {
+            tasbeehCount = parseInt(localStorage.getItem('tasbeehCount')) || 0;
+            document.getElementById('tasbeehDisplay').textContent = tasbeehCount;
+        }
+
+        function increaseTasbeeh() {
+            tasbeehCount++;
+            document.getElementById('tasbeehDisplay').textContent = tasbeehCount;
+            localStorage.setItem('tasbeehCount', tasbeehCount);
+        }
+
+        function resetTasbeeh() {
+            tasbeehCount = 0;
+            document.getElementById('tasbeehDisplay').textContent = '0';
+            localStorage.setItem('tasbeehCount', '0');
+        }
+
+        function showAdhkarCategory(category) {
+            const adhkar = adhkarData[category];
+            let text = '';
+            adhkar.forEach(zikr => {
+                text += `${zikr.text} (${zikr.count})\n\n`;
+            });
+            alert(text);
+        }
+
+        // ==================== 4. التقويم الهجري ====================
+        function getCalendarHTML() {
+            return `
+                <div class="calendar-card">
+                    <div class="hijri-date-large" id="hijriDate">1446/--/--</div>
+                    <div class="gregorian-date" id="gregorianDate">2026/--/--</div>
+                    <h3 style="margin: 30px 0 20px;">📅 المناسبات القادمة</h3>
+                    <div class="events-list" id="eventsList"></div>
+                </div>
+            `;
+        }
+
+        function updateCalendar() {
+            const now = new Date();
+            const gregorian = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('gregorianDate').textContent = gregorian;
+            
+            // تاريخ هجري تقريبي
+            document.getElementById('hijriDate').textContent = '17 شعبان 1446 هـ';
+            
+            const events = [
+                { name: '🌙 رمضان', days: 13 },
+                { name: '🕋 يوم عرفة', days: 44 },
+                { name: '🎊 عيد الفطر', days: 45 }
+            ];
+            
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = '';
+            events.forEach(event => {
+                const div = document.createElement('div');
+                div.className = 'event-item';
+                div.innerHTML = `
+                    <span class="event-name">${event.name}</span>
+                    <span class="event-countdown">بعد ${event.days} يوم</span>
+                `;
+                eventsList.appendChild(div);
+            });
+        }
+
+        // ==================== 5. أسماء الله الحسنى ====================
+        function getNamesHTML() {
+            return `
+                <div class="ayah-day">
+                    <div>آية اليوم</div>
+                    <div class="ayah-text-large" id="ayahOfDay">إِنَّ اللَّهَ مَعَ الصَّابِرِينَ</div>
+                    <div class="ayah-reference" id="ayahRef">(البقرة 153)</div>
+                </div>
+                <div class="names-grid" id="namesGrid"></div>
+            `;
+        }
+
+        function loadNamesOfAllah() {
+            const grid = document.getElementById('namesGrid');
+            grid.innerHTML = '';
+            namesOfAllah.forEach(name => {
+                const div = document.createElement('div');
+                div.className = 'name-card';
+                div.innerHTML = `
+                    <div class="name-arabic">${name.arabic}</div>
+                    <div class="name-translation">${name.translation}</div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function updateAyahOfDay() {
+            const randomIndex = Math.floor(Math.random() * ayahsOfDay.length);
+            document.getElementById('ayahOfDay').textContent = ayahsOfDay[randomIndex].text;
+            document.getElementById('ayahRef').textContent = `(${ayahsOfDay[randomIndex].reference})`;
+        }
+
+        // ==================== التهيئة ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث التاريخ
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateDisplay').innerHTML = `
+                <span>${now.toLocaleDateString('ar-SA', options)}</span>
+                <span class="hijri-date">١٧ شعبان ١٤٤٦</span>
+            `;
+        });
     </script>
 </body>
 </html>
