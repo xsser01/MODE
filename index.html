@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xsser01 | ADVANCED HACKER INTERFACE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Matrix Rain خفيف جداً */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        /* ========== الشريط العلوي المتطور ========== */
+        .top-bar {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 8px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+        
+        .system-status {
+            display: flex;
+            gap: 25px;
+            font-size: 0.8rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff41;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ========== المحتوى الرئيسي ========== */
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 10px;
+            min-height: 0;
+        }
+        
+        /* ========== اللوحة اليسرى - معلومات الهاكر ========== */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+        }
+        
+        /* ASCII Art محسن */
+        .ascii-box {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 5px;
+            text-align: center;
+        }
+        
+        .ascii-art {
+            font-family: monospace;
+            font-size: 0.45rem;
+            color: #00ff41;
+            line-height: 1.2;
+            white-space: pre;
+        }
+        
+        /* بطاقات المعلومات - 40+ نوع بيانات */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            overflow-y: auto;
+            max-height: 300px;
+            padding-right: 5px;
+        }
+        
+        .info-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .info-grid::-webkit-scrollbar-track {
+            background: #111;
+        }
+        
+        .info-grid::-webkit-scrollbar-thumb {
+            background: #00ff41;
+        }
+        
+        .info-card {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 8px;
+            transition: all 0.2s;
+        }
+        
+        .info-card:hover {
+            background: rgba(0, 255, 65, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .info-label {
+            font-size: 0.65rem;
+            color: #00ff41;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+        
+        .info-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 3px;
+            word-break: break-word;
+        }
+        
+        /* ========== اللوحة اليمنى ========== */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* شاشة الـ Terminal المتطورة */
+        .terminal-box {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .terminal-header {
+            background: #00ff41;
+            color: #000;
+            padding: 3px 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .terminal-content {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.8rem;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .terminal-line {
+            color: #00ff41;
+            margin-bottom: 3px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+        
+        .terminal-prompt {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .prompt-sign {
+            color: #00ff41;
+            margin-right: 5px;
+        }
+        
+        .prompt-input {
+            color: #00ff41;
+            min-width: 150px;
+        }
+        
+        .cursor {
+            width: 8px;
+            height: 16px;
+            background: #00ff41;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* أدوات الاختراق */
+        .tools-box {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .tools-title {
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 3px;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+        
+        .tool-item {
+            background: #111;
+            border: 1px solid #00ff41;
+            border-radius: 3px;
+            padding: 5px;
+            font-size: 0.65rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-item:hover {
+            background: #00ff41;
+            color: #000;
+        }
+        
+        /* روابط التواصل */
+        .social-box {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 5px;
+        }
+        
+        .social-link {
+            background: #111;
+            border: 1px solid #00ff41;
+            border-radius: 3px;
+            padding: 8px;
+            text-align: center;
+            color: #00ff41;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .social-link:hover {
+            background: #00ff41;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        /* مؤشرات النظام */
+        .stats-box {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.75rem;
+        }
+        
+        .stat-bar {
+            width: 100%;
+            height: 4px;
+            background: #111;
+            border: 1px solid #00ff41;
+            margin: 3px 0 8px;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: #00ff41;
+            width: 0%;
+        }
+        
+        /* الشريط السفلي */
+        .bottom-bar {
+            margin-top: 10px;
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 5px 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+        }
+        
+        /* رسالة الوصول */
+        .access-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border: 2px solid #00ff41;
+            padding: 20px;
+            box-shadow: 0 0 100px #00ff41;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .access-popup.show {
+            display: block;
+            animation: popupPulse 2s infinite;
+        }
+        
+        @keyframes popupPulse {
+            0%, 100% { box-shadow: 0 0 100px #00ff41; }
+            50% { box-shadow: 0 0 150px #00ff41; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    
+    <!-- رسالة الوصول -->
+    <div class="access-popup" id="accessPopup">
+        <i class="fas fa-skull" style="font-size: 4rem; color: #00ff41; margin-bottom: 15px;"></i>
+        <h2 style="font-size: 2rem;">ACCESS GRANTED</h2>
+        <p style="margin-top: 10px;">Welcome back, xsser01</p>
+        <p style="font-size: 0.7rem; margin-top: 15px;">ROOT PRIVILEGES ENABLED</p>
+    </div>
+    
+    <div class="container">
+        <!-- الشريط العلوي المتطور -->
+        <div class="top-bar">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <i class="fas fa-terminal" style="font-size: 1.3rem;"></i>
+                <span style="font-weight: bold; font-size: 1.1rem;">xsser01@root:~</span>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-dot"></span>
+                        <span>SYSTEM</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>FIREWALL</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-lock"></i>
+                        <span>ENCRYPTED</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <span id="liveClock" style="font-size: 0.9rem;"></span>
+            </div>
+        </div>
+        
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- اللوحة اليسرى - 40+ معلومة -->
+            <div class="left-panel">
+                <!-- ASCII Art -->
+                <div class="ascii-box">
+                    <div class="ascii-art">
+  ██╗  ██╗███████╗███████╗███████╗██████╗  ██████╗ ██╗
+  ╚██╗██╔╝██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██║
+   ╚███╔╝ ███████╗███████╗█████╗  ██████╔╝██████╔╝██║
+   ██╔██╗ ╚════██║╚════██║██╔══╝  ██╔══██╗██╔══██╗██║
+  ██╔╝ ██╗███████║███████║███████╗██║  ██║██║  ██║██║
+  ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝
+                    </div>
+                </div>
+                
+                <!-- 50+ معلومة حقيقية -->
+                <div class="info-grid" id="infoGrid">
+                    <!-- هنا رح تظهر المعلومات ديناميكياً -->
+                </div>
+            </div>
+            
+            <!-- اللوحة اليمنى -->
+            <div class="right-panel">
+                <!-- Terminal متطور -->
+                <div class="terminal-box">
+                    <div class="terminal-header">
+                        <span>root@xsser01:~$</span>
+                        <span><i class="fas fa-circle"></i> <i class="fas fa-circle"></i> <i class="fas fa-circle"></i></span>
+                    </div>
+                    <div class="terminal-content" id="terminalContent">
+                        <div class="terminal-line">[✓] System initialized at 2025-02-17</div>
+                        <div class="terminal-line">[✓] Firewall status: ACTIVE</div>
+                        <div class="terminal-line">[✓] VPN connection: SECURE</div>
+                        <div class="terminal-line">[✓] TOR enabled</div>
+                        <div class="terminal-line">[✓] Proxy chain active</div>
+                        <div class="terminal-line">[✓] IDS bypassed</div>
+                        <div class="terminal-line">[✓] Root access: GRANTED</div>
+                        <div class="terminal-prompt">
+                            <span class="prompt-sign">$</span>
+                            <span class="prompt-input" id="promptInput"></span>
+                            <span class="cursor"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- أدوات الاختراق -->
+                <div class="tools-box">
+                    <div class="tools-title"><i class="fas fa-bolt"></i> EXPLOIT TOOLS</div>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="showAccess()">NMAP</div>
+                        <div class="tool-item" onclick="showAccess()">METASPLOIT</div>
+                        <div class="tool-item" onclick="showAccess()">SQLMAP</div>
+                        <div class="tool-item" onclick="showAccess()">HYDRA</div>
+                        <div class="tool-item" onclick="showAccess()">BURPSUITE</div>
+                        <div class="tool-item" onclick="showAccess()">WIRESHARK</div>
+                        <div class="tool-item" onclick="showAccess()">JOHN</div>
+                        <div class="tool-item" onclick="showAccess()">AIROSNG</div>
+                        <div class="tool-item" onclick="showAccess()">BEFF</div>
+                    </div>
+                </div>
+                
+                <!-- مؤشرات النظام -->
+                <div class="stats-box">
+                    <div class="tools-title"><i class="fas fa-chart-line"></i> SYSTEM RESOURCES</div>
+                    <div class="stat-row">
+                        <span>CPU</span>
+                        <span id="cpuPercent">47%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" id="cpuBar" style="width: 47%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span>RAM</span>
+                        <span id="ramPercent">62%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" id="ramBar" style="width: 62%"></div>
+                    </div>
+                    <div class="stat-row">
+                        <span>NETWORK</span>
+                        <span id="networkPercent">89%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" id="networkBar" style="width: 89%"></div>
+                    </div>
+                </div>
+                
+                <!-- روابط التواصل -->
+                <div class="social-box">
+                    <div class="tools-title"><i class="fas fa-share-alt"></i> CONNECT</div>
+                    <div class="social-grid">
+                        <a href="https://t.me/xsser01" class="social-link" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.facebook.com/xsser01" class="social-link" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/xsser_01" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/213795889151" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريط السفلي -->
+        <div class="bottom-bar">
+            <span><i class="fas fa-network-wired"></i> IP: 192.168.1.1337</span>
+            <span><i class="fas fa-globe"></i> <span id="publicIP">0.0.0.0</span></span>
+            <span><i class="fas fa-shield"></i> ENCRYPTION: AES-256</span>
+            <span><i class="fas fa-database"></i> <span id="uptime">00:00:00</span></span>
+            <span><i class="fas fa-user-secret"></i> UID: 0 (ROOT)</span>
+        </div>
+    </div>
+    
+    <script>
+        // ========== إعدادات Matrix ==========
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for(let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * -canvas.height / fontSize);
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+        
+        // ========== 50+ معلومة حقيقية ==========
+        const infoData = [
+            // معلومات شخصية (10)
+            { label: "HANDLE", value: "xsser01" },
+            { label: "REAL NAME", value: "[CLASSIFIED]" },
+            { label: "LOCATION", value: "DZ / MA" },
+            { label: "TIMEZONE", value: "UTC+1" },
+            { label: "LANGUAGE", value: "AR, EN, FR" },
+            { label: "BIRTH YEAR", value: "1998" },
+            { label: "STATUS", value: "ACTIVE" },
+            { label: "RANK", value: "ELITE" },
+            { label: "LEVEL", value: "1337" },
+            { label: "EXPERIENCE", value: "10+ YEARS" },
+            
+            // معلومات التقنية (15)
+            { label: "PRIMARY OS", value: "Kali Linux" },
+            { label: "SECONDARY OS", value: "Parrot OS" },
+            { label: "SHELL", value: "ZSH + OhMyZsh" },
+            { label: "TERMINAL", value: "Terminator" },
+            { label: "EDITOR", value: "Vim / VS Code" },
+            { label: "BROWSER", value: "Firefox + Tor" },
+            { label: "VPN", value: "ProtonVPN" },
+            { label: "PROXY", value: "SOCKS5" },
+            { label: "DNS", value: "1.1.1.1" },
+            { label: "ENCRYPTION", value: "AES-256 + RSA" },
+            { label: "HASHING", value: "SHA-512" },
+            { label: "PROTOCOLS", value: "TCP/IP, UDP" },
+            { label: "PORTS", value: "22, 80, 443, 8080" },
+            { label: "FIREWALL", value: "iptables + nftables" },
+            { label: "IDS/IPS", value: "Snort + Suricata" },
+            
+            // مهارات الاختراق (15)
+            { label: "WEB APP", value: "XSS, SQLi, CSRF" },
+            { label: "NETWORK", value: "MITM, ARP Spoof" },
+            { label: "WIRELESS", value: "WPA/WPA2 Cracking" },
+            { label: "ANDROID", value: "APK Backdoor" },
+            { label: "WINDOWS", value: "Priv Esc" },
+            { label: "LINUX", value: "Kernel Exploit" },
+            { label: "REVERSE", value: "x86/x64 Assembly" },
+            { label: "FORENSICS", value: "Autopsy + FTK" },
+            { label: "STEGANO", value: "LSB + Metadata" },
+            { label: "CRYPTO", value: "RSA, AES, XOR" },
+            { label: "OSINT", value: "Maltego + theHarvester" },
+            { label: "SOCIAL", value: "Phishing + SE" },
+            { label: "DDOS", value: "LOIC + HOIC" },
+            { label: "RAT", value: "NjRAT + Quasar" },
+            { label: "KEYLOGGER", value: "Custom C++" },
+            
+            // الأدوات (10)
+            { label: "SCANNER", value: "Nmap + Masscan" },
+            { label: "EXPLOIT", value: "Metasploit" },
+            { label: "SQL TOOL", value: "SQLmap" },
+            { label: "PASSWORD", value: "Hydra + John" },
+            { label: "PROXY", value: "Burp Suite" },
+            { label: "PACKET", value: "Wireshark" },
+            { label: "WIFI", value: "Aircrack-ng" },
+            { label: "FRAMEWORK", value: "BeEF + SET" },
+            { label: "MOBILE", value: "Apktool + MobSF" },
+            { label: "CLOUD", value: "AWS Pentest" },
+            
+            // إحصائيات (10)
+            { label: "BUG BOUNTY", value: "$75,420" },
+            { label: "CVES FOUND", value: "47" },
+            { label: "HACKTHEBOX", value: "Elite (100+ boxes)" },
+            { label: "TRYHACKME", value: "Top 1%" },
+            { label: "GITHUB REPOS", value: "34" },
+            { label: "PROJECTS", value: "28" },
+            { label: "TOOLS CREATED", value: "15" },
+            { label: "EXPLOITS", value: "23" },
+            { label: "TUTORIALS", value: "89" },
+            { label: "SUCCESS RATE", value: "97%" }
+        ];
+        
+        // عرض المعلومات
+        const infoGrid = document.getElementById('infoGrid');
+        infoData.forEach(info => {
+            const card = document.createElement('div');
+            card.className = 'info-card';
+            card.innerHTML = `
+                <div class="info-label">${info.label}</div>
+                <div class="info-value">${info.value}</div>
+            `;
+            infoGrid.appendChild(card);
+        });
+        
+        // ========== Terminal المتطور ==========
+        const terminalContent = document.getElementById('terminalContent');
+        const promptInput = document.getElementById('promptInput');
+        
+        const terminalCommands = [
+            'nmap -sV -A 10.10.10.10',
+            'hydra -l admin -P rockyou.txt ssh://target',
+            'sqlmap -u http://target.com/page?id=1 --dbs',
+            'msfconsole -q',
+            'use exploit/windows/smb/ms17_010_eternalblue',
+            'set RHOSTS 192.168.1.100',
+            'run',
+            'whoami',
+            'cat /etc/passwd',
+            'ifconfig',
+            'ping -c 4 google.com'
+        ];
+        
+        let cmdIndex = 0;
+        let charIndex = 0;
+        let isTyping = false;
+        
+        function typeCommand() {
+            if (cmdIndex >= terminalCommands.length) cmdIndex = 0;
+            
+            const currentCmd = terminalCommands[cmdIndex];
+            
+            if (charIndex < currentCmd.length) {
+                promptInput.textContent += currentCmd[charIndex];
+                charIndex++;
+                setTimeout(typeCommand, 50);
+            } else {
+                setTimeout(() => {
+                    executeCommand(currentCmd);
+                    promptInput.textContent = '';
+                    charIndex = 0;
+                    cmdIndex++;
+                    setTimeout(typeCommand, 2000);
+                }, 1000);
+            }
+        }
+        
+        function executeCommand(cmd) {
+            const output = document.createElement('div');
+            output.className = 'terminal-line';
+            
+            if (cmd.includes('nmap')) {
+                output.innerHTML = `[+] Open ports: 22, 80, 443, 8080<br>[+] OS: Linux 4.15<br>[+] Service versions: Apache 2.4.29, OpenSSH 7.6`;
+            } else if (cmd.includes('hydra')) {
+                output.innerHTML = `[+] Password found: admin:password123`;
+            } else if (cmd.includes('sqlmap')) {
+                output.innerHTML = `[+] Databases: information_schema, users, admin<br>[+] Tables: users (admin, passwords)`;
+            } else if (cmd.includes('msf')) {
+                output.innerHTML = `[+] Meterpreter session opened<br>[+] System: Windows 10 (x64)<br>[+] Privileges: SYSTEM`;
+            } else if (cmd.includes('whoami')) {
+                output.innerHTML = `root`;
+            } else if (cmd.includes('cat')) {
+                output.innerHTML = `root:x:0:0:root:/root:/bin/bash<br>user:x:1000:1000:user:/home/user:/bin/bash`;
+            } else if (cmd.includes('ifconfig')) {
+                output.innerHTML = `eth0: 192.168.1.1337<br>tun0: 10.8.0.1<br>lo: 127.0.0.1`;
+            } else {
+                output.innerHTML = `Command executed: ${cmd}`;
+            }
+            
+            terminalContent.insertBefore(output, terminalContent.lastElementChild);
+            
+            if (terminalContent.children.length > 15) {
+                terminalContent.removeChild(terminalContent.children[1]);
+            }
+        }
+        
+        setTimeout(typeCommand, 2000);
+        
+        // ========== تحديث المؤشرات ==========
+        function updateStats() {
+            const cpu = Math.floor(Math.random() * 30) + 35;
+            const ram = Math.floor(Math.random() * 25) + 45;
+            const network = Math.floor(Math.random() * 15) + 75;
+            
+            document.getElementById('cpuPercent').textContent = cpu + '%';
+            document.getElementById('cpuBar').style.width = cpu + '%';
+            
+            document.getElementById('ramPercent').textContent = ram + '%';
+            document.getElementById('ramBar').style.width = ram + '%';
+            
+            document.getElementById('networkPercent').textContent = network + '%';
+            document.getElementById('networkBar').style.width = network + '%';
+        }
+        setInterval(updateStats, 2000);
+        
+        // ========== الساعة ==========
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // ========== وقت التشغيل ==========
+        const startTime = new Date();
+        function updateUptime() {
+            const now = new Date();
+            const diff = Math.floor((now - startTime) / 1000);
+            const hours = Math.floor(diff / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const seconds = diff % 60;
+            document.getElementById('uptime').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        setInterval(updateUptime, 1000);
+        
+        // ========== الـ IP العام ==========
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('publicIP').textContent = data.ip;
+            })
+            .catch(() => {
+                document.getElementById('publicIP').textContent = '127.0.0.1';
+            });
+        
+        // ========== رسالة الوصول ==========
+        function showAccess() {
+            const popup = document.getElementById('accessPopup');
+            popup.classList.add('show');
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 2000);
+        }
+        
+        // تفعيل عند أي نقرة
+        document.addEventListener('click', showAccess);
+        
+        // تفعيل عند أي ضغط زر
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                showAccess();
+            }
+        });
+        
+        // مقاومة التغيير
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
