@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جامع البيانات الخطير - 30 نوع</title>
-    <!-- طابع قديم / تقني خام -->
+    <title>برج الخدمات المتكامل</title>
+    <!-- أحدث وأقوى التقنيات: CSS Variables, Flex/Grid, Modern Fonts, Smooth Animations -->
     <style>
-        /* أفضل الممارسات: reset بسيط، خطوط واضحة، تباين عالي */
+        /* متغيرات CSS للتحكم الكامل - أحدث المعايير */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --font-main: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* تحميل خط Tajawal العصري */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+
+        /* إعادة تعيين متطورة */
         * {
             margin: 0;
             padding: 0;
@@ -14,579 +31,774 @@
         }
 
         body {
-            background-color: #0a0f0e; /* خلفية داكنة قديمة */
-            font-family: 'Courier New', Courier, monospace; /* خط الآلة الكاتبة */
-            color: #b3ffcc; /* أخضر فسفوري قديم */
-            line-height: 1.5;
-            padding: 20px;
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
+            color: var(--light);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة متطورة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQwMCIgaGVpZ2h0PSI5MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxMDAlIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTAgMGgxNDAwdjkwMEgweiIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==') repeat;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* رأس الموقع بتأثير زجاجي حديث */
+        .header {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 30px 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* شبكة البطاقات المتجاوبة - CSS Grid الحديث */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* بطاقات الخدمات - تصميم زجاجي عصري */
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.6s ease-out backwards;
             display: flex;
             flex-direction: column;
         }
 
-        /* الحاوية الرئيسية */
-        .old-school-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            border: 3px solid #2e8b57;
-            padding: 20px;
-            background-color: #0f1a17;
-            box-shadow: 0 0 20px rgba(46, 139, 86, 0.3);
-            width: 100%;
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
         }
 
-        /* رأس الموقع */
-        .header {
-            text-align: center;
-            border-bottom: 2px dashed #2e8b57;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .header h1 {
+        /* عناوين البطاقات */
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .card-title i {
             font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            word-break: break-word;
-            color: #adff2f;
-            text-shadow: 0 0 5px #2e8b57;
+            background: linear-gradient(45deg, #fff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* محتوى البطاقات */
+        .card-content {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* ========== المذكرة المتطورة ========== */
+        .notes-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notes-list {
+            list-style: none;
+            margin-bottom: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .notes-list li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.2s;
+        }
+
+        .notes-list li:hover {
+            background: rgba(255,  ‌255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .delete-note {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: 0.2s;
+        }
+
+        .delete-note:hover {
+            color: #ff4757;
+            transform: scale(1.2);
+        }
+
+        .note-input {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .note-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .note-input input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .note-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .note-input button {
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            border: none;
+            border-radius: 50px;
+            width: 55px;
+            height: 55px;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .note-input button:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: linear-gradient(135deg, #fbbf24, var(--accent));
+        }
+
+        /* ========== الآلة الحاسبة ========== */
+        .calculator {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 20px;
+        }
+
+        .calc-display {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        #calc-result {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            font-family: 'Courier New', monospace;
+            text-align: right;
+            direction: rtl;
+        }
+
+        #calc-result:focus {
+            outline: none;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 20px 5px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: var(--font-main);
+        }
+
+        .calc-btn:hover {
+            background: var(--primary);
+            transform: scale(0.95);
+            border-color: white;
+        }
+
+        .calc-btn.operator {
+            background: rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+        }
+
+        .calc-btn.operator:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, #10b981, #059669);
+            grid-column: span 2;
+        }
+
+        /* ========== ساعة مكة المتقدمة ========== */
+        .clock-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 30px;
+        }
+
+        .makkah-clock {
+            font-size: 5rem;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 20px var(--accent);
+            margin: 20px 0;
+            direction: ltr;
+        }
+
+        .clock-date {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #e0e7ff;
+        }
+
+        .prayer-times {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .prayer-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .prayer-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .prayer-name {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+
+        .prayer-time {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* ========== أشياء أخرى متعددة ========== */
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .extra-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 30px;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .weather-icon {
+            font-size: 4rem;
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .quran-ayah {
+            font-size: 1.5rem;
+            line-height: 2;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .quran-source {
+            text-align: left;
+            opacity: 0.7;
+        }
+
+        /* تذييل الصفحة */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* مؤثرات إضافية */
+        .badge {
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-block;
             margin-bottom: 10px;
         }
 
-        .header p {
-            font-size: 1.1rem;
-            color: #98fb98;
-        }
-
-        .status-bar {
-            background-color: #1e2b26;
-            border: 1px solid #2e8b57;
-            padding: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            direction: ltr; /* للأرقام */
-        }
-
-        .counter {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #ffffe0;
-        }
-        .counter span {
-            color: #ffa07a;
-            background: #2f4f4f;
-            padding: 3px 10px;
-            border-radius: 0;
-            margin: 0 5px;
-        }
-
-        .warning {
-            color: #ffd700;
-            font-weight: bold;
-            border: 1px solid #ffd700;
-            padding: 5px 10px;
-            background: #2a3a2a;
-        }
-
-        /* شبكة البطاقات القديمة */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        /* بطاقة كل عنصر */
-        .data-card {
-            background: #15231f;
-            border: 2px solid #2e8b57;
-            padding: 15px 12px;
-            transition: all 0.2s ease;
-            word-break: break-word;
-            box-shadow: inset 0 0 5px #1f3a2c;
-        }
-
-        .data-card:hover {
-            border-color: #ffd700;
-            background: #1c2e27;
-            transform: scale(1.01);
-        }
-
-        .data-card .title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffd700;
-            border-bottom: 1px dotted #3cb371;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .data-card .title::before {
-            content: "►";
-            color: #dc143c;
-            font-size: 1rem;
-        }
-
-        .data-card .value {
-            background: #0c1512;
-            padding: 8px;
-            border: 1px solid #2e8b57;
-            font-family: 'Courier New', monospace;
-            color: #e0ffff;
-            font-size: 0.95rem;
-            max-height: 150px;
-            overflow-y: auto;
-            direction: ltr; /* للمحتوى */
-            text-align: left;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .value-placeholder {
-            color: #6b8e23;
-            font-style: italic;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            border-top: 2px dashed #2e8b57;
-            padding-top: 20px;
-            font-size: 0.9rem;
-            color: #8fbc8f;
-        }
-
-        /* زر التحديث/الجمع */
-        .gather-btn {
-            background: #1e2b26;
-            border: 3px solid #adff2f;
-            color: #adff2f;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 1.5rem;
-            padding: 15px 30px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: 0.2s;
-            margin: 20px 0;
-            width: 100%;
-        }
-
-        .gather-btn:hover {
-            background: #2e8b57;
-            color: #0a0f0e;
-            border-color: #ffffe0;
-        }
-
-        /* شريط التمرير القديم */
+        /* تحسين شريط التمرير */
         ::-webkit-scrollbar {
             width: 12px;
-            background: #1e2b26;
         }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
         ::-webkit-scrollbar-thumb {
-            background: #3cb371;
-            border: 2px solid #0f1a17;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            border: 3px solid transparent;
         }
     </style>
 </head>
 <body>
-<div class="old-school-container">
-    <div class="header">
-        <h1>⚡ جامع البيانات الكلي ⚡</h1>
-        <p>النسخة القديمة • 30 نوع خطر • جمع فوري وعرض مباشر</p>
+    <div class="container">
+        <!-- رأس الموقع -->
+        <header class="header">
+            <h1>⚡ برج الخدمات الذكية ⚡</h1>
+            <p>مذكرة · آلة حاسبة · ساعة مكة · قرآن · طقس · والمزيد</p>
+        </header>
+
+        <!-- الخدمات الرئيسية - Grid 3 أعمدة -->
+        <div class="services-grid">
+            <!-- 1. بطاقة المذكرة -->
+            <div class="service-card" style="animation-delay: 0.1s;">
+                <div class="card-title">
+                    <span>📝</span>
+                    <span>المذكرة الذكية</span>
+                </div>
+                <div class="card-content">
+                    <div class="notes-container">
+                        <ul id="notesList" class="notes-list">
+                            <!-- المذكرات تظهر هنا -->
+                        </ul>
+                        <div class="note-input">
+                            <input type="text" id="noteInput" placeholder="اكتب ملاحظة جديدة...">
+                            <button id="addNoteBtn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. بطاقة الآلة الحاسبة -->
+            <div class="service-card" style="animation-delay: 0.2s;">
+                <div class="card-title">
+                    <span>🧮</span>
+                    <span>آلة حاسبة</span>
+                </div>
+                <div class="card-content">
+                    <div class="calculator">
+                        <div class="calc-display">
+                            <input type="text" id="calc-result" value="0" readonly>
+                        </div>
+                        <div class="calc-buttons">
+                            <button class="calc-btn" onclick="appendToCalc('7')">7</button>
+                            <button class="calc-btn" onclick="appendToCalc('8')">8</button>
+                            <button class="calc-btn" onclick="appendToCalc('9')">9</button>
+                            <button class="calc-btn operator" onclick="appendToCalc('/')">÷</button>
+                            
+                            <button class="calc-btn" onclick="appendToCalc('4')">4</button>
+                            <button class="calc-btn" onclick="appendToCalc('5')">5</button>
+                            <button class="calc-btn" onclick="appendToCalc('6')">6</button>
+                            <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+                            
+                            <button class="calc-btn" onclick="appendToCalc('1')">1</button>
+                            <button class="calc-btn" onclick="appendToCalc('2')">2</button>
+                            <button class="calc-btn" onclick="appendToCalc('3')">3</button>
+                            <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+                            
+                            <button class="calc-btn" onclick="appendToCalc('0')">0</button>
+                            <button class="calc-btn" onclick="appendToCalc('.')">.</button>
+                            <button class="calc-btn" onclick="clearCalc()">C</button>
+                            <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+                            
+                            <button class="calc-btn equals" onclick="calculateResult()">=</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. بطاقة ساعة مكة -->
+            <div class="service-card" style="animation-delay: 0.3s;">
+                <div class="card-title">
+                    <span>🕋</span>
+                    <span>ساعة مكة</span>
+                </div>
+                <div class="card-content">
+                    <div class="clock-container">
+                        <div class="badge">بتوقيت مكة المكرمة</div>
+                        <div id="makkahClock" class="makkah-clock">--:--:--</div>
+                        <div id="makkahDate" class="clock-date">...</div>
+                        <div class="prayer-times" id="prayerTimes">
+                            <!-- أوقات الصلاة -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أشياء أخرى إضافية -->
+        <div class="extra-grid">
+            <!-- بطاقة الطقس -->
+            <div class="extra-card" style="animation-delay: 0.4s;">
+                <div class="card-title">
+                    <span>☁️</span>
+                    <span>الطقس في مكة</span>
+                </div>
+                <div class="weather-widget">
+                    <div class="weather-icon" id="weatherIcon">☀️</div>
+                    <div class="weather-temp" id="weatherTemp">38°</div>
+                    <div class="weather-desc" id="weatherDesc">مشمس</div>
+                </div>
+            </div>
+
+            <!-- بطاقة القرآن -->
+            <div class="extra-card" style="animation-delay: 0.5s;">
+                <div class="card-title">
+                    <span>📖</span>
+                    <span>آية اليوم</span>
+                </div>
+                <div class="quran-ayah" id="quranAyah">
+                    إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ
+                </div>
+                <div class="quran-source" id="quranSource">(الأحزاب 56)</div>
+            </div>
+
+            <!-- بطاقة مؤقت/عداد -->
+            <div class="extra-card" style="animation-delay: 0.6s;">
+                <div class="card-title">
+                    <span>⏳</span>
+                    <span>مؤقت عكسي</span>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; font-weight: 700; margin: 20px 0;" id="countdown">05:00</div>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button onclick="startCountdown(300)" style="background: var(--primary); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">5 دقائق</button>
+                        <button onclick="startCountdown(600)" style="background: var(--secondary); border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">10 دقائق</button>
+                        <button onclick="stopCountdown()" style="background: #ef4444; border: none; color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer;">إيقاف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2026 برج الخدمات المتكامل - جميع الخدمات تعمل آنياً بأحدث التقنيات</p>
+        </footer>
     </div>
 
-    <!-- شريط الحالة والإحصائيات -->
-    <div class="status-bar">
-        <div class="counter" id="live-counter">تم جمع <span id="collected-count">0</span> / <span id="total-count">30</span></div>
-        <div class="warning">⚠️ هذه البيانات تخص جهازك فقط ولن ترسل لأي سيرفر</div>
-    </div>
+    <!-- JavaScript المتطور مع أحدث الممارسات -->
+    <script>
+        (function() {
+            "use strict";
 
-    <!-- حاوية البيانات (سيتم تعبئتها عبر JS) -->
-    <div id="data-grid" class="grid">
-        <!-- يتم توليد البطاقات ديناميكياً -->
-    </div>
+            // ==================== 1. المذكرة ====================
+            let notes = JSON.parse(localStorage.getItem('smartNotes')) || [];
+            const notesList = document.getElementById('notesList');
+            const noteInput = document.getElementById('noteInput');
+            const addNoteBtn = document.getElementById('addNoteBtn');
 
-    <!-- زر الجمع (يمكن الضغط عليه لتحديث البيانات) -->
-    <button class="gather-btn" id="gatherBtn">⟳ اجمع كل البيانات الآن</button>
-
-    <div class="footer">
-        <p>["أفضل الممارسات": جمع وعرض محلي 100%، لا تخزين، لا tracking]</p>
-        <p>البيانات المعروضة هي من متصفحك وجهازك مباشرة - 30 نوع خطير</p>
-    </div>
-</div>
-
-<script>
-    (function() {
-        "use strict";
-        // أفضل الممارسات: تشغيل الكود فوراً، ومعالجة الأخطاء، وتحديث واجهة المستخدم
-
-        // ---------- قائمة الـ 30 نوع بيانات (بالعربية والإنجليزية للوضوح) ----------
-        const dataTypes = [
-            { id: 'browserHistory', name: 'سجل التصفح (Browsing History)' },
-            { id: 'cookies', name: 'ملفات تعريف الارتباط (Cookies)' },
-            { id: 'fingerprint', name: 'بصمة المتصفح (Browser Fingerprint)' },
-            { id: 'searchHistory', name: 'سجل البحث (Search History)' },
-            { id: 'bookmarks', name: 'المواقع المفضلة (Bookmarks)' },
-            { id: 'downloads', name: 'الملفات التي تم تحميلها (Downloads)' },
-            { id: 'autofill', name: 'بيانات الملء التلقائي (Autofill Data)' },
-            { id: 'gps', name: 'الموقع الجغرافي الدقيق (GPS)' },
-            { id: 'ip', name: 'عنوان IP (IP Address)' },
-            { id: 'os', name: 'نظام التشغيل (OS)' },
-            { id: 'deviceModel', name: 'نوع الجهاز (Device Model)' },
-            { id: 'battery', name: 'حالة البطارية (Battery Level)' },
-            { id: 'language', name: 'اللغة والإعدادات الإقليمية (Language)' },
-            { id: 'timezone', name: 'المنطقة الزمنية (Time Zone)' },
-            { id: 'email', name: 'عناوين البريد الإلكتروني (Email Addresses)' },
-            { id: 'savedPasswords', name: 'كلمات المرور المخزنة (Saved Passwords)' },
-            { id: 'contacts', name: 'جهات الاتصال (Contacts)' },
-            { id: 'callLogs', name: 'سجل المكالمات (Call Logs - mock)' },
-            { id: 'smsLogs', name: 'سجل الرسائل (SMS Logs - mock)' },
-            { id: 'photos', name: 'الصور (Photos - metadata)' },
-            { id: 'cameraAccess', name: 'الوصول إلى الكاميرا (Camera Access)' },
-            { id: 'microphoneAccess', name: 'الوصول إلى الميكروفون (Microphone Access)' },
-            { id: 'timeOnSite', name: 'الوقت المستغرق في الموقع (Time on Site)' },
-            { id: 'mouseMovements', name: 'حركات الفأرة (Mouse Movements)' },
-            { id: 'lastSession', name: 'آخر جلسة (Last Session)' },
-            { id: 'extensions', name: 'إضافات المتصفح (Browser Extensions)' },
-            { id: 'incognito', name: 'مواقع التصفح الخفي (Incognito Tabs)' },
-            { id: 'paymentData', name: 'بيانات الدفع (Payment Data)' },
-            { id: 'addresses', name: 'العناوين الشخصية (Addresses)' },
-            { id: 'documents', name: 'المستندات الشخصية (Personal Documents)' }
-        ];
-
-        // ---------- وظائف مساعدة لجمع البيانات بشكل آمن (مع محاكاة للبيانات الحساسة جداً) ----------
-        function safeGet(prop, fallback = '❌ غير متاح') {
-            try { return prop !== undefined && prop !== null ? prop : fallback; }
-            catch { return fallback; }
-        }
-
-        // جمع البيانات الحقيقية قدر الإمكان، مع محاكاة للبيانات التي لا يمكن الوصول إليها مباشرة (لأسباب أمنية)
-        function collectAllData() {
-            const data = {};
-
-            // 1. سجل التصفح (محاكاة لأن الوصول الفعلي غير مسموح)
-            data.browserHistory = "لا يمكن الوصول (قيود أمان) - لكن يمكن تتبعه عبر الكوكيز";
-
-            // 2. الكوكيز: محاولة قراءة Document.cookie
-            data.cookies = document.cookie || "لا توجد كوكيز أو غير قابلة للقراءة (HttpOnly)";
-
-            // 3. بصمة المتصفح: جمع بعض العناصر
-            const fp = [];
-            fp.push(`UserAgent: ${navigator.userAgent}`);
-            fp.push(`اللغة: ${navigator.language}`);
-            fp.push(`المنصة: ${navigator.platform}`);
-            fp.push(`عدد النوى: ${navigator.hardwareConcurrency || '?'}`);
-            fp.push(`الذاكرة: ${navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'غير معروفة'}`);
-            fp.push(`دقة الشاشة: ${screen.width}x${screen.height}`);
-            fp.push(`عمق الألوان: ${screen.colorDepth}`);
-            fp.push(`الخطوط: (محاكاة) Times, Arial, Courier`);
-            data.fingerprint = fp.join(' · ');
-
-            // 4. سجل البحث (لا يمكن) – محاكاة
-            data.searchHistory = "غير متاح مباشرة، لكن محركات البحث تخزنه";
-
-            // 5. المفضلة (لا يمكن)
-            data.bookmarks = "لا يمكن قراءة المفضلة من JS";
-
-            // 6. التنزيلات (لا يمكن)
-            data.downloads = "غير متاح بسبب الخصوصية";
-
-            // 7. بيانات الملء التلقائي (محاولة أخذ من DOM? غير أخلاقي) – نعرض تعليق
-            data.autofill = "غير قابلة للقراءة (محمية)";
-
-            // 8. الموقع الجغرافي (نحاول الحصول على GPS)
-            data.gps = "جاري طلب الإذن...";
-            if (navigator.geolocation) {
-                // سنقوم بتحديثه لاحقاً عبر وعد (promise) لتجنب التعليق. سنضبطه بعد التوليد.
-                // حالياً نضع رسالة ثم نحدث خارجاً.
-                data.gps = "⚠️ يرجى السماح بالموقع (سيتم التحديث)";
-            } else {
-                data.gps = "الموقع غير مدعوم";
+            function renderNotes() {
+                notesList.innerHTML = '';
+                notes.forEach((note, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${note}</span>
+                        <button class="delete-note" onclick="deleteNote(${index})">×</button>
+                    `;
+                    notesList.appendChild(li);
+                });
+                localStorage.setItem('smartNotes', JSON.stringify(notes));
             }
 
-            // 9. عنوان IP (عبر api خارجي؟ لكن الأفضل محلي) – نستخدم WebRTC أو نترك رسالة.
-            // لعدم الاعتماد على طرف خارجي، نعرض عنوان محلي أو رسالة.
-            data.ip = "عنوان IP محلي: " + (window.location.hostname || "غير معروف") + " (العام غير متاح بدون API)";
+            window.deleteNote = function(index) {
+                notes.splice(index, 1);
+                renderNotes();
+            };
 
-            // 10. نظام التشغيل
-            data.os = navigator.platform + " " + (navigator.oscpu || "");
-
-            // 11. نوع الجهاز
-            data.deviceModel = navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || navigator.platform;
-
-            // 12. حالة البطارية (Battery API)
-            data.battery = "جاري الفحص...";
-            if ('getBattery' in navigator) {
-                navigator.getBattery().then(battery => {
-                    updateSingleData('battery', `المستوى: ${Math.round(battery.level*100)}% ، الشاحن: ${battery.charging ? 'موصول' : 'غير موصول'}`);
-                }).catch(() => updateSingleData('battery', '❌ فشل'));
-            } else {
-                data.battery = "غير مدعوم";
-            }
-
-            // 13. اللغة
-            data.language = navigator.language + " (لغات المتصفح: " + navigator.languages.join(', ') + ")";
-
-            // 14. المنطقة الزمنية
-            data.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone + " (إزاحة: " + new Date().getTimezoneOffset() + " دقيقة)";
-
-            // 15. البريد الإلكتروني (محاكاة لأن الوصول الفعلي غير مسموح)
-            data.email = "لا يمكن الوصول (محمي)";
-
-            // 16. كلمات المرور المخزنة (محاكاة)
-            data.savedPasswords = "لا يمكن قراءة كلمات المرور";
-
-            // 17. جهات الاتصال (محاكاة)
-            data.contacts = "غير متاحة (تتطلب إذن خاص)";
-
-            // 18. سجل المكالمات (محاكاة)
-            data.callLogs = "(محاكاة) لا يمكن الوصول";
-
-            // 19. سجل الرسائل (محاكاة)
-            data.smsLogs = "(محاكاة) لا يمكن الوصول";
-
-            // 20. الصور (محاكاة)
-            data.photos = "لا يمكن سرد الصور من JS";
-
-            // 21. الوصول للكاميرا (نعرض حالة الإذن عبر Permissions API إذا أمكن)
-            data.cameraAccess = "لم يتم الطلب بعد";
-            if (navigator.permissions) {
-                navigator.permissions.query({ name: 'camera' }).then(perm => {
-                    updateSingleData('cameraAccess', `حالة الإذن: ${perm.state}`);
-                }).catch(() => {});
-            }
-
-            // 22. الوصول للميكروفون
-            data.microphoneAccess = "لم يتم الطلب بعد";
-            if (navigator.permissions) {
-                navigator.permissions.query({ name: 'microphone' }).then(perm => {
-                    updateSingleData('microphoneAccess', `حالة الإذن: ${perm.state}`);
-                }).catch(() => {});
-            }
-
-            // 23. الوقت المستغرق في الموقع (نحسب وقت الجلسة)
-            if (window.performance && performance.timing) {
-                let loadTime = performance.now() / 1000;
-                data.timeOnSite = `منذ تحميل الصفحة: ${loadTime.toFixed(1)} ثانية (تحديث مستمر)`;
-            } else {
-                data.timeOnSite = "غير متاح";
-            }
-
-            // 24. حركات الفأرة (محاكاة بسيطة)
-            data.mouseMovements = "تم تسجيل آخر حركة (محاكاة)";
-
-            // 25. آخر جلسة (محاكاة)
-            data.lastSession = localStorage.getItem('lastVisit') || "هذه زيارتك الأولى (في هذا التخزين)";
-            localStorage.setItem('lastVisit', new Date().toISOString());
-
-            // 26. إضافات المتصفح (لا يمكن تعدادها مباشرة، نعرض بعض المعلومات)
-            data.extensions = "لا يمكن تعداد الإضافات، لكن يمكن استنتاج بعضها عبر بصمة المتصفح";
-
-            // 27. مواقع التصفح الخفي (لا يمكن الوصول)
-            data.incognito = "غير متاح (وضع الخفي لا يخفي عن المتصفح نفسه لكن JS لا يعلم)";
-
-            // 28. بيانات الدفع (محاكاة)
-            data.paymentData = "لا يمكن الوصول لبيانات الدفع";
-
-            // 29. العناوين الشخصية (محاكاة)
-            data.addresses = "غير متاحة";
-
-            // 30. المستندات الشخصية (محاكاة)
-            data.documents = "لا يمكن الوصول للمستندات";
-
-            // إضافة بعض التحديثات غير المتزامنة للموقع والبطارية
-            // سنقوم بإرجاع object data مبدئي، ثم نحدث لاحقاً
-
-            return data;
-        }
-
-        // تخزين الكارتات للوصول السريع للتحديث
-        const cardElements = new Map();
-
-        // دالة لإنشاء وعرض جميع البطاقات
-        function renderGrid(initialData) {
-            const grid = document.getElementById('data-grid');
-            grid.innerHTML = ''; // تفريغ
-            cardElements.clear();
-
-            dataTypes.forEach((type, index) => {
-                const card = document.createElement('div');
-                card.className = 'data-card';
-                card.id = `card-${type.id}`;
-
-                const title = document.createElement('div');
-                title.className = 'title';
-                title.textContent = type.name;
-
-                const valueDiv = document.createElement('div');
-                valueDiv.className = 'value';
-                let displayValue = initialData[type.id];
-                if (displayValue === undefined || displayValue === null || displayValue === '') {
-                    displayValue = '⏳ في الانتظار...';
+            addNoteBtn.addEventListener('click', () => {
+                const text = noteInput.value.trim();
+                if (text) {
+                    notes.push(text);
+                    noteInput.value = '';
+                    renderNotes();
                 }
-                valueDiv.textContent = displayValue;
-                valueDiv.id = `value-${type.id}`;
-
-                card.appendChild(title);
-                card.appendChild(valueDiv);
-                grid.appendChild(card);
-
-                cardElements.set(type.id, valueDiv);
             });
 
-            updateCounter();
-        }
+            noteInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addNoteBtn.click();
+                }
+            });
 
-        // دالة تحديث بيانات واحدة
-        function updateSingleData(id, newValue) {
-            const valueDiv = cardElements.get(id);
-            if (valueDiv) {
-                valueDiv.textContent = newValue;
-                updateCounter();
-            }
-        }
+            renderNotes();
 
-        // دالة تحديث البيانات الكثيرة (غير المتزامنة)
-        function updateMultipleData(updates) {
-            for (const [id, val] of Object.entries(updates)) {
-                const div = cardElements.get(id);
-                if (div) div.textContent = val;
-            }
-            updateCounter();
-        }
+            // ==================== 2. الآلة الحاسبة ====================
+            const calcResult = document.getElementById('calc-result');
 
-        // عدّ البطاقات التي تحتوي على قيم غير Placeholder
-        function updateCounter() {
-            let collected = 0;
-            for (let [id, div] of cardElements.entries()) {
-                const text = div.textContent;
-                // إذا كانت القيمة لا تبدأ بـ "لا يمكن" أو "غير متاح" أو "❌" أو "محاكاة" أو "جاري" أو "⏳" فهي ناجحة جزئياً
-                // لكن سنعد كل شيء ما عدا بعض الكلمات المفتاحية للتبسيط
-                if (text && !text.includes('⏳') && !text.includes('جاري') && !text.includes('يرجى')) {
-                    // ولكن أيضاً نستثني الواضح
-                    if (text.includes('لا يمكن') || text.includes('غير متاح') || text.includes('❌') || text.includes('محاكاة')) {
-                        // لا تعد
-                    } else {
-                        collected++;
-                    }
+            window.appendToCalc = function(value) {
+                if (calcResult.value === '0' && value !== '.') {
+                    calcResult.value = value;
                 } else {
-                    // لا تعد
+                    calcResult.value += value;
                 }
-            }
-            // لتجنب التعقيد، نعرض العدد الإجمالي للبطاقات التي لديها قيم غير افتراضية واضحة
-            // تبسيط: نعد البطاقات التي تحتوي على '⚠️' أو 'غير' أو '❌' على أنها غير محسوبة، لكن الأسهل:
-            // سأعرض عدد البطاقات المحدثة والتي لا تحتوي على الكلمات المذكورة
-            let count = 0;
-            for (let div of cardElements.values()) {
-                const t = div.textContent;
-                if (!t.includes('لا يمكن') && !t.includes('غير متاح') && !t.includes('❌') && !t.includes('محاكاة') && !t.includes('⏳') && !t.includes('جاري') && !t.includes('يرجى')) {
-                    count++;
-                }
-            }
-            document.getElementById('collected-count').innerText = count;
-        }
+            };
 
-        // تحديث الموقع الجغرافي الفعلي
-        function updateGPS() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const coords = `خط العرض: ${pos.coords.latitude}, خط الطول: ${pos.coords.longitude} (الدقة: ${pos.coords.accuracy}m)`;
-                        updateSingleData('gps', coords);
-                    },
-                    (err) => {
-                        updateSingleData('gps', `❌ رفض الوصول أو خطأ: ${err.message}`);
+            window.clearCalc = function() {
+                calcResult.value = '0';
+            };
+
+            window.calculateResult = function() {
+                try {
+                    calcResult.value = eval(calcResult.value) || '0';
+                } catch {
+                    calcResult.value = 'خطأ';
+                }
+            };
+
+            // ==================== 3. ساعة مكة ====================
+            function updateMakkahTime() {
+                const now = new Date();
+                // توقيت مكة = UTC+3
+                const makkahTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3 * 3600000));
+                
+                const hours = makkahTime.getUTCHours().toString().padStart(2, '0');
+                const minutes = makkahTime.getUTCMinutes().toString().padStart(2, '0');
+                const seconds = makkahTime.getUTCSeconds().toString().padStart(2, '0');
+                
+                document.getElementById('makkahClock').textContent = `${hours}:${minutes}:${seconds}`;
+                
+                // التاريخ الهجري (محاكاة - في الإنتاج تستخدم API)
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('makkahDate').textContent = makkahTime.toLocaleDateString('ar-SA', options);
+            }
+
+            // أوقات صلاة تقريبية (يمكن تحديثها عبر API)
+            const prayerTimes = [
+                { name: 'الفجر', time: '04:12' },
+                { name: 'الشروق', time: '05:38' },
+                { name: 'الظهر', time: '12:15' },
+                { name: 'العصر', time: '15:45' },
+                { name: 'المغرب', time: '18:52' },
+                { name: 'العشاء', time: '20:15' }
+            ];
+
+            function renderPrayerTimes() {
+                const container = document.getElementById('prayerTimes');
+                container.innerHTML = '';
+                prayerTimes.forEach(prayer => {
+                    const div = document.createElement('div');
+                    div.className = 'prayer-item';
+                    div.innerHTML = `
+                        <div class="prayer-name">${prayer.name}</div>
+                        <div class="prayer-time">${prayer.time}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            setInterval(updateMakkahTime, 1000);
+            updateMakkahTime();
+            renderPrayerTimes();
+
+            // ==================== 4. الطقس (محاكاة) ====================
+            // في الإنتاج تستخدم API حقيقي مثل OpenWeatherMap
+            const weatherIcons = ['☀️', '⛅', '☁️', '🌧️', '⛈️'];
+            const weatherDescs = ['مشمس', 'غائم جزئياً', 'غائم', 'ممطر', 'عاصفة'];
+            
+            function updateWeather() {
+                const random = Math.floor(Math.random() * 5);
+                document.getElementById('weatherIcon').textContent = weatherIcons[random];
+                document.getElementById('weatherDesc').textContent = weatherDescs[random];
+                document.getElementById('weatherTemp').textContent = Math.floor(Math.random() * 10 + 35) + '°';
+            }
+            
+            setInterval(updateWeather, 10000);
+            updateWeather();
+
+            // ==================== 5. آية القرآن ====================
+            const ayahs = [
+                { text: 'إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ', source: 'الأحزاب ٥٦' },
+                { text: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي', source: 'طه ٢٥-٢٦' },
+                { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', source: 'هود ٨٨' },
+                { text: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا', source: 'الشرح ٦' }
+            ];
+            
+            function updateAyah() {
+                const random = Math.floor(Math.random() * ayahs.length);
+                document.getElementById('quranAyah').textContent = ayahs[random].text;
+                document.getElementById('quranSource').textContent = `(${ayahs[random].source})`;
+            }
+            
+            setInterval(updateAyah, 15000);
+            updateAyah();
+
+            // ==================== 6. مؤقت عكسي ====================
+            let countdownInterval;
+            let countdownSeconds = 300; // 5 دقائق افتراضي
+
+            function updateCountdownDisplay() {
+                const mins = Math.floor(countdownSeconds / 60).toString().padStart(2, '0');
+                const secs = (countdownSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('countdown').textContent = `${mins}:${secs}`;
+            }
+
+            window.startCountdown = function(seconds) {
+                stopCountdown();
+                countdownSeconds = seconds;
+                updateCountdownDisplay();
+                countdownInterval = setInterval(() => {
+                    if (countdownSeconds > 0) {
+                        countdownSeconds--;
+                        updateCountdownDisplay();
+                    } else {
+                        stopCountdown();
+                        alert('⏰ انتهى الوقت!');
                     }
-                );
-            } else {
-                updateSingleData('gps', 'الموقع غير مدعوم');
-            }
-        }
+                }, 1000);
+            };
 
-        // تحديث البطارية الفعلية
-        function updateBattery() {
-            if ('getBattery' in navigator) {
-                navigator.getBattery().then(battery => {
-                    const updateBatt = () => {
-                        updateSingleData('battery', `المستوى: ${Math.round(battery.level*100)}% ، الشاحن: ${battery.charging ? 'موصول' : 'غير موصول'}`);
-                    };
-                    updateBatt();
-                    battery.addEventListener('levelchange', updateBatt);
-                    battery.addEventListener('chargingchange', updateBatt);
-                }).catch(() => updateSingleData('battery', '❌ فشل'));
-            } else {
-                updateSingleData('battery', 'غير مدعوم');
-            }
-        }
-
-        // محاولة تحديث الإذن للكاميرا والميكروفون
-        function updatePermissions() {
-            if (navigator.permissions) {
-                navigator.permissions.query({ name: 'camera' }).then(perm => {
-                    updateSingleData('cameraAccess', `حالة الإذن: ${perm.state}`);
-                }).catch(() => updateSingleData('cameraAccess', 'غير معروف'));
-                navigator.permissions.query({ name: 'microphone' }).then(perm => {
-                    updateSingleData('microphoneAccess', `حالة الإذن: ${perm.state}`);
-                }).catch(() => updateSingleData('microphoneAccess', 'غير معروف'));
-            }
-        }
-
-        // دالة إعادة الجمع (تنادي على جمع البيانات ثم تحدث الواجهة)
-        function refreshAllData() {
-            const initialData = collectAllData(); // مزامن
-            updateMultipleData(initialData);
-            // استدعاء التحديثات غير المتزامنة
-            updateGPS();
-            updateBattery();
-            updatePermissions();
-
-            // تحديث الوقت على الموقع بشكل مستمر
-            setInterval(() => {
-                if (window.performance) {
-                    let seconds = performance.now() / 1000;
-                    updateSingleData('timeOnSite', `منذ التحميل: ${seconds.toFixed(1)} ثانية`);
+            window.stopCountdown = function() {
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
                 }
-            }, 1000);
+            };
+
+            updateCountdownDisplay();
+
+            // ==================== 7. Service Worker للتثبيت (PWA) ====================
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(console.log);
+            }
+
+        })();
+    </script>
+
+    <!-- Service Worker بسيط للتشغيل دون إنترنت -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
+                self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
+                self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+                self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+            `));
         }
-
-        // تهيئة الصفحة
-        function init() {
-            // جمع أولي
-            const initialData = collectAllData();
-            renderGrid(initialData);
-
-            // التحديثات غير المتزامنة
-            updateGPS();
-            updateBattery();
-            updatePermissions();
-
-            // مراقبة الوقت
-            setInterval(() => {
-                if (window.performance) {
-                    let seconds = performance.now() / 1000;
-                    updateSingleData('timeOnSite', `منذ التحميل: ${seconds.toFixed(1)} ثانية`);
-                }
-            }, 1000);
-
-            // ربط الزر
-            document.getElementById('gatherBtn').addEventListener('click', () => {
-                refreshAllData();
-            });
-
-            // عداد أولي
-            updateCounter();
-        }
-
-        // التشغيل بعد تحميل DOM
-        window.addEventListener('DOMContentLoaded', init);
-    })();
-</script>
+    </script>
 </body>
 </html>
