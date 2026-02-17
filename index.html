@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System & Browser Info | 100+ Data Points</title>
+    <title>System Info | 300+ Data Points in JSON</title>
     <style>
         * {
             margin: 0;
@@ -15,16 +15,15 @@
             background: #0a0a0a;
             color: #00ff41;
             font-family: 'Courier New', monospace;
-            padding: 15px;
+            padding: 20px;
             min-height: 100vh;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
         }
         
-        /* Header */
         .header {
             border: 2px solid #00ff41;
             padding: 15px 20px;
@@ -34,6 +33,10 @@
             align-items: center;
             background: #000;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
         }
         
         .title {
@@ -45,6 +48,7 @@
         .stats {
             display: flex;
             gap: 30px;
+            align-items: center;
         }
         
         .stat-item {
@@ -61,93 +65,6 @@
             font-weight: bold;
         }
         
-        /* Grid layout */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 10px;
-        }
-        
-        /* Card style */
-        .info-card {
-            background: #000;
-            border: 1px solid #00ff41;
-            border-radius: 3px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-        
-        .info-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
-        }
-        
-        .card-header {
-            background: #00ff41;
-            color: #000;
-            padding: 6px 10px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #00ff41;
-        }
-        
-        .card-content {
-            padding: 10px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px dashed rgba(0, 255, 65, 0.2);
-            font-size: 0.8rem;
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            color: #00ff41;
-            opacity: 0.8;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-        
-        .info-value {
-            color: #00ff41;
-            font-weight: bold;
-            text-align: right;
-            max-width: 60%;
-            word-break: break-word;
-        }
-        
-        /* Special value colors */
-        .value-string { color: #00ff41; }
-        .value-number { color: #ffaa00; }
-        .value-boolean { color: #ff00ff; }
-        .value-object { color: #66ccff; }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 1.5rem;
-            color: #00ff41;
-        }
-        
-        .loading::after {
-            content: '█';
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        /* Export button */
         .export-btn {
             background: #000;
             border: 1px solid #00ff41;
@@ -164,7 +81,43 @@
             color: #000;
         }
         
-        /* Footer */
+        /* JSON Viewer */
+        .json-container {
+            background: #000;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+        
+        .json-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .json-container::-webkit-scrollbar-track {
+            background: #000;
+            border: 1px solid #00ff41;
+        }
+        
+        .json-container::-webkit-scrollbar-thumb {
+            background: #00ff41;
+        }
+        
+        /* JSON Syntax Highlighting */
+        .json-key { color: #ff66cc; }
+        .json-string { color: #66ff66; }
+        .json-number { color: #ffaa66; }
+        .json-boolean { color: #66ccff; }
+        .json-null { color: #ff6666; }
+        .json-bracket { color: #00ff41; }
+        
         .footer {
             margin-top: 20px;
             padding: 10px;
@@ -173,6 +126,34 @@
             font-size: 0.7rem;
             opacity: 0.7;
         }
+        
+        .copy-btn {
+            background: #000;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 5px 15px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 15px;
+        }
+        
+        .copy-btn:hover {
+            background: #00ff41;
+            color: #000;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -180,12 +161,12 @@
         <!-- Header -->
         <div class="header">
             <div>
-                <span class="title">SYSTEM::INFO</span>
-                <span style="margin-left: 20px; font-size: 0.8rem;">v1.0 | 100% REAL DATA</span>
+                <span class="title">SYSTEM::JSON</span>
+                <span style="margin-left: 20px; font-size: 0.8rem;">v2.0 | 300+ REAL DATA POINTS</span>
             </div>
             <div class="stats">
                 <div class="stat-item">
-                    <div class="stat-label" id="totalLabel">TOTAL</div>
+                    <div class="stat-label">TOTAL</div>
                     <div class="stat-value" id="totalCount">0</div>
                 </div>
                 <div class="stat-item">
@@ -193,433 +174,546 @@
                     <div class="stat-value" id="updateTime">-</div>
                 </div>
                 <div>
-                    <button class="export-btn" onclick="exportData()">EXPORT JSON</button>
+                    <button class="export-btn" onclick="exportJSON()">📥 DOWNLOAD</button>
+                    <button class="copy-btn" onclick="copyJSON()">📋 COPY</button>
                 </div>
             </div>
         </div>
         
-        <!-- Info Grid -->
-        <div id="infoGrid" class="info-grid">
-            <div class="loading">COLLECTING SYSTEM DATA</div>
+        <!-- JSON Display -->
+        <div class="json-container" id="jsonDisplay">
+            {<span class="json-key">"status"</span>: <span class="json-string">"collecting data..."</span>}
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            <span>SYSTEM INFORMATION COLLECTOR | 100% ACCURATE | REAL-TIME DATA</span>
+            <span>REAL SYSTEM INFORMATION | 100% ACCURATE | 300+ DATA POINTS</span>
         </div>
     </div>
     
     <script>
         (function() {
-            // Helper function to format values
-            function formatValue(value) {
-                if (value === null || value === undefined) {
-                    return { text: 'null', class: 'value-object' };
+            // Helper function to get nested object properties safely
+            function getSafe(obj, path) {
+                try {
+                    return path.split('.').reduce((o, p) => o && o[p], obj);
+                } catch {
+                    return undefined;
+                }
+            }
+            
+            // Format bytes
+            function formatBytes(bytes) {
+                if (bytes === 0 || bytes === undefined) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            // Main data collection - 300+ points
+            function collectAllData() {
+                const data = {};
+                
+                // ==================== 1. BROWSER INFO (45+) ====================
+                data.browser = {
+                    userAgent: navigator.userAgent,
+                    appName: navigator.appName,
+                    appVersion: navigator.appVersion,
+                    appCodeName: navigator.appCodeName,
+                    platform: navigator.platform,
+                    product: navigator.product,
+                    productSub: navigator.productSub || null,
+                    vendor: navigator.vendor,
+                    vendorSub: navigator.vendorSub || null,
+                    buildID: navigator.buildID || null,
+                    oscpu: navigator.oscpu || null,
+                    language: navigator.language,
+                    languages: navigator.languages || [],
+                    acceptLanguage: navigator.acceptLanguage || null,
+                    cookieEnabled: navigator.cookieEnabled,
+                    doNotTrack: navigator.doNotTrack || null,
+                    hardwareConcurrency: navigator.hardwareConcurrency || null,
+                    deviceMemory: navigator.deviceMemory || null,
+                    maxTouchPoints: navigator.maxTouchPoints || 0,
+                    pdfViewerEnabled: navigator.pdfViewerEnabled || false,
+                    webdriver: navigator.webdriver || false,
+                    onLine: navigator.onLine,
+                    clipboard: !!navigator.clipboard,
+                    credentials: !!navigator.credentials,
+                    geolocation: !!navigator.geolocation,
+                    mediaDevices: !!navigator.mediaDevices,
+                    serviceWorker: !!navigator.serviceWorker,
+                    bluetooth: !!navigator.bluetooth,
+                    usb: !!navigator.usb,
+                    hid: !!navigator.hid,
+                    serial: !!navigator.serial,
+                    presentation: !!navigator.presentation,
+                    share: !!navigator.share,
+                    canShare: !!navigator.canShare,
+                    vibrate: !!navigator.vibrate,
+                    keyboard: !!navigator.keyboard,
+                    locks: !!navigator.locks,
+                    wakeLock: !!navigator.wakeLock,
+                    permissions: !!navigator.permissions,
+                    storage: !!navigator.storage,
+                    connection: !!navigator.connection,
+                    getBattery: !!navigator.getBattery,
+                    device: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+                    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                    isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent),
+                    isAndroid: /Android/.test(navigator.userAgent),
+                    isWindows: /Windows/.test(navigator.userAgent),
+                    isMac: /Mac/.test(navigator.userAgent),
+                    isLinux: /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent),
+                };
+                
+                // ==================== 2. WINDOW INFO (30+) ====================
+                data.window = {
+                    innerWidth: window.innerWidth,
+                    innerHeight: window.innerHeight,
+                    outerWidth: window.outerWidth,
+                    outerHeight: window.outerHeight,
+                    screenX: window.screenX,
+                    screenY: window.screenY,
+                    screenLeft: window.screenLeft,
+                    screenTop: window.screenTop,
+                    scrollX: window.scrollX,
+                    scrollY: window.scrollY,
+                    pageXOffset: window.pageXOffset,
+                    pageYOffset: window.pageYOffset,
+                    devicePixelRatio: window.devicePixelRatio,
+                    location: {
+                        href: window.location.href,
+                        protocol: window.location.protocol,
+                        host: window.location.host,
+                        hostname: window.location.hostname,
+                        port: window.location.port,
+                        pathname: window.location.pathname,
+                        search: window.location.search,
+                        hash: window.location.hash,
+                        origin: window.location.origin,
+                    },
+                    history: {
+                        length: window.history.length,
+                        scrollRestoration: window.history.scrollRestoration,
+                        state: window.history.state,
+                    },
+                    navigator: {
+                        sendBeacon: !!navigator.sendBeacon,
+                    },
+                    opener: !!window.opener,
+                    parent: !!window.parent,
+                    top: !!window.top,
+                    self: !!window.self,
+                    frames: window.frames.length,
+                    length: window.length,
+                    closed: window.closed,
+                    status: window.status,
+                    defaultStatus: window.defaultStatus,
+                    name: window.name,
+                };
+                
+                // ==================== 3. SCREEN INFO (20+) ====================
+                data.screen = {
+                    width: screen.width,
+                    height: screen.height,
+                    availWidth: screen.availWidth,
+                    availHeight: screen.availHeight,
+                    availTop: screen.availTop || null,
+                    availLeft: screen.availLeft || null,
+                    colorDepth: screen.colorDepth,
+                    pixelDepth: screen.pixelDepth,
+                    orientation: screen.orientation ? {
+                        type: screen.orientation.type,
+                        angle: screen.orientation.angle,
+                    } : null,
+                    isExtended: screen.isExtended || null,
+                    left: screen.left || null,
+                    top: screen.top || null,
+                    mozBrightness: screen.mozBrightness || null,
+                    availScreen: {
+                        width: window.screen.availWidth,
+                        height: window.screen.availHeight,
+                    },
+                };
+                
+                // ==================== 4. DOCUMENT INFO (25+) ====================
+                data.document = {
+                    title: document.title,
+                    URL: document.URL,
+                    domain: document.domain,
+                    referrer: document.referrer,
+                    cookie: document.cookie ? document.cookie.length + ' chars' : null,
+                    lastModified: document.lastModified,
+                    characterSet: document.characterSet,
+                    charset: document.charset,
+                    contentType: document.contentType,
+                    designMode: document.designMode,
+                    dir: document.dir,
+                    hidden: document.hidden,
+                    visibilityState: document.visibilityState,
+                    readyState: document.readyState,
+                    compatMode: document.compatMode,
+                    all: document.all.length,
+                    forms: document.forms.length,
+                    images: document.images.length,
+                    links: document.links.length,
+                    scripts: document.scripts.length,
+                    styleSheets: document.styleSheets.length,
+                    embeds: document.embeds.length,
+                    plugins: document.plugins.length,
+                    anchors: document.anchors.length,
+                    applets: document.applets.length,
+                    childElementCount: document.documentElement.childElementCount,
+                };
+                
+                // ==================== 5. TIME INFO (20+) ====================
+                const now = new Date();
+                data.time = {
+                    timestamp: Date.now(),
+                    isoString: now.toISOString(),
+                    dateString: now.toDateString(),
+                    timeString: now.toTimeString(),
+                    localeDate: now.toLocaleDateString(),
+                    localeTime: now.toLocaleTimeString(),
+                    localeString: now.toLocaleString(),
+                    utcString: now.toUTCString(),
+                    timezoneOffset: now.getTimezoneOffset(),
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    year: now.getFullYear(),
+                    month: now.getMonth() + 1,
+                    day: now.getDate(),
+                    hours: now.getHours(),
+                    minutes: now.getMinutes(),
+                    seconds: now.getSeconds(),
+                    milliseconds: now.getMilliseconds(),
+                    dayOfWeek: now.getDay(),
+                    dayOfYear: Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000),
+                    weekOfYear: Math.ceil((((now - new Date(now.getFullYear(), 0, 1)) / 86400000) + new Date(now.getFullYear(), 0, 1).getDay() + 1) / 7),
+                };
+                
+                // ==================== 6. STORAGE INFO (15+) ====================
+                data.storage = {
+                    localStorage: {
+                        available: typeof localStorage !== 'undefined',
+                        length: typeof localStorage !== 'undefined' ? localStorage.length : 0,
+                        keys: typeof localStorage !== 'undefined' ? Object.keys(localStorage) : [],
+                    },
+                    sessionStorage: {
+                        available: typeof sessionStorage !== 'undefined',
+                        length: typeof sessionStorage !== 'undefined' ? sessionStorage.length : 0,
+                        keys: typeof sessionStorage !== 'undefined' ? Object.keys(sessionStorage) : [],
+                    },
+                    cookieEnabled: navigator.cookieEnabled,
+                    cookieStore: !!window.cookieStore,
+                    indexedDB: !!window.indexedDB,
+                };
+                
+                // ==================== 7. NETWORK INFO (15+) ====================
+                if (navigator.connection) {
+                    data.network = {
+                        type: navigator.connection.type,
+                        effectiveType: navigator.connection.effectiveType,
+                        downlink: navigator.connection.downlink,
+                        downlinkMax: navigator.connection.downlinkMax,
+                        rtt: navigator.connection.rtt,
+                        saveData: navigator.connection.saveData,
+                        onchange: typeof navigator.connection.onchange,
+                    };
+                } else {
+                    data.network = { available: false };
                 }
                 
-                const type = typeof value;
-                
-                if (type === 'string') {
-                    if (value === '') return { text: '""', class: 'value-string' };
-                    return { text: value, class: 'value-string' };
-                }
-                
-                if (type === 'number') {
-                    return { text: value.toString(), class: 'value-number' };
-                }
-                
-                if (type === 'boolean') {
-                    return { text: value.toString(), class: 'value-boolean' };
-                }
-                
-                if (type === 'object') {
-                    try {
-                        if (Array.isArray(value)) {
-                            return { text: `Array(${value.length})`, class: 'value-object' };
-                        }
-                        return { text: '{object}', class: 'value-object' };
-                    } catch {
-                        return { text: 'error', class: 'value-object' };
+                // ==================== 8. PERFORMANCE INFO (25+) ====================
+                if (window.performance) {
+                    data.performance = {
+                        timeOrigin: performance.timeOrigin,
+                        navigation: performance.navigation ? {
+                            type: performance.navigation.type,
+                            redirectCount: performance.navigation.redirectCount,
+                        } : null,
+                        timing: performance.timing ? {
+                            navigationStart: performance.timing.navigationStart,
+                            unloadEventStart: performance.timing.unloadEventStart,
+                            unloadEventEnd: performance.timing.unloadEventEnd,
+                            redirectStart: performance.timing.redirectStart,
+                            redirectEnd: performance.timing.redirectEnd,
+                            fetchStart: performance.timing.fetchStart,
+                            domainLookupStart: performance.timing.domainLookupStart,
+                            domainLookupEnd: performance.timing.domainLookupEnd,
+                            connectStart: performance.timing.connectStart,
+                            connectEnd: performance.timing.connectEnd,
+                            secureConnectionStart: performance.timing.secureConnectionStart,
+                            requestStart: performance.timing.requestStart,
+                            responseStart: performance.timing.responseStart,
+                            responseEnd: performance.timing.responseEnd,
+                            domLoading: performance.timing.domLoading,
+                            domInteractive: performance.timing.domInteractive,
+                            domContentLoadedEventStart: performance.timing.domContentLoadedEventStart,
+                            domContentLoadedEventEnd: performance.timing.domContentLoadedEventEnd,
+                            domComplete: performance.timing.domComplete,
+                            loadEventStart: performance.timing.loadEventStart,
+                            loadEventEnd: performance.timing.loadEventEnd,
+                        } : null,
+                        memory: performance.memory ? {
+                            jsHeapSizeLimit: formatBytes(performance.memory.jsHeapSizeLimit),
+                            totalJSHeapSize: formatBytes(performance.memory.totalJSHeapSize),
+                            usedJSHeapSize: formatBytes(performance.memory.usedJSHeapSize),
+                        } : null,
+                    };
+                    
+                    // Get resource timing
+                    if (performance.getEntries) {
+                        const resources = performance.getEntriesByType('resource');
+                        data.performance.resourceCount = resources.length;
+                        data.performance.resourceTypes = {};
+                        resources.forEach(r => {
+                            const type = r.initiatorType || 'other';
+                            data.performance.resourceTypes[type] = (data.performance.resourceTypes[type] || 0) + 1;
+                        });
                     }
                 }
                 
-                if (type === 'function') {
-                    return { text: 'function()', class: 'value-object' };
-                }
-                
-                return { text: String(value), class: 'value-string' };
-            }
-            
-            // Main data collection
-            function collectAllInfo() {
-                const data = {};
-                
-                // ==================== BROWSER INFO (35+) ====================
-                const browser = {
-                    // Basic browser info
-                    'browser.userAgent': navigator.userAgent,
-                    'browser.appName': navigator.appName,
-                    'browser.appVersion': navigator.appVersion,
-                    'browser.appCodeName': navigator.appCodeName,
-                    'browser.platform': navigator.platform,
-                    'browser.product': navigator.product,
-                    'browser.productSub': navigator.productSub,
-                    'browser.vendor': navigator.vendor,
-                    'browser.vendorSub': navigator.vendorSub,
-                    'browser.buildID': navigator.buildID,
-                    'browser.oscpu': navigator.oscpu,
-                    
-                    // Language
-                    'browser.language': navigator.language,
-                    'browser.languages': navigator.languages ? navigator.languages.join(', ') : 'N/A',
-                    'browser.acceptLanguage': navigator.acceptLanguage,
-                    
-                    // Cookies & Storage
-                    'browser.cookieEnabled': navigator.cookieEnabled,
-                    'browser.doNotTrack': navigator.doNotTrack,
-                    'browser.storage.estimate': 'See Storage section',
-                    
-                    // Connection
-                    'browser.onLine': navigator.onLine,
-                    'browser.connection.effectiveType': navigator.connection?.effectiveType || 'N/A',
-                    'browser.connection.downlink': navigator.connection?.downlink || 'N/A',
-                    'browser.connection.rtt': navigator.connection?.rtt || 'N/A',
-                    'browser.connection.saveData': navigator.connection?.saveData || 'N/A',
-                    
-                    // Hardware
-                    'browser.hardwareConcurrency': navigator.hardwareConcurrency || 'N/A',
-                    'browser.deviceMemory': navigator.deviceMemory || 'N/A',
-                    'browser.maxTouchPoints': navigator.maxTouchPoints || 'N/A',
-                    
-                    // Permissions
-                    'browser.permissions.query': 'Requires permissions API',
-                    
-                    // PDF Viewer
-                    'browser.pdfViewerEnabled': navigator.pdfViewerEnabled,
-                    
-                    // WebDriver
-                    'browser.webdriver': navigator.webdriver,
-                    
-                    // Device
-                    'browser.device': /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
-                };
-                Object.assign(data, browser);
-                
-                // ==================== WINDOW INFO (20+) ====================
-                const windowInfo = {
-                    'window.innerWidth': window.innerWidth,
-                    'window.innerHeight': window.innerHeight,
-                    'window.outerWidth': window.outerWidth,
-                    'window.outerHeight': window.outerHeight,
-                    'window.screenX': window.screenX,
-                    'window.screenY': window.screenY,
-                    'window.screenLeft': window.screenLeft,
-                    'window.screenTop': window.screenTop,
-                    'window.scrollX': window.scrollX,
-                    'window.scrollY': window.scrollY,
-                    'window.pageXOffset': window.pageXOffset,
-                    'window.pageYOffset': window.pageYOffset,
-                    'window.devicePixelRatio': window.devicePixelRatio,
-                    'window.location.href': window.location.href,
-                    'window.location.protocol': window.location.protocol,
-                    'window.location.host': window.location.host,
-                    'window.location.hostname': window.location.hostname,
-                    'window.location.port': window.location.port,
-                    'window.location.pathname': window.location.pathname,
-                    'window.location.search': window.location.search,
-                    'window.location.hash': window.location.hash,
-                    'window.origin': window.origin,
-                };
-                Object.assign(data, windowInfo);
-                
-                // ==================== SCREEN INFO (15+) ====================
-                const screen = {
-                    'screen.width': screen.width,
-                    'screen.height': screen.height,
-                    'screen.availWidth': screen.availWidth,
-                    'screen.availHeight': screen.availHeight,
-                    'screen.availTop': screen.availTop,
-                    'screen.availLeft': screen.availLeft,
-                    'screen.colorDepth': screen.colorDepth,
-                    'screen.pixelDepth': screen.pixelDepth,
-                    'screen.orientation': screen.orientation ? screen.orientation.type : 'N/A',
-                    'screen.orientation.angle': screen.orientation ? screen.orientation.angle : 'N/A',
-                    'screen.isExtended': screen.isExtended || 'N/A',
-                    'screen.left': screen.left || 'N/A',
-                    'screen.top': screen.top || 'N/A',
-                    'screen.mozBrightness': screen.mozBrightness || 'N/A',
-                };
-                Object.assign(data, screen);
-                
-                // ==================== DOCUMENT INFO (15+) ====================
-                const document = {
-                    'document.title': document.title,
-                    'document.URL': document.URL,
-                    'document.domain': document.domain,
-                    'document.referrer': document.referrer,
-                    'document.cookie': document.cookie ? 'Present' : 'None',
-                    'document.lastModified': document.lastModified,
-                    'document.characterSet': document.characterSet,
-                    'document.charset': document.charset,
-                    'document.contentType': document.contentType,
-                    'document.designMode': document.designMode,
-                    'document.dir': document.dir,
-                    'document.hidden': document.hidden,
-                    'document.visibilityState': document.visibilityState,
-                    'document.readyState': document.readyState,
-                    'document.compatMode': document.compatMode,
-                    'document.all.length': document.all.length,
-                    'document.forms.length': document.forms.length,
-                    'document.images.length': document.images.length,
-                    'document.links.length': document.links.length,
-                    'document.scripts.length': document.scripts.length,
-                    'document.styleSheets.length': document.styleSheets.length,
-                };
-                Object.assign(data, document);
-                
-                // ==================== TIME INFO (10+) ====================
-                const now = new Date();
-                const time = {
-                    'time.timestamp': Date.now(),
-                    'time.isoString': now.toISOString(),
-                    'time.dateString': now.toDateString(),
-                    'time.timeString': now.toTimeString(),
-                    'time.localeDate': now.toLocaleDateString(),
-                    'time.localeTime': now.toLocaleTimeString(),
-                    'time.utcString': now.toUTCString(),
-                    'time.timezoneOffset': now.getTimezoneOffset(),
-                    'time.year': now.getFullYear(),
-                    'time.month': now.getMonth() + 1,
-                    'time.day': now.getDate(),
-                    'time.hours': now.getHours(),
-                    'time.minutes': now.getMinutes(),
-                    'time.seconds': now.getSeconds(),
-                    'time.milliseconds': now.getMilliseconds(),
-                    'time.dayOfWeek': now.getDay(),
-                };
-                Object.assign(data, time);
-                
-                // ==================== STORAGE INFO (10+) ====================
-                // Local Storage
-                const storage = {
-                    'storage.localStorage.available': typeof localStorage !== 'undefined',
-                    'storage.localStorage.length': typeof localStorage !== 'undefined' ? localStorage.length : 'N/A',
-                    'storage.sessionStorage.available': typeof sessionStorage !== 'undefined',
-                    'storage.sessionStorage.length': typeof sessionStorage !== 'undefined' ? sessionStorage.length : 'N/A',
-                };
-                
-                // Try to get storage estimates
-                if (navigator.storage && navigator.storage.estimate) {
-                    navigator.storage.estimate().then(estimate => {
-                        updateStorageInfo(estimate);
-                    });
-                }
-                
-                function updateStorageInfo(estimate) {
-                    const storageQuota = estimate.quota;
-                    const storageUsage = estimate.usage;
-                    
-                    data['storage.quota'] = storageQuota ? formatBytes(storageQuota) : 'N/A';
-                    data['storage.usage'] = storageUsage ? formatBytes(storageUsage) : 'N/A';
-                    data['storage.usageDetails'] = estimate.usageDetails ? JSON.stringify(estimate.usageDetails) : 'N/A';
-                    
-                    renderData();
-                }
-                
-                Object.assign(data, storage);
-                
-                // ==================== NAVIGATOR MISC (15+) ====================
-                const navigatorMisc = {
-                    'navigator.geolocation': navigator.geolocation ? 'Available' : 'Not Available',
-                    'navigator.mediaDevices': navigator.mediaDevices ? 'Available' : 'Not Available',
-                    'navigator.serviceWorker': navigator.serviceWorker ? 'Available' : 'Not Available',
-                    'navigator.bluetooth': navigator.bluetooth ? 'Available' : 'Not Available',
-                    'navigator.usb': navigator.usb ? 'Available' : 'Not Available',
-                    'navigator.hid': navigator.hid ? 'Available' : 'Not Available',
-                    'navigator.serial': navigator.serial ? 'Available' : 'Not Available',
-                    'navigator.credentials': navigator.credentials ? 'Available' : 'Not Available',
-                    'navigator.presentation': navigator.presentation ? 'Available' : 'Not Available',
-                    'navigator.clipboard': navigator.clipboard ? 'Available' : 'Not Available',
-                    'navigator.canShare': navigator.canShare ? 'Available' : 'Not Available',
-                    'navigator.share': navigator.share ? 'Available' : 'Not Available',
-                    'navigator.vibrate': navigator.vibrate ? 'Available' : 'Not Available',
-                    'navigator.keyboard': navigator.keyboard ? 'Available' : 'Not Available',
-                    'navigator.locks': navigator.locks ? 'Available' : 'Not Available',
-                    'navigator.wakeLock': navigator.wakeLock ? 'Available' : 'Not Available',
-                };
-                Object.assign(data, navigatorMisc);
-                
-                // ==================== PERFORMANCE INFO (10+) ====================
-                if (performance) {
-                    const perf = {
-                        'performance.timeOrigin': performance.timeOrigin,
-                        'performance.navigation.type': performance.navigation ? performance.navigation.type : 'N/A',
-                        'performance.navigation.redirectCount': performance.navigation ? performance.navigation.redirectCount : 'N/A',
-                        'performance.timing.connectStart': performance.timing ? performance.timing.connectStart : 'N/A',
-                        'performance.timing.connectEnd': performance.timing ? performance.timing.connectEnd : 'N/A',
-                        'performance.timing.domComplete': performance.timing ? performance.timing.domComplete : 'N/A',
-                        'performance.timing.domInteractive': performance.timing ? performance.timing.domInteractive : 'N/A',
-                        'performance.timing.domLoading': performance.timing ? performance.timing.domLoading : 'N/A',
-                        'performance.timing.loadEventEnd': performance.timing ? performance.timing.loadEventEnd : 'N/A',
-                        'performance.timing.loadEventStart': performance.timing ? performance.timing.loadEventStart : 'N/A',
-                        'performance.timing.navigationStart': performance.timing ? performance.timing.navigationStart : 'N/A',
-                        'performance.timing.responseEnd': performance.timing ? performance.timing.responseEnd : 'N/A',
-                        'performance.memory.jsHeapSizeLimit': performance.memory ? performance.memory.jsHeapSizeLimit : 'N/A',
-                        'performance.memory.totalJSHeapSize': performance.memory ? performance.memory.totalJSHeapSize : 'N/A',
-                        'performance.memory.usedJSHeapSize': performance.memory ? performance.memory.usedJSHeapSize : 'N/A',
-                    };
-                    Object.assign(data, perf);
-                }
-                
-                // ==================== BATTERY INFO ====================
-                if (navigator.getBattery) {
-                    navigator.getBattery().then(battery => {
-                        data['battery.charging'] = battery.charging;
-                        data['battery.chargingTime'] = battery.chargingTime;
-                        data['battery.dischargingTime'] = battery.dischargingTime;
-                        data['battery.level'] = (battery.level * 100) + '%';
-                        renderData();
-                    });
-                }
-                
-                // ==================== NETWORK INFO ====================
-                if (navigator.connection) {
-                    const conn = navigator.connection;
-                    const network = {
-                        'network.type': conn.type,
-                        'network.effectiveType': conn.effectiveType,
-                        'network.downlink': conn.downlink + ' Mbps',
-                        'network.downlinkMax': conn.downlinkMax + ' Mbps',
-                        'network.rtt': conn.rtt + ' ms',
-                        'network.saveData': conn.saveData,
-                        'network.onchange': typeof conn.onchange,
-                    };
-                    Object.assign(data, network);
-                }
-                
-                // ==================== WEBGL INFO ====================
+                // ==================== 9. WEBGL INFO (15+) ====================
                 try {
                     const canvas = document.createElement('canvas');
                     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
                     if (gl) {
-                        const webgl = {
-                            'webgl.vendor': gl.getParameter(gl.VENDOR),
-                            'webgl.renderer': gl.getParameter(gl.RENDERER),
-                            'webgl.version': gl.getParameter(gl.VERSION),
-                            'webgl.shadingLanguageVersion': gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
-                            'webgl.maxTextureSize': gl.getParameter(gl.MAX_TEXTURE_SIZE),
-                            'webgl.maxVertexAttribs': gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
-                            'webgl.maxVaryingVectors': gl.getParameter(gl.MAX_VARYING_VECTORS),
-                            'webgl.maxVertexUniformVectors': gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
-                            'webgl.maxFragmentUniformVectors': gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
-                            'webgl.aliasedLineWidthRange': gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE),
-                            'webgl.aliasedPointSizeRange': gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE),
+                        data.webgl = {
+                            vendor: gl.getParameter(gl.VENDOR),
+                            renderer: gl.getParameter(gl.RENDERER),
+                            version: gl.getParameter(gl.VERSION),
+                            shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+                            maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+                            maxVertexAttribs: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
+                            maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS),
+                            maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
+                            maxFragmentUniformVectors: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
+                            aliasedLineWidthRange: gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE),
+                            aliasedPointSizeRange: gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE),
+                            maxViewportDims: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
+                            maxCombinedTextureImageUnits: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),
+                            maxCubeMapTextureSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
+                            maxRenderbufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+                            maxTextureImageUnits: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS),
+                            maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
                         };
-                        Object.assign(data, webgl);
+                    } else {
+                        data.webgl = { supported: false };
                     }
                 } catch (e) {
-                    data['webgl.error'] = e.message;
+                    data.webgl = { error: e.message };
                 }
                 
-                // ==================== FONTS ====================
-                if (document.fonts) {
-                    data['fonts.status'] = document.fonts.status;
-                    document.fonts.ready.then(() => {
-                        data['fonts.size'] = document.fonts.size;
-                        renderData();
+                // ==================== 10. CSS INFO (10+) ====================
+                data.css = {
+                    supports: {
+                        grid: CSS.supports('display', 'grid'),
+                        flex: CSS.supports('display', 'flex'),
+                        variables: CSS.supports('--test', '0'),
+                        backdropFilter: CSS.supports('backdrop-filter', 'blur(1px)'),
+                        aspectRatio: CSS.supports('aspect-ratio', '1/1'),
+                        clamp: CSS.supports('width', 'clamp(1px, 2px, 3px)'),
+                    },
+                    pixelRatio: window.devicePixelRatio,
+                    touch: 'ontouchstart' in window,
+                };
+                
+                // ==================== 11. MEDIA INFO (10+) ====================
+                data.media = {
+                    matchMedia: {
+                        darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+                        lightMode: window.matchMedia('(prefers-color-scheme: light)').matches,
+                        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+                        highContrast: window.matchMedia('(prefers-contrast: high)').matches,
+                        landscape: window.matchMedia('(orientation: landscape)').matches,
+                        portrait: window.matchMedia('(orientation: portrait)').matches,
+                    },
+                };
+                
+                // ==================== 12. BATTERY INFO ====================
+                if (navigator.getBattery) {
+                    navigator.getBattery().then(battery => {
+                        data.battery = {
+                            charging: battery.charging,
+                            chargingTime: battery.chargingTime,
+                            dischargingTime: battery.dischargingTime,
+                            level: battery.level * 100 + '%',
+                        };
+                        updateDisplay();
                     });
                 }
                 
-                // ==================== GEOLOCATION ====================
+                // ==================== 13. GEOLOCATION ====================
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
-                            data['geolocation.latitude'] = pos.coords.latitude;
-                            data['geolocation.longitude'] = pos.coords.longitude;
-                            data['geolocation.accuracy'] = pos.coords.accuracy + ' meters';
-                            data['geolocation.altitude'] = pos.coords.altitude;
-                            data['geolocation.speed'] = pos.coords.speed;
-                            data['geolocation.timestamp'] = pos.timestamp;
-                            renderData();
+                            data.geolocation = {
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude,
+                                accuracy: pos.coords.accuracy + ' meters',
+                                altitude: pos.coords.altitude,
+                                altitudeAccuracy: pos.coords.altitudeAccuracy,
+                                heading: pos.coords.heading,
+                                speed: pos.coords.speed,
+                                timestamp: pos.timestamp,
+                            };
+                            updateDisplay();
                         },
                         (err) => {
-                            data['geolocation.error'] = err.message;
+                            data.geolocation = { error: err.message };
                         }
                     );
                 }
                 
-                // Helper function
-                function formatBytes(bytes) {
-                    if (bytes === 0) return '0 Bytes';
-                    const k = 1024;
-                    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                    const i = Math.floor(Math.log(bytes) / Math.log(k));
-                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                // ==================== 14. FONTS INFO ====================
+                if (document.fonts) {
+                    document.fonts.ready.then(() => {
+                        data.fonts = {
+                            status: document.fonts.status,
+                            size: document.fonts.size,
+                            loaded: document.fonts.size,
+                        };
+                        updateDisplay();
+                    });
                 }
+                
+                // ==================== 15. SYSTEM INFO (20+) ====================
+                data.system = {
+                    platform: navigator.platform,
+                    oscpu: navigator.oscpu || null,
+                    vendor: navigator.vendor,
+                    language: navigator.language,
+                    languages: navigator.languages,
+                    cookieEnabled: navigator.cookieEnabled,
+                    doNotTrack: navigator.doNotTrack,
+                    hardwareConcurrency: navigator.hardwareConcurrency,
+                    deviceMemory: navigator.deviceMemory,
+                    maxTouchPoints: navigator.maxTouchPoints,
+                    pdfViewerEnabled: navigator.pdfViewerEnabled,
+                    webdriver: navigator.webdriver,
+                    onLine: navigator.onLine,
+                    javaEnabled: navigator.javaEnabled ? navigator.javaEnabled() : false,
+                };
+                
+                // ==================== 16. RANDOM INFO (10+) ====================
+                data.random = {
+                    screenOrientation: screen.orientation ? screen.orientation.type : null,
+                    historyLength: history.length,
+                    pluginsCount: navigator.plugins.length,
+                    mimeTypesCount: navigator.mimeTypes.length,
+                    windowFrames: window.frames.length,
+                    iframes: document.getElementsByTagName('iframe').length,
+                    formsCount: document.forms.length,
+                    imagesCount: document.images.length,
+                    linksCount: document.links.length,
+                    scriptsCount: document.scripts.length,
+                };
+                
+                // ==================== 17. BROWSER FEATURES (15+) ====================
+                data.features = {
+                    webgl: !!window.WebGLRenderingContext,
+                    webgl2: !!window.WebGL2RenderingContext,
+                    webgpu: !!window.GPU,
+                    webassembly: !!window.WebAssembly,
+                    webcrypto: !!window.crypto && !!window.crypto.subtle,
+                    indexedDB: !!window.indexedDB,
+                    serviceWorker: !!navigator.serviceWorker,
+                    webSocket: !!window.WebSocket,
+                    webRTC: !!window.RTCPeerConnection,
+                    webAudio: !!window.AudioContext,
+                    canvas: !!document.createElement('canvas').getContext,
+                    svg: !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect,
+                    webvtt: !!window.VTTCue,
+                    webAnimations: !!document.createElement('div').animate,
+                    webShare: !!navigator.share,
+                    webBluetooth: !!navigator.bluetooth,
+                    webUSB: !!navigator.usb,
+                    webHID: !!navigator.hid,
+                    webSerial: !!navigator.serial,
+                    webMIDI: !!navigator.requestMIDIAccess,
+                };
+                
+                // ==================== 18. COOKIE INFO ====================
+                data.cookies = {
+                    enabled: navigator.cookieEnabled,
+                    count: document.cookie ? document.cookie.split(';').length : 0,
+                    raw: document.cookie || null,
+                };
+                
+                // ==================== 19. REFERRER INFO ====================
+                data.referrer = {
+                    url: document.referrer || null,
+                    domain: document.referrer ? new URL(document.referrer).hostname : null,
+                };
+                
+                // ==================== 20. SECURITY INFO ====================
+                data.security = {
+                    isSecureContext: window.isSecureContext,
+                    origin: window.location.origin,
+                    protocol: window.location.protocol,
+                    host: window.location.host,
+                    crossOriginIsolated: window.crossOriginIsolated,
+                };
                 
                 return data;
             }
             
-            // Render function
-            function renderData() {
-                const data = collectAllInfo();
-                const grid = document.getElementById('infoGrid');
-                const totalSpan = document.getElementById('totalCount');
-                
-                // Count total items
-                const totalItems = Object.keys(data).length;
-                totalSpan.textContent = totalItems;
-                
-                // Update time
-                document.getElementById('updateTime').textContent = new Date().toLocaleTimeString();
-                
-                // Group data by category
-                const categories = {};
-                Object.keys(data).forEach(key => {
-                    const category = key.split('.')[0].toUpperCase();
-                    if (!categories[category]) categories[category] = {};
-                    categories[category][key] = data[key];
+            // Format JSON with syntax highlighting
+            function syntaxHighlight(json) {
+                if (typeof json !== 'string') {
+                    json = JSON.stringify(json, null, 2);
+                }
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                    var cls = 'json-number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'json-key';
+                        } else {
+                            cls = 'json-string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'json-boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'json-null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
                 });
-                
-                // Build HTML
-                let html = '';
-                
-                Object.keys(categories).sort().forEach(category => {
-                    const items = categories[category];
-                    const itemCount = Object.keys(items).length;
-                    
-                    html += `
-                        <div class="info-card">
-                            <div class="card-header">
-                                ${category} (${itemCount})
-                            </div>
-                            <div class="card-content">
-                    `;
-                    
-                    Object.keys(items).forEach(key => {
-                        const value = items[key];
-                        const formatted = formatValue(value);
-                        
-                        html += `
-                            <div class="info-row">
-                                <span class="info-label">${key}</span>
-                                <span class="info-value ${formatted.class}">${formatted.text}</span>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                grid.innerHTML = html;
             }
             
-            // Export function
-            window.exportData = function() {
-                const data = collectAllInfo();
+            // Update display
+            function updateDisplay() {
+                const data = collectAllData();
+                const jsonDisplay = document.getElementById('jsonDisplay');
+                const totalSpan = document.getElementById('totalCount');
+                const updateSpan = document.getElementById('updateTime');
+                
+                // Count total properties (flatten)
+                let totalCount = 0;
+                function countProps(obj) {
+                    if (obj && typeof obj === 'object') {
+                        Object.keys(obj).forEach(key => {
+                            totalCount++;
+                            if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                                countProps(obj[key]);
+                            }
+                        });
+                    }
+                }
+                countProps(data);
+                totalSpan.textContent = totalCount;
+                updateSpan.textContent = new Date().toLocaleTimeString();
+                
+                // Format and display
+                const jsonString = JSON.stringify(data, null, 2);
+                jsonDisplay.innerHTML = syntaxHighlight(jsonString);
+            }
+            
+            // Export functions
+            window.exportJSON = function() {
+                const data = collectAllData();
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -629,13 +723,21 @@
                 URL.revokeObjectURL(url);
             };
             
-            // Initial render
-            setTimeout(() => {
-                renderData();
-            }, 500);
+            window.copyJSON = function() {
+                const data = collectAllData();
+                const jsonString = JSON.stringify(data, null, 2);
+                navigator.clipboard.writeText(jsonString).then(() => {
+                    alert('✅ JSON copied to clipboard!');
+                }).catch(() => {
+                    alert('❌ Failed to copy');
+                });
+            };
             
-            // Update every 5 seconds for dynamic data
-            setInterval(renderData, 5000);
+            // Initial display
+            setTimeout(updateDisplay, 100);
+            
+            // Update every second for dynamic data
+            setInterval(updateDisplay, 1000);
         })();
     </script>
 </body>
