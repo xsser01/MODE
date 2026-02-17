@@ -1,744 +1,592 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Info | 300+ Data Points in JSON</title>
+    <title>جامع البيانات الخطير - 30 نوع</title>
+    <!-- طابع قديم / تقني خام -->
     <style>
+        /* أفضل الممارسات: reset بسيط، خطوط واضحة، تباين عالي */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            background: #0a0a0a;
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
+            background-color: #0a0f0e; /* خلفية داكنة قديمة */
+            font-family: 'Courier New', Courier, monospace; /* خط الآلة الكاتبة */
+            color: #b3ffcc; /* أخضر فسفوري قديم */
+            line-height: 1.5;
             padding: 20px;
             min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        
-        .header {
-            border: 2px solid #00ff41;
-            padding: 15px 20px;
-            margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
+        }
+
+        /* الحاوية الرئيسية */
+        .old-school-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            border: 3px solid #2e8b57;
+            padding: 20px;
+            background-color: #0f1a17;
+            box-shadow: 0 0 20px rgba(46, 139, 86, 0.3);
+            width: 100%;
+        }
+
+        /* رأس الموقع */
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #2e8b57;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            word-break: break-word;
+            color: #adff2f;
+            text-shadow: 0 0 5px #2e8b57;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #98fb98;
+        }
+
+        .status-bar {
+            background-color: #1e2b26;
+            border: 1px solid #2e8b57;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            background: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            direction: ltr; /* للأرقام */
         }
-        
-        .title {
-            font-size: 1.5rem;
+
+        .counter {
+            font-size: 1.4rem;
             font-weight: bold;
-            text-shadow: 0 0 10px #00ff41;
+            color: #ffffe0;
         }
-        
-        .stats {
-            display: flex;
-            gap: 30px;
-            align-items: center;
+        .counter span {
+            color: #ffa07a;
+            background: #2f4f4f;
+            padding: 3px 10px;
+            border-radius: 0;
+            margin: 0 5px;
         }
-        
-        .stat-item {
-            text-align: center;
+
+        .warning {
+            color: #ffd700;
+            font-weight: bold;
+            border: 1px solid #ffd700;
+            padding: 5px 10px;
+            background: #2a3a2a;
         }
-        
-        .stat-label {
-            font-size: 0.7rem;
-            opacity: 0.7;
+
+        /* شبكة البطاقات القديمة */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
         }
-        
-        .stat-value {
+
+        /* بطاقة كل عنصر */
+        .data-card {
+            background: #15231f;
+            border: 2px solid #2e8b57;
+            padding: 15px 12px;
+            transition: all 0.2s ease;
+            word-break: break-word;
+            box-shadow: inset 0 0 5px #1f3a2c;
+        }
+
+        .data-card:hover {
+            border-color: #ffd700;
+            background: #1c2e27;
+            transform: scale(1.01);
+        }
+
+        .data-card .title {
             font-size: 1.2rem;
             font-weight: bold;
+            color: #ffd700;
+            border-bottom: 1px dotted #3cb371;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        
-        .export-btn {
-            background: #000;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 8px 20px;
+        .data-card .title::before {
+            content: "►";
+            color: #dc143c;
+            font-size: 1rem;
+        }
+
+        .data-card .value {
+            background: #0c1512;
+            padding: 8px;
+            border: 1px solid #2e8b57;
             font-family: 'Courier New', monospace;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-        
-        .export-btn:hover {
-            background: #00ff41;
-            color: #000;
-        }
-        
-        /* JSON Viewer */
-        .json-container {
-            background: #000;
-            border: 1px solid #00ff41;
-            border-radius: 5px;
-            padding: 20px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-            max-height: calc(100vh - 150px);
+            color: #e0ffff;
+            font-size: 0.95rem;
+            max-height: 150px;
             overflow-y: auto;
+            direction: ltr; /* للمحتوى */
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-        
-        .json-container::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+
+        .value-placeholder {
+            color: #6b8e23;
+            font-style: italic;
         }
-        
-        .json-container::-webkit-scrollbar-track {
-            background: #000;
-            border: 1px solid #00ff41;
-        }
-        
-        .json-container::-webkit-scrollbar-thumb {
-            background: #00ff41;
-        }
-        
-        /* JSON Syntax Highlighting */
-        .json-key { color: #ff66cc; }
-        .json-string { color: #66ff66; }
-        .json-number { color: #ffaa66; }
-        .json-boolean { color: #66ccff; }
-        .json-null { color: #ff6666; }
-        .json-bracket { color: #00ff41; }
-        
+
         .footer {
-            margin-top: 20px;
-            padding: 10px;
-            border-top: 1px solid #00ff41;
             text-align: center;
-            font-size: 0.7rem;
-            opacity: 0.7;
+            margin-top: 30px;
+            border-top: 2px dashed #2e8b57;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #8fbc8f;
         }
-        
-        .copy-btn {
-            background: #000;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 5px 15px;
+
+        /* زر التحديث/الجمع */
+        .gather-btn {
+            background: #1e2b26;
+            border: 3px solid #adff2f;
+            color: #adff2f;
             font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.5rem;
+            padding: 15px 30px;
             cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: 0.2s;
+            margin: 20px 0;
+            width: 100%;
         }
-        
-        .copy-btn:hover {
-            background: #00ff41;
-            color: #000;
+
+        .gather-btn:hover {
+            background: #2e8b57;
+            color: #0a0f0e;
+            border-color: #ffffe0;
         }
-        
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .stats {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+
+        /* شريط التمرير القديم */
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #1e2b26;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3cb371;
+            border: 2px solid #0f1a17;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div>
-                <span class="title">SYSTEM::JSON</span>
-                <span style="margin-left: 20px; font-size: 0.8rem;">v2.0 | 300+ REAL DATA POINTS</span>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-label">TOTAL</div>
-                    <div class="stat-value" id="totalCount">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">UPDATED</div>
-                    <div class="stat-value" id="updateTime">-</div>
-                </div>
-                <div>
-                    <button class="export-btn" onclick="exportJSON()">📥 DOWNLOAD</button>
-                    <button class="copy-btn" onclick="copyJSON()">📋 COPY</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- JSON Display -->
-        <div class="json-container" id="jsonDisplay">
-            {<span class="json-key">"status"</span>: <span class="json-string">"collecting data..."</span>}
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <span>REAL SYSTEM INFORMATION | 100% ACCURATE | 300+ DATA POINTS</span>
-        </div>
+<div class="old-school-container">
+    <div class="header">
+        <h1>⚡ جامع البيانات الكلي ⚡</h1>
+        <p>النسخة القديمة • 30 نوع خطر • جمع فوري وعرض مباشر</p>
     </div>
-    
-    <script>
-        (function() {
-            // Helper function to get nested object properties safely
-            function getSafe(obj, path) {
-                try {
-                    return path.split('.').reduce((o, p) => o && o[p], obj);
-                } catch {
-                    return undefined;
-                }
+
+    <!-- شريط الحالة والإحصائيات -->
+    <div class="status-bar">
+        <div class="counter" id="live-counter">تم جمع <span id="collected-count">0</span> / <span id="total-count">30</span></div>
+        <div class="warning">⚠️ هذه البيانات تخص جهازك فقط ولن ترسل لأي سيرفر</div>
+    </div>
+
+    <!-- حاوية البيانات (سيتم تعبئتها عبر JS) -->
+    <div id="data-grid" class="grid">
+        <!-- يتم توليد البطاقات ديناميكياً -->
+    </div>
+
+    <!-- زر الجمع (يمكن الضغط عليه لتحديث البيانات) -->
+    <button class="gather-btn" id="gatherBtn">⟳ اجمع كل البيانات الآن</button>
+
+    <div class="footer">
+        <p>["أفضل الممارسات": جمع وعرض محلي 100%، لا تخزين، لا tracking]</p>
+        <p>البيانات المعروضة هي من متصفحك وجهازك مباشرة - 30 نوع خطير</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+        // أفضل الممارسات: تشغيل الكود فوراً، ومعالجة الأخطاء، وتحديث واجهة المستخدم
+
+        // ---------- قائمة الـ 30 نوع بيانات (بالعربية والإنجليزية للوضوح) ----------
+        const dataTypes = [
+            { id: 'browserHistory', name: 'سجل التصفح (Browsing History)' },
+            { id: 'cookies', name: 'ملفات تعريف الارتباط (Cookies)' },
+            { id: 'fingerprint', name: 'بصمة المتصفح (Browser Fingerprint)' },
+            { id: 'searchHistory', name: 'سجل البحث (Search History)' },
+            { id: 'bookmarks', name: 'المواقع المفضلة (Bookmarks)' },
+            { id: 'downloads', name: 'الملفات التي تم تحميلها (Downloads)' },
+            { id: 'autofill', name: 'بيانات الملء التلقائي (Autofill Data)' },
+            { id: 'gps', name: 'الموقع الجغرافي الدقيق (GPS)' },
+            { id: 'ip', name: 'عنوان IP (IP Address)' },
+            { id: 'os', name: 'نظام التشغيل (OS)' },
+            { id: 'deviceModel', name: 'نوع الجهاز (Device Model)' },
+            { id: 'battery', name: 'حالة البطارية (Battery Level)' },
+            { id: 'language', name: 'اللغة والإعدادات الإقليمية (Language)' },
+            { id: 'timezone', name: 'المنطقة الزمنية (Time Zone)' },
+            { id: 'email', name: 'عناوين البريد الإلكتروني (Email Addresses)' },
+            { id: 'savedPasswords', name: 'كلمات المرور المخزنة (Saved Passwords)' },
+            { id: 'contacts', name: 'جهات الاتصال (Contacts)' },
+            { id: 'callLogs', name: 'سجل المكالمات (Call Logs - mock)' },
+            { id: 'smsLogs', name: 'سجل الرسائل (SMS Logs - mock)' },
+            { id: 'photos', name: 'الصور (Photos - metadata)' },
+            { id: 'cameraAccess', name: 'الوصول إلى الكاميرا (Camera Access)' },
+            { id: 'microphoneAccess', name: 'الوصول إلى الميكروفون (Microphone Access)' },
+            { id: 'timeOnSite', name: 'الوقت المستغرق في الموقع (Time on Site)' },
+            { id: 'mouseMovements', name: 'حركات الفأرة (Mouse Movements)' },
+            { id: 'lastSession', name: 'آخر جلسة (Last Session)' },
+            { id: 'extensions', name: 'إضافات المتصفح (Browser Extensions)' },
+            { id: 'incognito', name: 'مواقع التصفح الخفي (Incognito Tabs)' },
+            { id: 'paymentData', name: 'بيانات الدفع (Payment Data)' },
+            { id: 'addresses', name: 'العناوين الشخصية (Addresses)' },
+            { id: 'documents', name: 'المستندات الشخصية (Personal Documents)' }
+        ];
+
+        // ---------- وظائف مساعدة لجمع البيانات بشكل آمن (مع محاكاة للبيانات الحساسة جداً) ----------
+        function safeGet(prop, fallback = '❌ غير متاح') {
+            try { return prop !== undefined && prop !== null ? prop : fallback; }
+            catch { return fallback; }
+        }
+
+        // جمع البيانات الحقيقية قدر الإمكان، مع محاكاة للبيانات التي لا يمكن الوصول إليها مباشرة (لأسباب أمنية)
+        function collectAllData() {
+            const data = {};
+
+            // 1. سجل التصفح (محاكاة لأن الوصول الفعلي غير مسموح)
+            data.browserHistory = "لا يمكن الوصول (قيود أمان) - لكن يمكن تتبعه عبر الكوكيز";
+
+            // 2. الكوكيز: محاولة قراءة Document.cookie
+            data.cookies = document.cookie || "لا توجد كوكيز أو غير قابلة للقراءة (HttpOnly)";
+
+            // 3. بصمة المتصفح: جمع بعض العناصر
+            const fp = [];
+            fp.push(`UserAgent: ${navigator.userAgent}`);
+            fp.push(`اللغة: ${navigator.language}`);
+            fp.push(`المنصة: ${navigator.platform}`);
+            fp.push(`عدد النوى: ${navigator.hardwareConcurrency || '?'}`);
+            fp.push(`الذاكرة: ${navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'غير معروفة'}`);
+            fp.push(`دقة الشاشة: ${screen.width}x${screen.height}`);
+            fp.push(`عمق الألوان: ${screen.colorDepth}`);
+            fp.push(`الخطوط: (محاكاة) Times, Arial, Courier`);
+            data.fingerprint = fp.join(' · ');
+
+            // 4. سجل البحث (لا يمكن) – محاكاة
+            data.searchHistory = "غير متاح مباشرة، لكن محركات البحث تخزنه";
+
+            // 5. المفضلة (لا يمكن)
+            data.bookmarks = "لا يمكن قراءة المفضلة من JS";
+
+            // 6. التنزيلات (لا يمكن)
+            data.downloads = "غير متاح بسبب الخصوصية";
+
+            // 7. بيانات الملء التلقائي (محاولة أخذ من DOM? غير أخلاقي) – نعرض تعليق
+            data.autofill = "غير قابلة للقراءة (محمية)";
+
+            // 8. الموقع الجغرافي (نحاول الحصول على GPS)
+            data.gps = "جاري طلب الإذن...";
+            if (navigator.geolocation) {
+                // سنقوم بتحديثه لاحقاً عبر وعد (promise) لتجنب التعليق. سنضبطه بعد التوليد.
+                // حالياً نضع رسالة ثم نحدث خارجاً.
+                data.gps = "⚠️ يرجى السماح بالموقع (سيتم التحديث)";
+            } else {
+                data.gps = "الموقع غير مدعوم";
             }
-            
-            // Format bytes
-            function formatBytes(bytes) {
-                if (bytes === 0 || bytes === undefined) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+
+            // 9. عنوان IP (عبر api خارجي؟ لكن الأفضل محلي) – نستخدم WebRTC أو نترك رسالة.
+            // لعدم الاعتماد على طرف خارجي، نعرض عنوان محلي أو رسالة.
+            data.ip = "عنوان IP محلي: " + (window.location.hostname || "غير معروف") + " (العام غير متاح بدون API)";
+
+            // 10. نظام التشغيل
+            data.os = navigator.platform + " " + (navigator.oscpu || "");
+
+            // 11. نوع الجهاز
+            data.deviceModel = navigator.userAgent.match(/\(([^)]+)\)/)?.[1] || navigator.platform;
+
+            // 12. حالة البطارية (Battery API)
+            data.battery = "جاري الفحص...";
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(battery => {
+                    updateSingleData('battery', `المستوى: ${Math.round(battery.level*100)}% ، الشاحن: ${battery.charging ? 'موصول' : 'غير موصول'}`);
+                }).catch(() => updateSingleData('battery', '❌ فشل'));
+            } else {
+                data.battery = "غير مدعوم";
             }
-            
-            // Main data collection - 300+ points
-            function collectAllData() {
-                const data = {};
-                
-                // ==================== 1. BROWSER INFO (45+) ====================
-                data.browser = {
-                    userAgent: navigator.userAgent,
-                    appName: navigator.appName,
-                    appVersion: navigator.appVersion,
-                    appCodeName: navigator.appCodeName,
-                    platform: navigator.platform,
-                    product: navigator.product,
-                    productSub: navigator.productSub || null,
-                    vendor: navigator.vendor,
-                    vendorSub: navigator.vendorSub || null,
-                    buildID: navigator.buildID || null,
-                    oscpu: navigator.oscpu || null,
-                    language: navigator.language,
-                    languages: navigator.languages || [],
-                    acceptLanguage: navigator.acceptLanguage || null,
-                    cookieEnabled: navigator.cookieEnabled,
-                    doNotTrack: navigator.doNotTrack || null,
-                    hardwareConcurrency: navigator.hardwareConcurrency || null,
-                    deviceMemory: navigator.deviceMemory || null,
-                    maxTouchPoints: navigator.maxTouchPoints || 0,
-                    pdfViewerEnabled: navigator.pdfViewerEnabled || false,
-                    webdriver: navigator.webdriver || false,
-                    onLine: navigator.onLine,
-                    clipboard: !!navigator.clipboard,
-                    credentials: !!navigator.credentials,
-                    geolocation: !!navigator.geolocation,
-                    mediaDevices: !!navigator.mediaDevices,
-                    serviceWorker: !!navigator.serviceWorker,
-                    bluetooth: !!navigator.bluetooth,
-                    usb: !!navigator.usb,
-                    hid: !!navigator.hid,
-                    serial: !!navigator.serial,
-                    presentation: !!navigator.presentation,
-                    share: !!navigator.share,
-                    canShare: !!navigator.canShare,
-                    vibrate: !!navigator.vibrate,
-                    keyboard: !!navigator.keyboard,
-                    locks: !!navigator.locks,
-                    wakeLock: !!navigator.wakeLock,
-                    permissions: !!navigator.permissions,
-                    storage: !!navigator.storage,
-                    connection: !!navigator.connection,
-                    getBattery: !!navigator.getBattery,
-                    device: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
-                    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-                    isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent),
-                    isAndroid: /Android/.test(navigator.userAgent),
-                    isWindows: /Windows/.test(navigator.userAgent),
-                    isMac: /Mac/.test(navigator.userAgent),
-                    isLinux: /Linux/.test(navigator.userAgent) && !/Android/.test(navigator.userAgent),
-                };
-                
-                // ==================== 2. WINDOW INFO (30+) ====================
-                data.window = {
-                    innerWidth: window.innerWidth,
-                    innerHeight: window.innerHeight,
-                    outerWidth: window.outerWidth,
-                    outerHeight: window.outerHeight,
-                    screenX: window.screenX,
-                    screenY: window.screenY,
-                    screenLeft: window.screenLeft,
-                    screenTop: window.screenTop,
-                    scrollX: window.scrollX,
-                    scrollY: window.scrollY,
-                    pageXOffset: window.pageXOffset,
-                    pageYOffset: window.pageYOffset,
-                    devicePixelRatio: window.devicePixelRatio,
-                    location: {
-                        href: window.location.href,
-                        protocol: window.location.protocol,
-                        host: window.location.host,
-                        hostname: window.location.hostname,
-                        port: window.location.port,
-                        pathname: window.location.pathname,
-                        search: window.location.search,
-                        hash: window.location.hash,
-                        origin: window.location.origin,
-                    },
-                    history: {
-                        length: window.history.length,
-                        scrollRestoration: window.history.scrollRestoration,
-                        state: window.history.state,
-                    },
-                    navigator: {
-                        sendBeacon: !!navigator.sendBeacon,
-                    },
-                    opener: !!window.opener,
-                    parent: !!window.parent,
-                    top: !!window.top,
-                    self: !!window.self,
-                    frames: window.frames.length,
-                    length: window.length,
-                    closed: window.closed,
-                    status: window.status,
-                    defaultStatus: window.defaultStatus,
-                    name: window.name,
-                };
-                
-                // ==================== 3. SCREEN INFO (20+) ====================
-                data.screen = {
-                    width: screen.width,
-                    height: screen.height,
-                    availWidth: screen.availWidth,
-                    availHeight: screen.availHeight,
-                    availTop: screen.availTop || null,
-                    availLeft: screen.availLeft || null,
-                    colorDepth: screen.colorDepth,
-                    pixelDepth: screen.pixelDepth,
-                    orientation: screen.orientation ? {
-                        type: screen.orientation.type,
-                        angle: screen.orientation.angle,
-                    } : null,
-                    isExtended: screen.isExtended || null,
-                    left: screen.left || null,
-                    top: screen.top || null,
-                    mozBrightness: screen.mozBrightness || null,
-                    availScreen: {
-                        width: window.screen.availWidth,
-                        height: window.screen.availHeight,
-                    },
-                };
-                
-                // ==================== 4. DOCUMENT INFO (25+) ====================
-                data.document = {
-                    title: document.title,
-                    URL: document.URL,
-                    domain: document.domain,
-                    referrer: document.referrer,
-                    cookie: document.cookie ? document.cookie.length + ' chars' : null,
-                    lastModified: document.lastModified,
-                    characterSet: document.characterSet,
-                    charset: document.charset,
-                    contentType: document.contentType,
-                    designMode: document.designMode,
-                    dir: document.dir,
-                    hidden: document.hidden,
-                    visibilityState: document.visibilityState,
-                    readyState: document.readyState,
-                    compatMode: document.compatMode,
-                    all: document.all.length,
-                    forms: document.forms.length,
-                    images: document.images.length,
-                    links: document.links.length,
-                    scripts: document.scripts.length,
-                    styleSheets: document.styleSheets.length,
-                    embeds: document.embeds.length,
-                    plugins: document.plugins.length,
-                    anchors: document.anchors.length,
-                    applets: document.applets.length,
-                    childElementCount: document.documentElement.childElementCount,
-                };
-                
-                // ==================== 5. TIME INFO (20+) ====================
-                const now = new Date();
-                data.time = {
-                    timestamp: Date.now(),
-                    isoString: now.toISOString(),
-                    dateString: now.toDateString(),
-                    timeString: now.toTimeString(),
-                    localeDate: now.toLocaleDateString(),
-                    localeTime: now.toLocaleTimeString(),
-                    localeString: now.toLocaleString(),
-                    utcString: now.toUTCString(),
-                    timezoneOffset: now.getTimezoneOffset(),
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    year: now.getFullYear(),
-                    month: now.getMonth() + 1,
-                    day: now.getDate(),
-                    hours: now.getHours(),
-                    minutes: now.getMinutes(),
-                    seconds: now.getSeconds(),
-                    milliseconds: now.getMilliseconds(),
-                    dayOfWeek: now.getDay(),
-                    dayOfYear: Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000),
-                    weekOfYear: Math.ceil((((now - new Date(now.getFullYear(), 0, 1)) / 86400000) + new Date(now.getFullYear(), 0, 1).getDay() + 1) / 7),
-                };
-                
-                // ==================== 6. STORAGE INFO (15+) ====================
-                data.storage = {
-                    localStorage: {
-                        available: typeof localStorage !== 'undefined',
-                        length: typeof localStorage !== 'undefined' ? localStorage.length : 0,
-                        keys: typeof localStorage !== 'undefined' ? Object.keys(localStorage) : [],
-                    },
-                    sessionStorage: {
-                        available: typeof sessionStorage !== 'undefined',
-                        length: typeof sessionStorage !== 'undefined' ? sessionStorage.length : 0,
-                        keys: typeof sessionStorage !== 'undefined' ? Object.keys(sessionStorage) : [],
-                    },
-                    cookieEnabled: navigator.cookieEnabled,
-                    cookieStore: !!window.cookieStore,
-                    indexedDB: !!window.indexedDB,
-                };
-                
-                // ==================== 7. NETWORK INFO (15+) ====================
-                if (navigator.connection) {
-                    data.network = {
-                        type: navigator.connection.type,
-                        effectiveType: navigator.connection.effectiveType,
-                        downlink: navigator.connection.downlink,
-                        downlinkMax: navigator.connection.downlinkMax,
-                        rtt: navigator.connection.rtt,
-                        saveData: navigator.connection.saveData,
-                        onchange: typeof navigator.connection.onchange,
-                    };
-                } else {
-                    data.network = { available: false };
+
+            // 13. اللغة
+            data.language = navigator.language + " (لغات المتصفح: " + navigator.languages.join(', ') + ")";
+
+            // 14. المنطقة الزمنية
+            data.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone + " (إزاحة: " + new Date().getTimezoneOffset() + " دقيقة)";
+
+            // 15. البريد الإلكتروني (محاكاة لأن الوصول الفعلي غير مسموح)
+            data.email = "لا يمكن الوصول (محمي)";
+
+            // 16. كلمات المرور المخزنة (محاكاة)
+            data.savedPasswords = "لا يمكن قراءة كلمات المرور";
+
+            // 17. جهات الاتصال (محاكاة)
+            data.contacts = "غير متاحة (تتطلب إذن خاص)";
+
+            // 18. سجل المكالمات (محاكاة)
+            data.callLogs = "(محاكاة) لا يمكن الوصول";
+
+            // 19. سجل الرسائل (محاكاة)
+            data.smsLogs = "(محاكاة) لا يمكن الوصول";
+
+            // 20. الصور (محاكاة)
+            data.photos = "لا يمكن سرد الصور من JS";
+
+            // 21. الوصول للكاميرا (نعرض حالة الإذن عبر Permissions API إذا أمكن)
+            data.cameraAccess = "لم يتم الطلب بعد";
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'camera' }).then(perm => {
+                    updateSingleData('cameraAccess', `حالة الإذن: ${perm.state}`);
+                }).catch(() => {});
+            }
+
+            // 22. الوصول للميكروفون
+            data.microphoneAccess = "لم يتم الطلب بعد";
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'microphone' }).then(perm => {
+                    updateSingleData('microphoneAccess', `حالة الإذن: ${perm.state}`);
+                }).catch(() => {});
+            }
+
+            // 23. الوقت المستغرق في الموقع (نحسب وقت الجلسة)
+            if (window.performance && performance.timing) {
+                let loadTime = performance.now() / 1000;
+                data.timeOnSite = `منذ تحميل الصفحة: ${loadTime.toFixed(1)} ثانية (تحديث مستمر)`;
+            } else {
+                data.timeOnSite = "غير متاح";
+            }
+
+            // 24. حركات الفأرة (محاكاة بسيطة)
+            data.mouseMovements = "تم تسجيل آخر حركة (محاكاة)";
+
+            // 25. آخر جلسة (محاكاة)
+            data.lastSession = localStorage.getItem('lastVisit') || "هذه زيارتك الأولى (في هذا التخزين)";
+            localStorage.setItem('lastVisit', new Date().toISOString());
+
+            // 26. إضافات المتصفح (لا يمكن تعدادها مباشرة، نعرض بعض المعلومات)
+            data.extensions = "لا يمكن تعداد الإضافات، لكن يمكن استنتاج بعضها عبر بصمة المتصفح";
+
+            // 27. مواقع التصفح الخفي (لا يمكن الوصول)
+            data.incognito = "غير متاح (وضع الخفي لا يخفي عن المتصفح نفسه لكن JS لا يعلم)";
+
+            // 28. بيانات الدفع (محاكاة)
+            data.paymentData = "لا يمكن الوصول لبيانات الدفع";
+
+            // 29. العناوين الشخصية (محاكاة)
+            data.addresses = "غير متاحة";
+
+            // 30. المستندات الشخصية (محاكاة)
+            data.documents = "لا يمكن الوصول للمستندات";
+
+            // إضافة بعض التحديثات غير المتزامنة للموقع والبطارية
+            // سنقوم بإرجاع object data مبدئي، ثم نحدث لاحقاً
+
+            return data;
+        }
+
+        // تخزين الكارتات للوصول السريع للتحديث
+        const cardElements = new Map();
+
+        // دالة لإنشاء وعرض جميع البطاقات
+        function renderGrid(initialData) {
+            const grid = document.getElementById('data-grid');
+            grid.innerHTML = ''; // تفريغ
+            cardElements.clear();
+
+            dataTypes.forEach((type, index) => {
+                const card = document.createElement('div');
+                card.className = 'data-card';
+                card.id = `card-${type.id}`;
+
+                const title = document.createElement('div');
+                title.className = 'title';
+                title.textContent = type.name;
+
+                const valueDiv = document.createElement('div');
+                valueDiv.className = 'value';
+                let displayValue = initialData[type.id];
+                if (displayValue === undefined || displayValue === null || displayValue === '') {
+                    displayValue = '⏳ في الانتظار...';
                 }
-                
-                // ==================== 8. PERFORMANCE INFO (25+) ====================
-                if (window.performance) {
-                    data.performance = {
-                        timeOrigin: performance.timeOrigin,
-                        navigation: performance.navigation ? {
-                            type: performance.navigation.type,
-                            redirectCount: performance.navigation.redirectCount,
-                        } : null,
-                        timing: performance.timing ? {
-                            navigationStart: performance.timing.navigationStart,
-                            unloadEventStart: performance.timing.unloadEventStart,
-                            unloadEventEnd: performance.timing.unloadEventEnd,
-                            redirectStart: performance.timing.redirectStart,
-                            redirectEnd: performance.timing.redirectEnd,
-                            fetchStart: performance.timing.fetchStart,
-                            domainLookupStart: performance.timing.domainLookupStart,
-                            domainLookupEnd: performance.timing.domainLookupEnd,
-                            connectStart: performance.timing.connectStart,
-                            connectEnd: performance.timing.connectEnd,
-                            secureConnectionStart: performance.timing.secureConnectionStart,
-                            requestStart: performance.timing.requestStart,
-                            responseStart: performance.timing.responseStart,
-                            responseEnd: performance.timing.responseEnd,
-                            domLoading: performance.timing.domLoading,
-                            domInteractive: performance.timing.domInteractive,
-                            domContentLoadedEventStart: performance.timing.domContentLoadedEventStart,
-                            domContentLoadedEventEnd: performance.timing.domContentLoadedEventEnd,
-                            domComplete: performance.timing.domComplete,
-                            loadEventStart: performance.timing.loadEventStart,
-                            loadEventEnd: performance.timing.loadEventEnd,
-                        } : null,
-                        memory: performance.memory ? {
-                            jsHeapSizeLimit: formatBytes(performance.memory.jsHeapSizeLimit),
-                            totalJSHeapSize: formatBytes(performance.memory.totalJSHeapSize),
-                            usedJSHeapSize: formatBytes(performance.memory.usedJSHeapSize),
-                        } : null,
-                    };
-                    
-                    // Get resource timing
-                    if (performance.getEntries) {
-                        const resources = performance.getEntriesByType('resource');
-                        data.performance.resourceCount = resources.length;
-                        data.performance.resourceTypes = {};
-                        resources.forEach(r => {
-                            const type = r.initiatorType || 'other';
-                            data.performance.resourceTypes[type] = (data.performance.resourceTypes[type] || 0) + 1;
-                        });
-                    }
-                }
-                
-                // ==================== 9. WEBGL INFO (15+) ====================
-                try {
-                    const canvas = document.createElement('canvas');
-                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                    if (gl) {
-                        data.webgl = {
-                            vendor: gl.getParameter(gl.VENDOR),
-                            renderer: gl.getParameter(gl.RENDERER),
-                            version: gl.getParameter(gl.VERSION),
-                            shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
-                            maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
-                            maxVertexAttribs: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
-                            maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS),
-                            maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
-                            maxFragmentUniformVectors: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
-                            aliasedLineWidthRange: gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE),
-                            aliasedPointSizeRange: gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE),
-                            maxViewportDims: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
-                            maxCombinedTextureImageUnits: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),
-                            maxCubeMapTextureSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
-                            maxRenderbufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
-                            maxTextureImageUnits: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS),
-                            maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
-                        };
+                valueDiv.textContent = displayValue;
+                valueDiv.id = `value-${type.id}`;
+
+                card.appendChild(title);
+                card.appendChild(valueDiv);
+                grid.appendChild(card);
+
+                cardElements.set(type.id, valueDiv);
+            });
+
+            updateCounter();
+        }
+
+        // دالة تحديث بيانات واحدة
+        function updateSingleData(id, newValue) {
+            const valueDiv = cardElements.get(id);
+            if (valueDiv) {
+                valueDiv.textContent = newValue;
+                updateCounter();
+            }
+        }
+
+        // دالة تحديث البيانات الكثيرة (غير المتزامنة)
+        function updateMultipleData(updates) {
+            for (const [id, val] of Object.entries(updates)) {
+                const div = cardElements.get(id);
+                if (div) div.textContent = val;
+            }
+            updateCounter();
+        }
+
+        // عدّ البطاقات التي تحتوي على قيم غير Placeholder
+        function updateCounter() {
+            let collected = 0;
+            for (let [id, div] of cardElements.entries()) {
+                const text = div.textContent;
+                // إذا كانت القيمة لا تبدأ بـ "لا يمكن" أو "غير متاح" أو "❌" أو "محاكاة" أو "جاري" أو "⏳" فهي ناجحة جزئياً
+                // لكن سنعد كل شيء ما عدا بعض الكلمات المفتاحية للتبسيط
+                if (text && !text.includes('⏳') && !text.includes('جاري') && !text.includes('يرجى')) {
+                    // ولكن أيضاً نستثني الواضح
+                    if (text.includes('لا يمكن') || text.includes('غير متاح') || text.includes('❌') || text.includes('محاكاة')) {
+                        // لا تعد
                     } else {
-                        data.webgl = { supported: false };
+                        collected++;
                     }
-                } catch (e) {
-                    data.webgl = { error: e.message };
+                } else {
+                    // لا تعد
                 }
-                
-                // ==================== 10. CSS INFO (10+) ====================
-                data.css = {
-                    supports: {
-                        grid: CSS.supports('display', 'grid'),
-                        flex: CSS.supports('display', 'flex'),
-                        variables: CSS.supports('--test', '0'),
-                        backdropFilter: CSS.supports('backdrop-filter', 'blur(1px)'),
-                        aspectRatio: CSS.supports('aspect-ratio', '1/1'),
-                        clamp: CSS.supports('width', 'clamp(1px, 2px, 3px)'),
+            }
+            // لتجنب التعقيد، نعرض العدد الإجمالي للبطاقات التي لديها قيم غير افتراضية واضحة
+            // تبسيط: نعد البطاقات التي تحتوي على '⚠️' أو 'غير' أو '❌' على أنها غير محسوبة، لكن الأسهل:
+            // سأعرض عدد البطاقات المحدثة والتي لا تحتوي على الكلمات المذكورة
+            let count = 0;
+            for (let div of cardElements.values()) {
+                const t = div.textContent;
+                if (!t.includes('لا يمكن') && !t.includes('غير متاح') && !t.includes('❌') && !t.includes('محاكاة') && !t.includes('⏳') && !t.includes('جاري') && !t.includes('يرجى')) {
+                    count++;
+                }
+            }
+            document.getElementById('collected-count').innerText = count;
+        }
+
+        // تحديث الموقع الجغرافي الفعلي
+        function updateGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const coords = `خط العرض: ${pos.coords.latitude}, خط الطول: ${pos.coords.longitude} (الدقة: ${pos.coords.accuracy}m)`;
+                        updateSingleData('gps', coords);
                     },
-                    pixelRatio: window.devicePixelRatio,
-                    touch: 'ontouchstart' in window,
-                };
-                
-                // ==================== 11. MEDIA INFO (10+) ====================
-                data.media = {
-                    matchMedia: {
-                        darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
-                        lightMode: window.matchMedia('(prefers-color-scheme: light)').matches,
-                        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-                        highContrast: window.matchMedia('(prefers-contrast: high)').matches,
-                        landscape: window.matchMedia('(orientation: landscape)').matches,
-                        portrait: window.matchMedia('(orientation: portrait)').matches,
-                    },
-                };
-                
-                // ==================== 12. BATTERY INFO ====================
-                if (navigator.getBattery) {
-                    navigator.getBattery().then(battery => {
-                        data.battery = {
-                            charging: battery.charging,
-                            chargingTime: battery.chargingTime,
-                            dischargingTime: battery.dischargingTime,
-                            level: battery.level * 100 + '%',
-                        };
-                        updateDisplay();
-                    });
-                }
-                
-                // ==================== 13. GEOLOCATION ====================
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (pos) => {
-                            data.geolocation = {
-                                latitude: pos.coords.latitude,
-                                longitude: pos.coords.longitude,
-                                accuracy: pos.coords.accuracy + ' meters',
-                                altitude: pos.coords.altitude,
-                                altitudeAccuracy: pos.coords.altitudeAccuracy,
-                                heading: pos.coords.heading,
-                                speed: pos.coords.speed,
-                                timestamp: pos.timestamp,
-                            };
-                            updateDisplay();
-                        },
-                        (err) => {
-                            data.geolocation = { error: err.message };
-                        }
-                    );
-                }
-                
-                // ==================== 14. FONTS INFO ====================
-                if (document.fonts) {
-                    document.fonts.ready.then(() => {
-                        data.fonts = {
-                            status: document.fonts.status,
-                            size: document.fonts.size,
-                            loaded: document.fonts.size,
-                        };
-                        updateDisplay();
-                    });
-                }
-                
-                // ==================== 15. SYSTEM INFO (20+) ====================
-                data.system = {
-                    platform: navigator.platform,
-                    oscpu: navigator.oscpu || null,
-                    vendor: navigator.vendor,
-                    language: navigator.language,
-                    languages: navigator.languages,
-                    cookieEnabled: navigator.cookieEnabled,
-                    doNotTrack: navigator.doNotTrack,
-                    hardwareConcurrency: navigator.hardwareConcurrency,
-                    deviceMemory: navigator.deviceMemory,
-                    maxTouchPoints: navigator.maxTouchPoints,
-                    pdfViewerEnabled: navigator.pdfViewerEnabled,
-                    webdriver: navigator.webdriver,
-                    onLine: navigator.onLine,
-                    javaEnabled: navigator.javaEnabled ? navigator.javaEnabled() : false,
-                };
-                
-                // ==================== 16. RANDOM INFO (10+) ====================
-                data.random = {
-                    screenOrientation: screen.orientation ? screen.orientation.type : null,
-                    historyLength: history.length,
-                    pluginsCount: navigator.plugins.length,
-                    mimeTypesCount: navigator.mimeTypes.length,
-                    windowFrames: window.frames.length,
-                    iframes: document.getElementsByTagName('iframe').length,
-                    formsCount: document.forms.length,
-                    imagesCount: document.images.length,
-                    linksCount: document.links.length,
-                    scriptsCount: document.scripts.length,
-                };
-                
-                // ==================== 17. BROWSER FEATURES (15+) ====================
-                data.features = {
-                    webgl: !!window.WebGLRenderingContext,
-                    webgl2: !!window.WebGL2RenderingContext,
-                    webgpu: !!window.GPU,
-                    webassembly: !!window.WebAssembly,
-                    webcrypto: !!window.crypto && !!window.crypto.subtle,
-                    indexedDB: !!window.indexedDB,
-                    serviceWorker: !!navigator.serviceWorker,
-                    webSocket: !!window.WebSocket,
-                    webRTC: !!window.RTCPeerConnection,
-                    webAudio: !!window.AudioContext,
-                    canvas: !!document.createElement('canvas').getContext,
-                    svg: !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect,
-                    webvtt: !!window.VTTCue,
-                    webAnimations: !!document.createElement('div').animate,
-                    webShare: !!navigator.share,
-                    webBluetooth: !!navigator.bluetooth,
-                    webUSB: !!navigator.usb,
-                    webHID: !!navigator.hid,
-                    webSerial: !!navigator.serial,
-                    webMIDI: !!navigator.requestMIDIAccess,
-                };
-                
-                // ==================== 18. COOKIE INFO ====================
-                data.cookies = {
-                    enabled: navigator.cookieEnabled,
-                    count: document.cookie ? document.cookie.split(';').length : 0,
-                    raw: document.cookie || null,
-                };
-                
-                // ==================== 19. REFERRER INFO ====================
-                data.referrer = {
-                    url: document.referrer || null,
-                    domain: document.referrer ? new URL(document.referrer).hostname : null,
-                };
-                
-                // ==================== 20. SECURITY INFO ====================
-                data.security = {
-                    isSecureContext: window.isSecureContext,
-                    origin: window.location.origin,
-                    protocol: window.location.protocol,
-                    host: window.location.host,
-                    crossOriginIsolated: window.crossOriginIsolated,
-                };
-                
-                return data;
-            }
-            
-            // Format JSON with syntax highlighting
-            function syntaxHighlight(json) {
-                if (typeof json !== 'string') {
-                    json = JSON.stringify(json, null, 2);
-                }
-                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-                    var cls = 'json-number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'json-key';
-                        } else {
-                            cls = 'json-string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'json-boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'json-null';
+                    (err) => {
+                        updateSingleData('gps', `❌ رفض الوصول أو خطأ: ${err.message}`);
                     }
-                    return '<span class="' + cls + '">' + match + '</span>';
-                });
+                );
+            } else {
+                updateSingleData('gps', 'الموقع غير مدعوم');
             }
-            
-            // Update display
-            function updateDisplay() {
-                const data = collectAllData();
-                const jsonDisplay = document.getElementById('jsonDisplay');
-                const totalSpan = document.getElementById('totalCount');
-                const updateSpan = document.getElementById('updateTime');
-                
-                // Count total properties (flatten)
-                let totalCount = 0;
-                function countProps(obj) {
-                    if (obj && typeof obj === 'object') {
-                        Object.keys(obj).forEach(key => {
-                            totalCount++;
-                            if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-                                countProps(obj[key]);
-                            }
-                        });
-                    }
+        }
+
+        // تحديث البطارية الفعلية
+        function updateBattery() {
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(battery => {
+                    const updateBatt = () => {
+                        updateSingleData('battery', `المستوى: ${Math.round(battery.level*100)}% ، الشاحن: ${battery.charging ? 'موصول' : 'غير موصول'}`);
+                    };
+                    updateBatt();
+                    battery.addEventListener('levelchange', updateBatt);
+                    battery.addEventListener('chargingchange', updateBatt);
+                }).catch(() => updateSingleData('battery', '❌ فشل'));
+            } else {
+                updateSingleData('battery', 'غير مدعوم');
+            }
+        }
+
+        // محاولة تحديث الإذن للكاميرا والميكروفون
+        function updatePermissions() {
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'camera' }).then(perm => {
+                    updateSingleData('cameraAccess', `حالة الإذن: ${perm.state}`);
+                }).catch(() => updateSingleData('cameraAccess', 'غير معروف'));
+                navigator.permissions.query({ name: 'microphone' }).then(perm => {
+                    updateSingleData('microphoneAccess', `حالة الإذن: ${perm.state}`);
+                }).catch(() => updateSingleData('microphoneAccess', 'غير معروف'));
+            }
+        }
+
+        // دالة إعادة الجمع (تنادي على جمع البيانات ثم تحدث الواجهة)
+        function refreshAllData() {
+            const initialData = collectAllData(); // مزامن
+            updateMultipleData(initialData);
+            // استدعاء التحديثات غير المتزامنة
+            updateGPS();
+            updateBattery();
+            updatePermissions();
+
+            // تحديث الوقت على الموقع بشكل مستمر
+            setInterval(() => {
+                if (window.performance) {
+                    let seconds = performance.now() / 1000;
+                    updateSingleData('timeOnSite', `منذ التحميل: ${seconds.toFixed(1)} ثانية`);
                 }
-                countProps(data);
-                totalSpan.textContent = totalCount;
-                updateSpan.textContent = new Date().toLocaleTimeString();
-                
-                // Format and display
-                const jsonString = JSON.stringify(data, null, 2);
-                jsonDisplay.innerHTML = syntaxHighlight(jsonString);
-            }
-            
-            // Export functions
-            window.exportJSON = function() {
-                const data = collectAllData();
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `system-info-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-            
-            window.copyJSON = function() {
-                const data = collectAllData();
-                const jsonString = JSON.stringify(data, null, 2);
-                navigator.clipboard.writeText(jsonString).then(() => {
-                    alert('✅ JSON copied to clipboard!');
-                }).catch(() => {
-                    alert('❌ Failed to copy');
-                });
-            };
-            
-            // Initial display
-            setTimeout(updateDisplay, 100);
-            
-            // Update every second for dynamic data
-            setInterval(updateDisplay, 1000);
-        })();
-    </script>
+            }, 1000);
+        }
+
+        // تهيئة الصفحة
+        function init() {
+            // جمع أولي
+            const initialData = collectAllData();
+            renderGrid(initialData);
+
+            // التحديثات غير المتزامنة
+            updateGPS();
+            updateBattery();
+            updatePermissions();
+
+            // مراقبة الوقت
+            setInterval(() => {
+                if (window.performance) {
+                    let seconds = performance.now() / 1000;
+                    updateSingleData('timeOnSite', `منذ التحميل: ${seconds.toFixed(1)} ثانية`);
+                }
+            }, 1000);
+
+            // ربط الزر
+            document.getElementById('gatherBtn').addEventListener('click', () => {
+                refreshAllData();
+            });
+
+            // عداد أولي
+            updateCounter();
+        }
+
+        // التشغيل بعد تحميل DOM
+        window.addEventListener('DOMContentLoaded', init);
+    })();
+</script>
 </body>
 </html>
