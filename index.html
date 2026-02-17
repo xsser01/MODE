@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- مكتبة البوصلة - Gyroscope API -->
-    <script src="https://cdn.jsdelivr.net/npm/simple-compass@1.0.0/dist/simple-compass.min.js"></script>
     <style>
         :root {
             --primary: #1e4d2e;
@@ -264,7 +262,7 @@
             color: red;
         }
 
-        /* ========== 2. القرآن الكريم ========== */
+        /* ========== 2. القرآن الكريم المصحح ========== */
         .quran-surah-list {
             max-height: 400px;
             overflow-y: auto;
@@ -341,6 +339,7 @@
         .audio-player {
             width: 100%;
             margin: 20px 0;
+            border-radius: 50px;
         }
 
         .surah-controls {
@@ -373,7 +372,7 @@
             cursor: not-allowed;
         }
 
-        /* ========== 3. الأذكار التفاعلية ========== */
+        /* ========== 3. الأذكار ========== */
         .adhkar-categories {
             display: grid;
             gap: 12px;
@@ -448,11 +447,6 @@
 
         .zikr-btn:hover {
             transform: scale(1.1);
-        }
-
-        .zikr-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
         }
 
         .zikr-progress {
@@ -633,6 +627,21 @@
             color: var(--text-light);
             font-size: 0.9rem;
         }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--secondary);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -655,12 +664,12 @@
             <div class="service-card" onclick="showSection('quran')">
                 <div class="service-icon">📖</div>
                 <div class="service-title">القرآن الكريم</div>
-                <div class="service-desc">114 سورة + تنقل كامل</div>
+                <div class="service-desc">114 سورة كاملة بالصوت</div>
             </div>
             <div class="service-card" onclick="showSection('adhkar')">
                 <div class="service-icon">🤲</div>
-                <div class="service-title">الأذكار التفاعلية</div>
-                <div class="service-desc">عداد متطور + تقدم</div>
+                <div class="service-title">الأذكار</div>
+                <div class="service-desc">أذكار الصباح والمساء</div>
             </div>
             <div class="service-card" onclick="showSection('calendar')">
                 <div class="service-icon">📅</div>
@@ -692,7 +701,7 @@
     </div>
 
     <script>
-        // قائمة السور الكاملة
+        // ==================== قائمة السور الكاملة ====================
         const surahList = [
             { id: 1, name: 'الفاتحة', type: 'مكية', ayahs: 7 },
             { id: 2, name: 'البقرة', type: 'مدنية', ayahs: 286 },
@@ -810,7 +819,7 @@
             { id: 114, name: 'الناس', type: 'مكية', ayahs: 6 }
         ];
 
-        // أسماء الله الحسنى كاملة
+        // ==================== أسماء الله الحسنى ====================
         const namesOfAllah = [
             { arabic: 'الرَّحْمَنُ', translation: 'الرحمن' },
             { arabic: 'الرَّحِيمُ', translation: 'الرحيم' },
@@ -936,7 +945,7 @@
             { text: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', reference: 'الشرح 5' }
         ];
 
-        // المدن المتاحة
+        // المدن
         const cities = [
             { name: 'مكة المكرمة', country: 'Saudi Arabia', apiName: 'Makkah' },
             { name: 'المدينة المنورة', country: 'Saudi Arabia', apiName: 'Medina' },
@@ -948,22 +957,17 @@
             { name: 'الكويت', country: 'Kuwait', apiName: 'Kuwait City' },
             { name: 'مسقط', country: 'Oman', apiName: 'Muscat' },
             { name: 'القاهرة', country: 'Egypt', apiName: 'Cairo' },
-            { name: 'عمان', country: 'Jordan', apiName: 'Amman' },
-            { name: 'القدس', country: 'Palestine', apiName: 'Jerusalem' }
+            { name: 'عمان', country: 'Jordan', apiName: 'Amman' }
         ];
 
+        // ==================== المتغيرات العامة ====================
         let currentSection = 'home';
         let tasbeehCount = 0;
         let currentSurahId = 1;
-        let currentAyahIndex = 0;
-        let currentSurahAyahs = [];
         let currentCity = cities[0];
         let prayerTimers = {};
-        let compass = null;
-        let currentZikrIndex = 0;
-        let currentZikrCount = 0;
-        let zikrInterval = null;
 
+        // ==================== وظائف التنقل ====================
         function showSection(section) {
             currentSection = section;
             document.getElementById('contentTitle').textContent = getSectionTitle(section);
@@ -973,7 +977,7 @@
                 case 'prayer':
                     body.innerHTML = getPrayerHTML();
                     initCitySelector();
-                    loadPrayerTimes(currentCity.apiName);
+                    loadPrayerTimes(currentCity.apiName, currentCity.country);
                     initCompass();
                     break;
                 case 'quran':
@@ -1001,7 +1005,7 @@
             const titles = {
                 prayer: '🕌 مواقيت الصلاة',
                 quran: '📖 القرآن الكريم',
-                adhkar: '🤲 الأذكار التفاعلية',
+                adhkar: '🤲 الأذكار',
                 calendar: '📅 التقويم الهجري',
                 names: '⭐ أسماء الله الحسنى'
             };
@@ -1019,7 +1023,7 @@
             `;
         }
 
-        // ==================== 1. مواقيت الصلاة المحسنة ====================
+        // ==================== 1. مواقيت الصلاة ====================
         function getPrayerHTML() {
             return `
                 <div class="city-selector">
@@ -1066,12 +1070,12 @@
                 currentCity = city;
                 localStorage.setItem('selectedCity', cityName);
                 document.getElementById('prayerCity').textContent = city.name;
-                loadPrayerTimes(city.apiName);
+                loadPrayerTimes(city.apiName, city.country);
             }
         }
 
-        function loadPrayerTimes(city) {
-            fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${currentCity.country}&method=4`)
+        function loadPrayerTimes(city, country) {
+            fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=4`)
                 .then(res => res.json())
                 .then(data => {
                     const timings = data.data.timings;
@@ -1079,7 +1083,6 @@
                     startPrayerCountdown(timings);
                 })
                 .catch(() => {
-                    // بيانات افتراضية
                     const defaultTimings = {
                         Fajr: '04:30',
                         Dhuhr: '12:15',
@@ -1105,7 +1108,7 @@
             
             prayerTimers.interval = setInterval(() => {
                 const now = new Date();
-                const currentTime = now.getHours() * 60 + now.getMinutes();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
                 
                 const prayers = [
                     { name: 'الفجر', time: timings.Fajr },
@@ -1121,8 +1124,8 @@
                 prayers.forEach(prayer => {
                     const [hours, minutes] = prayer.time.split(':').map(Number);
                     const prayerMinutes = hours * 60 + minutes;
-                    let diff = prayerMinutes - currentTime;
-                    if (diff < 0) diff += 24 * 60; // ليوم غد
+                    let diff = prayerMinutes - currentMinutes;
+                    if (diff < 0) diff += 24 * 60;
                     
                     if (diff < minDiff) {
                         minDiff = diff;
@@ -1144,29 +1147,10 @@
             const statusEl = document.getElementById('compassStatus');
             
             if (window.DeviceOrientationEvent) {
-                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // لنظام iOS
-                    DeviceOrientationEvent.requestPermission()
-                        .then(permissionState => {
-                            if (permissionState === 'granted') {
-                                startCompass();
-                            } else {
-                                statusEl.textContent = 'لم يتم السماح بالبوصلة';
-                            }
-                        })
-                        .catch(console.error);
-                } else {
-                    // أندرويد وأجهزة أخرى
-                    startCompass();
-                }
-            } else {
-                statusEl.textContent = 'البوصلة غير مدعومة على جهازك';
-            }
-            
-            function startCompass() {
-                window.addEventListener('deviceorientationabsolute', handleOrientation);
                 window.addEventListener('deviceorientation', handleOrientation);
                 statusEl.textContent = 'البوصلة تعمل - وجه جهازك نحو الكعبة';
+            } else {
+                statusEl.textContent = 'البوصلة غير مدعومة على جهازك';
             }
             
             function handleOrientation(event) {
@@ -1175,7 +1159,6 @@
                     alpha = 360 - event.webkitCompassHeading;
                 }
                 
-                // القبلة لمكة: تقريباً 137.5 درجة من الشمال
                 const qiblaAngle = 137.5;
                 const rotation = qiblaAngle - alpha;
                 
@@ -1185,7 +1168,7 @@
             }
         }
 
-        // ==================== 2. القرآن مع التنقل الكامل ====================
+        // ==================== 2. القرآن الكريم المصحح (سور كاملة) ====================
         function getQuranHTML() {
             return `
                 <div class="quran-surah-list" id="surahList"></div>
@@ -1193,8 +1176,8 @@
                     <div class="surah-title" id="currentSurahName"></div>
                     <div class="ayah-counter" id="ayahCounter"></div>
                     <div class="ayah-text" id="ayahDisplay"></div>
-                    <audio controls class="audio-player" id="audioPlayer" style="display: none;">
-                        <source src="" type="audio/mpeg">
+                    <audio controls class="audio-player" id="audioPlayer" style="width: 100%;">
+                        <source id="audioSource" src="" type="audio/mpeg">
                     </audio>
                     <div class="surah-controls">
                         <button class="surah-btn" onclick="prevAyah()" id="prevBtn"><i class="fas fa-arrow-right"></i> السابق</button>
@@ -1224,26 +1207,31 @@
             });
         }
 
+        // نص الآيات لسورة الفاتحة كاملة
+        const surah1Ayahs = [
+            'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ',
+            'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+            'الرَّحْمَـٰنِ الرَّحِيمِ',
+            'مَالِكِ يَوْمِ الدِّينِ',
+            'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
+            'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
+            'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'
+        ];
+
         function openSurah(id, name, totalAyahs) {
             currentSurahId = id;
-            currentAyahIndex = 0;
+            window.currentAyahIndex = 0;
             
-            // توليد آيات وهمية (في التطبيق الحقيقي تجلب من API)
-            currentSurahAyahs = [];
-            for (let i = 1; i <= totalAyahs; i++) {
-                if (id === 1 && i <= 7) {
-                    const ayahs = [
-                        'بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ',
-                        'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
-                        'الرَّحْمَـٰنِ الرَّحِيمِ',
-                        'مَالِكِ يَوْمِ الدِّينِ',
-                        'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
-                        'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
-                        'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'
-                    ];
-                    currentSurahAyahs.push(ayahs[i-1]);
-                } else {
-                    currentSurahAyahs.push(`الآية ${i} من سورة ${name}`);
+            // تجهيز مصدر الصوت - روابط مباشرة لكل سورة
+            const audioSource = document.getElementById('audioSource');
+            if (audioSource) {
+                // استخدام API موثوق للقرآن كامل مع سور كاملة
+                audioSource.src = `https://server8.mp3quran.net/afs/${id.toString().padStart(3, '0')}.mp3`;
+                
+                // تحديث مشغل الصوت
+                const audioPlayer = document.getElementById('audioPlayer');
+                if (audioPlayer) {
+                    audioPlayer.load();
                 }
             }
             
@@ -1251,71 +1239,88 @@
             document.getElementById('quranReader').style.display = 'block';
             document.getElementById('currentSurahName').textContent = `سورة ${name}`;
             
-            updateAyahDisplay();
+            // تجهيز النص للعرض
+            window.currentSurahAyahs = [];
+            if (id === 1) {
+                window.currentSurahAyahs = surah1Ayahs;
+            } else {
+                for (let i = 1; i <= totalAyahs; i++) {
+                    window.currentSurahAyahs.push(`الآية ${i} من سورة ${name}`);
+                }
+            }
             
-            // تحديث مصدر الصوت
-            const audio = document.getElementById('audioPlayer');
-            audio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
+            updateAyahDisplay();
         }
 
         function updateAyahDisplay() {
             const ayahDisplay = document.getElementById('ayahDisplay');
             const ayahCounter = document.getElementById('ayahCounter');
             
-            if (ayahDisplay && currentSurahAyahs.length > 0) {
-                ayahDisplay.textContent = currentSurahAyahs[currentAyahIndex];
-                ayahCounter.textContent = `الآية ${currentAyahIndex + 1} من ${currentSurahAyahs.length}`;
+            if (ayahDisplay && window.currentSurahAyahs && window.currentSurahAyahs.length > 0) {
+                ayahDisplay.textContent = window.currentSurahAyahs[window.currentAyahIndex || 0];
+                ayahCounter.textContent = `الآية ${(window.currentAyahIndex || 0) + 1} من ${window.currentSurahAyahs.length}`;
             }
             
-            // تحديث حالة الأزرار
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             
-            if (prevBtn) prevBtn.disabled = currentAyahIndex === 0;
-            if (nextBtn) nextBtn.disabled = currentAyahIndex === currentSurahAyahs.length - 1;
+            if (prevBtn) prevBtn.disabled = (window.currentAyahIndex || 0) === 0;
+            if (nextBtn) nextBtn.disabled = (window.currentAyahIndex || 0) === (window.currentSurahAyahs?.length || 0) - 1;
         }
 
         function prevAyah() {
-            if (currentAyahIndex > 0) {
-                currentAyahIndex--;
+            if (window.currentAyahIndex > 0) {
+                window.currentAyahIndex--;
                 updateAyahDisplay();
+                
+                // تحديث وقت الصوت (اختياري)
+                const audio = document.getElementById('audioPlayer');
+                if (audio) {
+                    audio.currentTime = 0;
+                }
             }
         }
 
         function nextAyah() {
-            if (currentAyahIndex < currentSurahAyahs.length - 1) {
-                currentAyahIndex++;
+            if (window.currentAyahIndex < (window.currentSurahAyahs?.length || 0) - 1) {
+                window.currentAyahIndex++;
                 updateAyahDisplay();
+                
+                const audio = document.getElementById('audioPlayer');
+                if (audio) {
+                    audio.currentTime = 0;
+                }
             }
         }
 
         function playAyah() {
             const audio = document.getElementById('audioPlayer');
+            const playBtn = document.getElementById('playBtn');
+            
             if (audio) {
-                audio.play();
-                const playBtn = document.getElementById('playBtn');
-                playBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف';
-                playBtn.onclick = pauseAyah;
-            }
-        }
-
-        function pauseAyah() {
-            const audio = document.getElementById('audioPlayer');
-            if (audio) {
-                audio.pause();
-                const playBtn = document.getElementById('playBtn');
-                playBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل';
-                playBtn.onclick = playAyah;
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف';
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+                }
             }
         }
 
         function backToSurahList() {
             document.getElementById('surahList').style.display = 'block';
             document.getElementById('quranReader').style.display = 'none';
-            pauseAyah();
+            
+            // إيقاف الصوت
+            const audio = document.getElementById('audioPlayer');
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
         }
 
-        // ==================== 3. الأذكار التفاعلية ====================
+        // ==================== 3. الأذكار ====================
         function getAdhkarHTML() {
             return `
                 <div class="adhkar-categories">
@@ -1346,8 +1351,6 @@
             if (!container) return;
             
             container.innerHTML = '';
-            currentZikrIndex = 0;
-            currentZikrCount = 0;
             
             adhkar.forEach((zikr, index) => {
                 const zikrDiv = document.createElement('div');
@@ -1379,18 +1382,6 @@
                 countEl.textContent = current;
                 const percentage = (current / target) * 100;
                 progressEl.style.width = `${percentage}%`;
-                
-                // إضافة تأثير اهتزاز بسيط
-                const btn = event.target;
-                btn.style.transform = 'scale(1.2)';
-                setTimeout(() => btn.style.transform = 'scale(1)', 100);
-            }
-            
-            if (current === target) {
-                // إظهار رسالة عند إكمال الذكر
-                setTimeout(() => {
-                    alert('✅ تم إكمال هذا الذكر');
-                }, 200);
             }
         }
 
@@ -1443,9 +1434,8 @@
             const gregorian = now.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('gregorianDate').textContent = gregorian;
             
-            // حساب الأيام المتبقية لرمضان (تقريباً)
             const today = new Date();
-            const ramadan2026 = new Date(2026, 1, 17); // 17 فبراير 2026 تقريباً
+            const ramadan2026 = new Date(2026, 1, 17);
             const daysUntilRamadan = Math.ceil((ramadan2026 - today) / (1000 * 60 * 60 * 24));
             
             const events = [
@@ -1489,7 +1479,7 @@
             namesOfAllah.forEach(name => {
                 const div = document.createElement('div');
                 div.className = 'name-card';
-                div.onclick = () => alert(`الاسم: ${name.arabic}\nالمعنى: ${name.translation}\n\nقال رسول الله ﷺ: "إن لله تسعة وتسعين اسماً، من أحصاها دخل الجنة"`);
+                div.onclick = () => alert(`الاسم: ${name.arabic}\nالمعنى: ${name.translation}`);
                 div.innerHTML = `
                     <div class="name-arabic">${name.arabic}</div>
                     <div class="name-translation">${name.translation}</div>
@@ -1513,7 +1503,6 @@
                 <span class="hijri-date">١٧ شعبان ١٤٤٦ هـ</span>
             `;
             
-            // تحميل المدينة المحفوظة
             const savedCity = localStorage.getItem('selectedCity');
             if (savedCity) {
                 const city = cities.find(c => c.apiName === savedCity);
